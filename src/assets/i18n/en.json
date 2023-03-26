@@ -1,0 +1,11 @@
+{
+  "configuration": {
+    "gameConfiguration": "Game configuration",
+    "numberOfPlayers": "Number of players",
+    "playerOneName": "Player 1 name:",
+    "playerTwoName": "Player 2 name:",
+    "playerThreeName": "Player 3 name:",
+    "playerFourName": "Player 4 name:",
+    "startGame": "Start game!"
+  }
+}

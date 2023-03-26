@@ -1,0 +1,11 @@
+{
+  "configuration": {
+  "gameConfiguration": "Ustawienia gry",
+    "numberOfPlayers": "Liczba graczy",
+    "playerOneName": "Imię pierwszego gracz",
+    "playerTwoName": "Imię drugiego gracza",
+    "playerThreeName": "Imię drugiego gracza",
+    "playerFourName": "Imię czwartego gracza",
+    "startGame": "Zacznij grę!"
+  }
+}
