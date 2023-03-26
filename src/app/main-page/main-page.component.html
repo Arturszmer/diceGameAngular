@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="container-conf conf-data">
+    <div class="form-container">
+      <div class="title h2">
+        <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
+        Game Configuration
+      </div>
+      <form class="form" id="form" (ngSubmit)="onSubmit()">
+        <div class="form-container-in">
+          <label for="numPlayers" class="selected">Number of players:</label>
+          <div class="input-group">
+            <select [(ngModel)]="numPlayers" (ngModelChange)="updatePlayersArray()" name="numPlayers" id="numPlayers" class="form-select">
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+            </select>
+            <label class="input-group-text" for="numPlayers"><i class="bi bi-people"></i></label>
+          </div>
+        </div>
+
+        <!-- Add a container to hold player names -->
+        <div id="player-names">
+          <div *ngFor="let i of playersArray">
+            <div class="form-container-in">
+              <div class="selected">Player {{ i }} name:</div>
+              <input type="text" [id]="'player' + i" class="form-input" [placeholder]="'Player ' + i + ' name'">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary">Start Game!</button>
+      </form>
+    </div>
+  </div>
+</div>

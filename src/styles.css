@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --casino-blue: #2D4262;
+  --casino-grey: #BFBFBF;
+  --casino-gold: #F2B632;
+  --casino-red: #ED553B;
+}
