@@ -7,13 +7,17 @@ import {FormsModule} from "@angular/forms";
 import { PlayGameComponent } from './play-game/play-game.component';
 import { MainTableComponent } from './play-game/main-table/main-table.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PlayerComponent } from './play-game/main-table/player/player.component';
+import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-dice.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
     PlayGameComponent,
-    MainTableComponent
+    MainTableComponent,
+    PlayerComponent,
+    RollerDiceComponent
   ],
   imports: [
     BrowserModule,

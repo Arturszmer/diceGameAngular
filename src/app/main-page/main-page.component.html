@@ -23,7 +23,16 @@
           <div *ngFor="let i of playersArray">
             <div class="form-container-in">
               <div class="selected">Player {{ i }} name:</div>
-              <input type="text" [id]="'player' + i" class="form-input" [placeholder]="'Player ' + i + ' name'">
+              <input type="text" class="form-input" name="text"
+                     [placeholder]="'Player ' + i + ' name'"
+                     [id]="'player' + i" required minlength="3"
+              [(ngModel)]="names[i]">
+            </div>
+            <div *ngIf="names[i].length > 0 && names[i].length < 3" class="alert-custom">
+              Please enter a valid name (minimum 3 characters).
+            </div>
+            <div *ngIf="invalidName" class="alert-custom">
+              Name cannot be empty
             </div>
           </div>
         </div>

@@ -1,0 +1,11 @@
+  <button class="cubeValue"
+          *ngFor="let dice of diceNumbers; let i = index"
+          (click)="diceCheck(i, dice)"
+  [ngClass]="{
+  'selected' : dice.isChecked, 'good' : dice.isGoodNumber}"
+  [disabled]="!dice.isGoodNumber">
+    <div>
+      <span>{{dice.value}}</span>
+
+    </div>
+  </button>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {Player} from "../player";
 import {DataService} from "../play-game/dataService";
+import {Player} from "../model/player";
 
 @Component({
   selector: 'app-main-page',
@@ -11,6 +11,9 @@ import {DataService} from "../play-game/dataService";
 export class MainPageComponent implements OnInit {
   numPlayers: number = 2;
   playersArray: number[] = new Array(this.numPlayers).fill(0).map((x, i) => i + 1)
+  players: Player[] = [];
+  invalidName: boolean = false;
+  names: string[] = ['', '', '', ''];
 
   constructor(private router: Router, private data: DataService) { }
 
@@ -23,12 +26,22 @@ export class MainPageComponent implements OnInit {
   }
 
   onSubmit() {
-    const players: Player[] = [];
     for (let i = 1; i <= this.numPlayers; i++) {
       const playerName = (document.getElementById(`player${i}`) as HTMLInputElement).value;
-      players.push({id: i, name: playerName});
+      if(playerName.length <= 3){
+        throw this.invalidName = true;
+      }
+      this.players.push({id: i, name: playerName, points: 0});
     }
-    this.data.setGameData(players);
+    this.data.setGameData(this.players);
     this.router.navigate(['/game']);
+  }
+
+  playerNameValid(index: number): boolean {
+    return (this.players[index] && this.players[index].name.length >= 3);
+  }
+
+  playerNameInvalid(index: number) {
+    return this.invalidName && !this.playerNameValid(index);
   }
 }
