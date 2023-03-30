@@ -2,8 +2,9 @@
           *ngFor="let dice of diceNumbers; let i = index"
           (click)="diceCheck(i, dice)"
   [ngClass]="{
-  'selected' : dice.isChecked, 'good' : dice.isGoodNumber}"
-  [disabled]="!dice.isGoodNumber">
+  'selected' : dice.isChecked, 'good' : dice.isGoodNumber, 'multiple' : dice.isMultiple}"
+  [disabled]="!dice.isGoodNumber"
+  (change)="updatePoints()">
     <div>
       <span>{{dice.value}}</span>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {DataService} from "../play-game/dataService";
 import {Player} from "../model/player";
+import {DataService} from "../play-game/main-table/services/dataService";
 
 @Component({
   selector: 'app-main-page',

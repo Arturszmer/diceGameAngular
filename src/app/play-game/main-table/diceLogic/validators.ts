@@ -1,6 +1,6 @@
-import {Dices} from "../../../model/dices";
+import {Dice} from "../../../model/dice";
 
-export const checkMultipleNumbers =(numbers: number[], muiltipleDices: Dices[]) => {
+export const checkMultipleNumbers =(numbers: number[], muiltipleDices: Dice[]) => {
   let diceProperties = muiltipleDices.filter(dices => !dices.isImmutable);
 
   for (let i = 0; i < diceProperties.length; i++){
@@ -12,7 +12,7 @@ export const checkMultipleNumbers =(numbers: number[], muiltipleDices: Dices[]) 
   }
 }
 
-const filterDice = (value: number, arr: Dices[]) => {
+const filterDice = (value: number, arr: Dice[]) => {
   const newArr: number[] = [];
   for (let v of arr){
     if (value == v.value){
@@ -22,7 +22,7 @@ const filterDice = (value: number, arr: Dices[]) => {
   return newArr;
 }
 
-export const checkGoodNumbers = (numbers: number[], dicesToPush: Dices[]) => {
+export const checkGoodNumbers = (numbers: number[], dicesToPush: Dice[]) => {
   for (let i = 0; i < dicesToPush.length; i++){
     if(numbers[i] == 1 || numbers[i] == 5){
       dicesToPush[i].isGoodNumber = true;

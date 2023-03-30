@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from "../dataService";
 import {Player} from "../../model/player";
+import {DataService} from "./services/dataService";
 
 @Component({
   selector: 'app-main-table',
@@ -10,20 +10,23 @@ import {Player} from "../../model/player";
 export class MainTableComponent implements OnInit {
 
   players: Player[] = [];
-  playersTurn = 0;
+  playerTurn = 0;
 
   constructor(private data: DataService) { }
 
   ngOnInit(): void {
-    this.players = this.data.getGameData()
+    this.players = this.data.getGameData();
+    this.data.setPlayerTurn(this.playerTurn);
     console.log('choosen players: ', this.players)
   }
 
   changeTurn() {
-    this.playersTurn++
-    if(this.playersTurn == this.players.length){
-      this.playersTurn = 0;
+    this.playerTurn++
+    if(this.playerTurn == this.players.length){
+      this.playerTurn = 0;
     }
+    this.data.setPlayerTurn(this.playerTurn);
+
   }
 
 }

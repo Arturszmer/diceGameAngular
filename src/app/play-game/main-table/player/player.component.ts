@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../dataService";
 import {Subscription} from "rxjs";
-import {Dices} from "../../../model/dices";
+import {Dice} from "../../../model/dice";
+import {count} from "../diceLogic/count";
+import {DataService} from "../services/dataService";
+import {CountService} from "../services/count.service";
 
 @Component({
   selector: 'app-player',
@@ -10,26 +12,42 @@ import {Dices} from "../../../model/dices";
 })
 export class PlayerComponent implements OnInit {
 
-  diceNumbers: Dices[] = [];
-  subscription?: Subscription;
+  diceNumbers: Dice[] = [];
+  subscriptionDices?: Subscription;
+  points: number = 0;
 
-  constructor(private service: DataService) { }
+  constructor(private dataService: DataService, private countService: CountService ) { }
 
   ngOnInit(): void {
-    this.subscription = this.service.diceNumbers$.subscribe(
+    this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
         this.diceNumbers = diceNumbers;
-        console.log('dice numbers COME TO ME', this.diceNumbers);
+        console.log(this.diceNumbers, 'NG ON INIT DICES');
       }
     );
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscriptionDices?.unsubscribe();
   }
 
-  diceCheck(index: number, dice: Dices) {
-    dice.isChecked = !dice.isChecked;
-    console.log(index, dice, ' action')
+  diceCheck(index: number, dice: Dice) {
+    if(dice.isMultiple){
+      this.diceNumbers.filter((d) => d.isMultiple == dice.isMultiple).forEach((value) => {
+      value.isChecked = !value.isChecked})
+      console.log(this.diceNumbers, ' MULTIPLE? ')
+      this.countService.countFromDices(this.diceNumbers);
+      this.updatePoints();
+    } else {
+      dice.isChecked = !dice.isChecked;
+      console.log(index, dice, ' CHECK');
+
+      this.countService.countFromDices(this.diceNumbers);
+      this.updatePoints();
+    }
+  }
+
+  updatePoints(){
+    this.countService.getPoints();
   }
 }
