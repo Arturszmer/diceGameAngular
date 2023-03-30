@@ -9,7 +9,7 @@
     <div id="player1Name" class="container">
       {{players[0].name || ""}}
     </div>
-    <div id="player1Cube"  *ngIf="playersTurn === 0">
+    <div id="player1Cube"  *ngIf="playerTurn === 0">
       <app-player class="gridCube"></app-player>
     </div>
     <div class="container points">
@@ -26,7 +26,7 @@
     <div id="player3Name" class="container" *ngIf="players[2]">
       {{players[2].name || "" }}
     </div>
-    <div id="player3Cube" *ngIf="playersTurn === 2">
+    <div id="player3Cube" *ngIf="playerTurn === 2">
       <app-player class="gridCubeSides"></app-player>
     </div>
     <div class="container points" *ngIf="players[2]">
@@ -43,24 +43,15 @@
   </div>
   <div class="grid-item main">
     <div class="mainContent">
-      <div id="mainButtons" class="container">
-        <app-roller-dice></app-roller-dice>
-        <button type="button" id="nextThrow" class="btn btn-warning btn-lg" style="display: none">Throw</button>
-        <button type="button" id="saveButton" class="btn btn-success btn-lg" style="display: none">Save points</button>
-        <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" style="display: none">Next player</button>
-        <button type="button" id="win" class="btn btn-dark btn-lg" style="display: none">Click to WIN!</button>
-      </div>
-      RESULT:
-      <div class="result container">
-        <span id="resultZero"></span>
-      </div>
+      <app-roller-dice></app-roller-dice>
+
     </div>
   </div>
   <div class="grid-item player4">
     <div id="player4Name" class="container" *ngIf="players[3]">
       {{players[3].name || ""}}
     </div>
-    <div id="player4Cube" *ngIf="playersTurn === 3">
+    <div id="player4Cube" *ngIf="playerTurn === 3">
       <app-player class="gridCubeSides"></app-player>
     </div>
     <div class="container points" *ngIf="players[3]">
@@ -79,7 +70,7 @@
     <div id="player2Name" class="container">
       {{players[1].name || ""}}
     </div>
-    <div id="player2Cube" *ngIf="playersTurn === 1">
+    <div id="player2Cube" *ngIf="playerTurn === 1">
       <app-player class="gridCube"></app-player>
     </div>
     <div class="container points">

@@ -35,6 +35,10 @@
 .good {
   background-color: #3e8e41;
 }
+.multiple {
+  /*background-color: var(--casino-red);*/
+  background: radial-gradient(var(--casino-gold), #3e8e41);
+}
 
 .cubeValue:hover {
   transform: scale(1.05);

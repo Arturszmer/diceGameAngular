@@ -1,5 +1,5 @@
 
-export interface Dices {
+export interface Dice {
   value: number;
   isGoodNumber: boolean;
   isChecked: boolean;
