@@ -3,7 +3,12 @@
 <!--<button type="button" id="nextPlayer" class="btn btn-dark btn-lg" style="display: none">Next player</button>-->
 <!--<button type="button" id="win" class="btn btn-dark btn-lg" style="display: none">Click to WIN!</button>-->
 <div id="mainButtons" class="container">
-  <button type="button" (click)="diceThrow()" id="firstThrow" class="btn-cube" [ngClass]="{'clicked' : isClicked}"><img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="150px" height="150px" alt=""></button>
+  <button type="button"  id="firstThrow" class="btn-cube"
+          (click)="diceThrow()"
+          [ngClass]="{'clicked' : isClicked}"
+  [disabled]="!isRolling">
+    <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="150px" height="150px" alt="" *ngIf="isRolling">
+    <img id="conf-dis" src="assets/soundsAndImages/roller-dice-disabled.png" width="150px" height="150px" alt="" *ngIf="!isRolling"></button>
 
   <button type="button" id="nextThrow" class="btn btn-warning btn-lg" style="display: none">Throw</button>
   <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" style="display: none">Next player</button>

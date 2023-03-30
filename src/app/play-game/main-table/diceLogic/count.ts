@@ -5,7 +5,7 @@ export const count = (dices: Dice[]) => {
   console.log('LICZĘ SOBIE ', dices )
 
   let multiplesArray = dices.filter((d) => d.isMultiple && d.isChecked);
-  console.log(multiplesArray, ' TABLI MULTIPLI')
+  // console.log(multiplesArray, ' TABLI MULTIPLI')
   if(multiplesArray.length > 0){
     points = countMultiples(multiplesArray);
   }
@@ -17,7 +17,7 @@ export const count = (dices: Dice[]) => {
       points += 5;
     }
   }
-  console.log(points, ' PUNKTÓW')
+  // console.log(points, ' PUNKTÓW')
 
   return points++;
 }

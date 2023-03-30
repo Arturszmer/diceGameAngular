@@ -18,57 +18,92 @@ export class RollerDiceComponent implements OnInit {
   isClicked: boolean = false;
   handleDices: Dice[] = [];
   points: number = 0;
-  subscription?: Subscription;
+  pointsSubscription?: Subscription;
+  diceSubscription?: Subscription;
   player?: Player;
+  isRolling: boolean = true;
 
-  constructor(private service: DataService, private countService: CountService) { }
+  constructor(private dataService: DataService, private countService: CountService) { }
 
   ngOnInit(): void {
-    this.subscription = this.countService.points$.subscribe((p) => {
+    this.pointsSubscription = this.countService.points$.subscribe((p) => {
       this.points = p;
-      console.log(' co to jest p: ', p)
     })
-    this.player = this.service.getPlayer();
-    console.log(this.player, ' PLAYER!!')
+    this.player = this.dataService.getPlayer();
+    this.diceSubscription = this.dataService.diceNumbers$.subscribe(
+      (diceNumbers) => {
+        this.dices = diceNumbers;
+        if(this.getCheckedDiceArr().length > 0){
+          this.isRolling = true;
+        } else if (this.getCheckedDiceArr().length == 0){
+          this.isRolling = false;
+        }
+      })
   }
 
   diceThrow() {
+    this.isRolling = false;
     this.isClicked = true;
-    let something = this.dices.filter(f => f.isImmutable)
-    let result = this.toRollDice(something);
+    console.log(this.dices.filter(f => !f.isChecked).length, ' --> LICZBY DO RZUTU')
+    let result = this.toRollDice(this.dices.filter(f => f.isChecked).length);
+    console.log(result, ' --> WYRZUCONE KOŚCI')
     this.insertDataIntoDices(result, this.handleDices);
-    this.service.setDiceNumbers(this.dices);
+    this.dataService.setDiceNumbers(this.dices);
     setTimeout(() => {
       this.isClicked = false
     }, 150);
   }
 
   insertDataIntoDices(numbers: number[], dicesToPush: Dice[]){
-    this.dices = [];
+    this.dices.filter((v) => v.isChecked).forEach((value) => value.isImmutable = true);
+    console.log(this.dices, ' KOSTKI PO RZUCIE I WYBRANIU PRZED KOLEJNYM RZUTEM')
+    // this.dices = [];
     for (let i = 0; i < numbers.length; i++){
-      dicesToPush.push({
-        value: numbers[i],
-        isGoodNumber: false,
-        isChecked: false,
-        isMultiple: false,
-        isImmutable: false
-      })
-    }
+        dicesToPush.push({
+          value: numbers[i],
+          isGoodNumber: false,
+          isChecked: false,
+          isMultiple: false,
+          isImmutable: false
+        })
+      }
+
     console.log(dicesToPush, ' beforeCHeck')
     checkMultipleNumbers(numbers, dicesToPush);
     console.log(dicesToPush, ' afterCheck')
     checkGoodNumbers(numbers, dicesToPush);
-    this.dices = dicesToPush;
+    if(this.dices.filter((v) => v.isImmutable).length === 5){
+      this.countService.setHandlePoints(this.points);
+      this.dices = dicesToPush;
+    }
+    this.pushDices(numbers, dicesToPush);
     this.handleDices = [];
   }
 
-  private toRollDice(numberOfDices: Dice[]): number[]{
-    if(this.dices.length == 0){
+  private pushDices(numbers: number[], dicesToPush: Dice[]) {
+    if (this.dices.length !== 0) {
+      let dn: number = 0;
+      for (let i = 0; i < numbers.length; i++) {
+        for (dn; dn < 5; dn++) {
+          if (this.dices[dn].isImmutable) {
+
+          } else {
+            this.dices[dn] = dicesToPush[i];
+            dn++
+            break
+          }
+        }
+      }
+    } else {
+      this.dices = dicesToPush;
+    }
+  }
+
+  private toRollDice(numberOfDices: number): number[]{
+    if(numberOfDices === 0){
       return rollDice(5);
     } else {
-      let toNextThrow = numberOfDices.filter(d => !d.isChecked).length;
-      console.log(toNextThrow);
-      return rollDice(toNextThrow)
+      return rollDice(numberOfDices)
     }
   }
 
@@ -78,5 +113,9 @@ export class RollerDiceComponent implements OnInit {
     } else {
       return this.points >= 25;
     }
+  }
+
+  private getCheckedDiceArr() {
+    return this.dices.filter((f) => f.isChecked);
   }
 }
