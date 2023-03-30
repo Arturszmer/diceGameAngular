@@ -22,7 +22,7 @@ export class PlayerComponent implements OnInit {
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
         this.diceNumbers = diceNumbers;
-        console.log(this.diceNumbers, 'NG ON INIT DICES');
+        console.log(this.diceNumbers, 'PLAYER COMPONENT DICES');
       }
     );
   }
@@ -35,19 +35,25 @@ export class PlayerComponent implements OnInit {
     if(dice.isMultiple){
       this.diceNumbers.filter((d) => d.isMultiple == dice.isMultiple).forEach((value) => {
       value.isChecked = !value.isChecked})
-      console.log(this.diceNumbers, ' MULTIPLE? ')
-      this.countService.countFromDices(this.diceNumbers);
-      this.updatePoints();
+      // console.log(this.diceNumbers, ' MULTIPLE? ')
+      this.sendData();
     } else {
       dice.isChecked = !dice.isChecked;
-      console.log(index, dice, ' CHECK');
-
-      this.countService.countFromDices(this.diceNumbers);
-      this.updatePoints();
+      // console.log(index, dice, ' CHECK');
+      this.sendData()
     }
   }
 
   updatePoints(){
     this.countService.getPoints();
+  }
+
+  updateDices(){
+    this.dataService.setDiceNumbers(this.diceNumbers);
+  }
+  private sendData() {
+    this.countService.countFromDices(this.diceNumbers);
+    this.updatePoints();
+    this.updateDices();
   }
 }

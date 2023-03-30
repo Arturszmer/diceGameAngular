@@ -12,13 +12,18 @@ export class CountService {
   private dPoints: number = 0;
   private pointsSource = new Subject<number>();
   points$ = this.pointsSource.asObservable();
+  private handlePoints: number = 0;
 
   constructor(private dataService: DataService) { }
 
 
   setPoints(points: number){
-    this.dPoints! = points;
+    this.dPoints! = points + this.handlePoints;
     this.pointsSource.next(this.dPoints);
+  }
+
+  setHandlePoints(points: number){
+    this.handlePoints = points;
   }
 
   getPoints(){
