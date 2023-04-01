@@ -11,7 +11,6 @@
     <img id="conf-dis" src="assets/soundsAndImages/roller-dice-disabled.png" width="150px" height="150px" alt="" *ngIf="!isRolling"></button>
 
   <button type="button" id="nextThrow" class="btn btn-warning btn-lg" style="display: none">Throw</button>
-  <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" style="display: none">Next player</button>
   <button type="button" id="win" class="btn btn-dark btn-lg" style="display: none">Click to WIN!</button>
 </div>
 <div class="m-3">
@@ -21,5 +20,6 @@ RESULT:
   <span id="resultZero">{{points}}</span>
 </div>
 <div class="container">
-  <button type="button" id="saveButton" class="btn btn-success btn-lg" *ngIf="isSaveValid()">Save points</button>
+  <button type="button" id="saveButton" class="btn btn-success btn-lg" *ngIf="isSaveValid() && isRolling" (click)="savePoints()">Save points</button>
+  <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" *ngIf="isNextPlayer" (click)="nextPlayer()">Next player</button>
 </div>

@@ -3,7 +3,6 @@
     <a routerLink="" class="btn btn-quit btn-lg">
       <i class="bi bi-box-arrow-left me-2">Quit game</i>
     </a>
-    <button class="btn btn-secondary" (click)="changeTurn()">ChangeTurn</button>
   </div>
   <div class="player1 grid-item">
     <div id="player1Name" class="container">
@@ -27,6 +26,7 @@
       {{players[2].name || "" }}
     </div>
     <div id="player3Cube" *ngIf="playerTurn === 2">
+<!--      <app-player (takePoints)="playerPoints($event)" class="gridCubeSides"></app-player>-->
       <app-player class="gridCubeSides"></app-player>
     </div>
     <div class="container points" *ngIf="players[2]">
@@ -43,7 +43,8 @@
   </div>
   <div class="grid-item main">
     <div class="mainContent">
-      <app-roller-dice></app-roller-dice>
+      <app-roller-dice (changeTurn)="nextPlayer($event)"></app-roller-dice>
+<!--      <app-roller-dice></app-roller-dice>-->
 
     </div>
   </div>
