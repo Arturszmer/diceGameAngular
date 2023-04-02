@@ -173,6 +173,13 @@ export class RollerDiceComponent implements OnInit {
     this.isRolling = true;
     this.player = this.dataService.getPlayer();
     console.log(this.player, ' PLAYER później')
-
   }
+  //
+  // isNextPlayerValid(): boolean{
+  //   if(this.isRolling){
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 }

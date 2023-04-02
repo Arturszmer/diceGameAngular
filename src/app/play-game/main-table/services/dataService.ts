@@ -17,10 +17,7 @@ export class DataService {
   private diceNumbersSource = new Subject<Dice[]>();
   diceNumbers$ = this.diceNumbersSource.asObservable();
 
-  constructor() {
-    console.log('constryctor')
-    this.setPlayer(this.playerTurn)
-  }
+  constructor() {}
 
   setGameData(data: Player[]) {
     this.gamePlayers = data;
@@ -47,9 +44,11 @@ export class DataService {
 
   setPlayer(turn: number){
     this.player = this.gamePlayers[turn];
+    console.log(this.player, ' --> setPlayer dataService')
   }
 
   setPlayerTurn(turn: number) {
+    this.setPlayer(turn)
     return this.playerTurn = turn;
   }
 
@@ -58,18 +57,14 @@ export class DataService {
     if(this.playerTurn == this.gamePlayers.length){
       this.playerTurn = 0;
     }
-    // this._playerTurn.next(this.playerTurn);
     console.log(this.playerTurn, 'change turn')
 
     return this.playerTurn;
-
-    // this.setPlayerTurn(this.playerTurn);
   }
 
   addPoints(points: number){
-    console.log(points, ' POINTS SERVICE')
-    console.log(this.player?.points, ' POINTS SERVIC2E2')
       this.player!.points += points;
+    console.log(this.player!, ' || ', this._player ,'addPoints')
       this._player.next(this.player!)
   }
 }
