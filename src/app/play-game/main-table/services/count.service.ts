@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {DataService} from "./dataService";
 import {Dice} from "../../../model/dice";
 import {count} from "../diceLogic/count";
 import {Subject} from "rxjs";
@@ -14,8 +13,7 @@ export class CountService {
   points$ = this.pointsSource.asObservable();
   private handlePoints: number = 0;
 
-  constructor(private dataService: DataService) { }
-
+  constructor() { }
 
   setPoints(points: number){
     this.dPoints! = points + this.handlePoints;
@@ -31,9 +29,7 @@ export class CountService {
   }
 
   countFromDices(dices: Dice[]){
-    console.log(dices, ' DICES IN SERVICE COUNT')
     let number = count(dices);
     this.setPoints(number)
   }
-
 }
