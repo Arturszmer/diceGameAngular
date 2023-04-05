@@ -22,7 +22,6 @@ export class PlayerComponent implements OnInit {
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
         this.diceNumbers = diceNumbers;
-        console.log(this.diceNumbers, 'PLAYER COMPONENT DICES');
       }
     );
   }
@@ -35,11 +34,9 @@ export class PlayerComponent implements OnInit {
     if(dice.isMultiple && !dice.isImmutable){
       this.diceNumbers.filter((d) => d.isMultiple == dice.isMultiple).forEach((value) => {
       value.isChecked = !value.isChecked})
-      // console.log(this.diceNumbers, ' MULTIPLE? ')
       this.sendData();
     } else if(!dice.isImmutable) {
       dice.isChecked = !dice.isChecked;
-      // console.log(index, dice, ' CHECK');
       this.sendData()
     }
   }

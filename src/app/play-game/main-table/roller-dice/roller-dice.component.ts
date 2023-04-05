@@ -37,7 +37,6 @@ export class RollerDiceComponent implements OnInit {
       (diceNumbers) => {
         this.dices = diceNumbers;
         if(this.getCheckedDiceArr().length > 0){
-          console.log('ROLLIN')
           this.isRolling = true;
         } else if (this.getCheckedDiceArr().length == 0){
           this.isRolling = false;
@@ -52,9 +51,7 @@ export class RollerDiceComponent implements OnInit {
   diceThrow() {
     this.isRolling = false;
     this.isClicked = true;
-    console.log(this.dices.filter(f => !f.isChecked).length, ' --> LICZBY DO RZUTU')
     let result = this.toRollDice(this.dices.filter(f => f.isChecked).length);
-    console.log(result, ' --> WYRZUCONE KOŚCI')
     this.insertDataIntoDices(result, this.handleDices);
     this.dataService.setDiceNumbers(this.dices);
     setTimeout(() => {
@@ -64,8 +61,6 @@ export class RollerDiceComponent implements OnInit {
 
   insertDataIntoDices(numbers: number[], dicesToPush: Dice[]){
     this.manageDices();
-    console.log(this.dices, ' KOSTKI PO RZUCIE I WYBRANIU PRZED KOLEJNYM RZUTEM')
-    // this.dices = [];
     for (let i = 0; i < numbers.length; i++){
         dicesToPush.push({
           value: numbers[i],
@@ -91,13 +86,9 @@ export class RollerDiceComponent implements OnInit {
     this.dices.filter((v) => v.isChecked).forEach((value) => {
       value.isImmutable = true
     });
-
-
   }
 
-
   private checkPossibilityToNextRoll(dicesToPush: Dice[]) {
-    console.log(dicesToPush, ' --> CHECK POSSIBILITY TO NEXT ROLL')
     this.isNextPlayer = true;
     this.isRolling = false;
 
@@ -140,46 +131,33 @@ export class RollerDiceComponent implements OnInit {
 
   isSaveValid(): boolean {
     if(!this.isNextPlayer){
-
       if(this.player?.points! <= 100){
-        return this.points >= 25;
+        return this.points >= 100;
       } else {
         return this.points >= 25;
       }
-
     } else return false;
   }
 
   private getCheckedDiceArr() {
-    console.log(this.dices.filter((f) => f.isChecked && !f.isImmutable), ' GET CHECKED DICE ARR' )
     return this.dices.filter((f) => f.isChecked && !f.isImmutable);
   }
 
   savePoints() {
-    console.log(this.player, ' PLAYER?')
     this.dataService.addPoints(this.points);
     this.nextPlayer()
   }
 
   nextPlayer() {
-    console.log(this.player, ' PLAYER?')
     this.points = 0;
     this.dices = [];
     this.playerTurn = this.dataService.chaneTurn();
     this.dataService.setPlayer(this.playerTurn)
     this.countService.setPoints(this.points);
-    // console.log(this.playerTurn)
     this.changeTurn.emit(this.playerTurn);
     this.isRolling = true;
+    this.isNextPlayer = false;
     this.player = this.dataService.getPlayer();
-    console.log(this.player, ' PLAYER później')
+    return this.dices.filter((f) => f.isChecked && !f.isImmutable);
   }
-  //
-  // isNextPlayerValid(): boolean{
-  //   if(this.isRolling){
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 }
