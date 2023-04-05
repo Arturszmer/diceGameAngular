@@ -38,13 +38,11 @@ export class DataService {
   }
 
   getPlayer() {
-    console.log(this.gamePlayers[this.playerTurn], ' PLAYER W SERWISIE')
     return this.gamePlayers[this.playerTurn];
   }
 
   setPlayer(turn: number){
     this.player = this.gamePlayers[turn];
-    console.log(this.player, ' --> setPlayer dataService')
   }
 
   setPlayerTurn(turn: number) {

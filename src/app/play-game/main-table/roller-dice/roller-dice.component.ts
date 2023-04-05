@@ -46,6 +46,7 @@ export class RollerDiceComponent implements OnInit {
 
   ngOnDestroy(){
     this.diceSubscription?.unsubscribe();
+    this.pointsSubscription?.unsubscribe();
   }
 
   diceThrow() {
@@ -153,7 +154,7 @@ export class RollerDiceComponent implements OnInit {
     this.dices = [];
     this.playerTurn = this.dataService.chaneTurn();
     this.dataService.setPlayer(this.playerTurn)
-    this.countService.setPoints(this.points);
+    this.countService.setHandlePoints(0);
     this.changeTurn.emit(this.playerTurn);
     this.isRolling = true;
     this.isNextPlayer = false;
