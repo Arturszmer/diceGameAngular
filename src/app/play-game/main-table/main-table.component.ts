@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Player} from "../../model/player";
 import {DataService} from "./services/dataService";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-main-table',
@@ -17,16 +18,10 @@ export class MainTableComponent implements OnInit {
   ngOnInit(): void {
     this.players = this.data.getGameData();
     this.data.setPlayerTurn(this.playerTurn);
-    console.log('choosen players: ', this.players)
   }
 
-  changeTurn() {
-    this.playerTurn++
-    if(this.playerTurn == this.players.length){
-      this.playerTurn = 0;
-    }
-    this.data.setPlayerTurn(this.playerTurn);
-
+  nextPlayer(turn: number){
+    this.playerTurn = turn;
   }
 
 }

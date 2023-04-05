@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Dice} from "../../../model/dice";
-import {count} from "../diceLogic/count";
 import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
 
@@ -15,6 +14,7 @@ export class PlayerComponent implements OnInit {
   diceNumbers: Dice[] = [];
   subscriptionDices?: Subscription;
   points: number = 0;
+  @Output() takePoints = new EventEmitter<number>()
 
   constructor(private dataService: DataService, private countService: CountService ) { }
 
@@ -22,7 +22,6 @@ export class PlayerComponent implements OnInit {
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
         this.diceNumbers = diceNumbers;
-        console.log(this.diceNumbers, 'PLAYER COMPONENT DICES');
       }
     );
   }
@@ -32,14 +31,12 @@ export class PlayerComponent implements OnInit {
   }
 
   diceCheck(index: number, dice: Dice) {
-    if(dice.isMultiple){
+    if(dice.isMultiple && !dice.isImmutable){
       this.diceNumbers.filter((d) => d.isMultiple == dice.isMultiple).forEach((value) => {
       value.isChecked = !value.isChecked})
-      // console.log(this.diceNumbers, ' MULTIPLE? ')
       this.sendData();
-    } else {
+    } else if(!dice.isImmutable) {
       dice.isChecked = !dice.isChecked;
-      // console.log(index, dice, ' CHECK');
       this.sendData()
     }
   }

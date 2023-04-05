@@ -39,6 +39,12 @@
   /*background-color: var(--casino-red);*/
   background: radial-gradient(var(--casino-gold), #3e8e41);
 }
+.immutable {
+  border: dashed !important;
+  border-color: aliceblue !important;
+  background-color: green !important;
+  color: black !important;
+}
 
 .cubeValue:hover {
   transform: scale(1.05);
