@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, DoCheck, EventEmitter, OnInit, Output} from '@angular/core';
 import {rollDice} from "../diceLogic/throwingDice";
 import {checkMultipleNumbers, checkGoodNumbers} from "../diceLogic/validators"
 import {Dice} from "../../../model/dice";
@@ -12,26 +12,29 @@ import {Player} from "../../../model/player";
   templateUrl: './roller-dice.component.html',
   styleUrls: ['./roller-dice.component.css']
 })
-export class RollerDiceComponent implements OnInit {
+export class RollerDiceComponent implements OnInit, DoCheck {
 
   dices: Dice[] = [];
   isClicked: boolean = false;
   handleDices: Dice[] = [];
   points: number = 0;
   pointsSubscription?: Subscription;
+  pointsFromRoll: number = 0;
   diceSubscription?: Subscription;
+  pointsFromRollSubscription?: Subscription;
   player?: Player;
+  playerTurn: number = 0;
   isRolling: boolean = true;
   isNextPlayer: boolean = false;
-  playerTurn: number = 0;
+  isSaved: boolean = false;
+  isWinner: boolean = false;
   @Output() changeTurn = new EventEmitter<number>();
 
   constructor(private dataService: DataService, private countService: CountService) { }
 
   ngOnInit(): void {
-    this.pointsSubscription = this.countService.points$.subscribe((p) => {
-      this.points = p;
-    })
+    this.pointsSubscription = this.countService.points$.subscribe((p) => this.points = p)
+    this.pointsFromRollSubscription = this.countService.pointsFromRoll$.subscribe((p) => this.pointsFromRoll = p)
     this.player = this.dataService.getPlayer();
     this.diceSubscription = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
@@ -49,7 +52,11 @@ export class RollerDiceComponent implements OnInit {
     this.pointsSubscription?.unsubscribe();
   }
 
-  diceThrow() {
+  ngDoCheck() {
+    this.buttonValidation();
+  }
+
+  diceRoll() {
     this.isRolling = false;
     this.isClicked = true;
     let result = this.toRollDice(this.dices.filter(f => f.isChecked).length);
@@ -131,7 +138,7 @@ export class RollerDiceComponent implements OnInit {
   }
 
   isSaveValid(): boolean {
-    if(!this.isNextPlayer){
+    if(!this.isNextPlayer && !this.isWinner){
       if(this.player?.points! <= 100){
         return this.points >= 100;
       } else {
@@ -158,7 +165,30 @@ export class RollerDiceComponent implements OnInit {
     this.changeTurn.emit(this.playerTurn);
     this.isRolling = true;
     this.isNextPlayer = false;
+    this.isSaved = false;
     this.player = this.dataService.getPlayer();
     return this.dices.filter((f) => f.isChecked && !f.isImmutable);
+  }
+
+  winGame(){
+
+  }
+
+  buttonValidation(): void {
+    if(this.player?.points! + this.points + this.pointsFromRoll === 1000){
+      this.isSaved = false;
+      this.isWinner = true;
+      this.dices.forEach(dice => {
+        dice.isImmutable = true
+      })
+      this.points = this.pointsFromRoll + this.points;
+    } else if(this.player?.points! + this.points > 1000){
+      this.isSaved = false;
+      this.isWinner = false;
+      this.isRolling = false;
+      this.isNextPlayer = true;
+    } else if(this.isSaveValid()){
+      this.isSaved = true;
+    }
   }
 }

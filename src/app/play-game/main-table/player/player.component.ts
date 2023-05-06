@@ -21,7 +21,9 @@ export class PlayerComponent implements OnInit {
   ngOnInit(): void {
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
+        console.log(diceNumbers, ' bleble')
         this.diceNumbers = diceNumbers;
+        this.countService.countFromRoll(this.diceNumbers)
       }
     );
   }
@@ -48,7 +50,9 @@ export class PlayerComponent implements OnInit {
   updateDices(){
     this.dataService.setDiceNumbers(this.diceNumbers);
   }
+
   private sendData() {
+    console.log('SEND DATA')
     this.countService.countFromDices(this.diceNumbers);
     this.updatePoints();
     this.updateDices();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Dice} from "../../../model/dice";
-import {count} from "../diceLogic/count";
+import {count, countAllGoodNumbers} from "../diceLogic/count";
 import {Subject} from "rxjs";
 
 @Injectable({
@@ -8,16 +8,24 @@ import {Subject} from "rxjs";
 })
 export class CountService {
 
-  private dPoints: number = 0;
+  private points: number = 0;
   private pointsSource = new Subject<number>();
   points$ = this.pointsSource.asObservable();
   private handlePoints: number = 0;
+  private pointsFromRoll: number = 0;
+  private pointsFromRollSource = new Subject<number>()
+  pointsFromRoll$ = this.pointsFromRollSource;
 
   constructor() { }
 
   setPoints(points: number){
-    this.dPoints! = points + this.handlePoints;
-    this.pointsSource.next(this.dPoints);
+    this.points! = points + this.handlePoints;
+    this.pointsSource.next(this.points);
+  }
+
+  setPointsFromRoll(points: number){
+    this.pointsFromRoll = points;
+    this.pointsFromRollSource.next(this.pointsFromRoll);
   }
 
   setHandlePoints(points: number){
@@ -25,7 +33,15 @@ export class CountService {
   }
 
   getPoints(){
-    return this.dPoints;
+    return this.points;
+  }
+
+  getPointsFromRoll(){
+    return this.pointsFromRoll;
+  }
+
+  countFromRoll(dices: Dice[]){
+    this.setPointsFromRoll(countAllGoodNumbers(dices));
   }
 
   countFromDices(dices: Dice[]){

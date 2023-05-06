@@ -9,6 +9,8 @@ import { MainTableComponent } from './play-game/main-table/main-table.component'
 import { AppRoutingModule } from './app-routing.module';
 import { PlayerComponent } from './play-game/main-table/player/player.component';
 import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-dice.component';
+import { WinnerModalComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal.component';
+import { WinnerModalContentComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal-content/winner-modal-content.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-d
     PlayGameComponent,
     MainTableComponent,
     PlayerComponent,
-    RollerDiceComponent
+    RollerDiceComponent,
+    WinnerModalComponent,
+    WinnerModalContentComponent
   ],
   imports: [
     BrowserModule,
