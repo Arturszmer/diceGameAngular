@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <h2 class="modal-title">Congratulations!</h2>
+</div>
+<div class="modal-body">
+  <p class="modal-body-text">{{playerData?.name}} has won the game with {{playerData?.points}} points!</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="modal-button" (click)="restartGame(); close()">Restart</button>
+  <button type="button" class="modal-button" (click)="close()">New game</button>
+</div>
