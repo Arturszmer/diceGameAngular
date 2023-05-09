@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Player} from "../../model/player";
 import {DataService} from "./services/dataService";
-import {Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-main-table',
@@ -11,17 +11,23 @@ import {Subscription} from "rxjs";
 export class MainTableComponent implements OnInit {
 
   players: Player[] = [];
-  playerTurn = 0;
+  playerTurn: number = 0;
 
-  constructor(private data: DataService) { }
+  constructor(private data: DataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.players = this.data.getGameData();
-    this.data.setPlayerTurn(this.playerTurn);
+    this.playerTurn = this.data.setPlayerTurn();
+    this.route.paramMap.subscribe(params => {
+      const gameId = params.get('id');
+    })
   }
 
   nextPlayer(turn: number){
     this.playerTurn = turn;
   }
 
+  quit() {
+    localStorage.clear();
+  }
 }

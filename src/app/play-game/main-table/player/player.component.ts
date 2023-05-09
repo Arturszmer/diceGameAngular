@@ -4,6 +4,8 @@ import {Dice} from "../../../model/dice";
 import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
 
+export const playerStorage = (id: number) => `player_${id}`
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -21,7 +23,6 @@ export class PlayerComponent implements OnInit {
   ngOnInit(): void {
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
-        console.log(diceNumbers, ' bleble')
         this.diceNumbers = diceNumbers;
         this.countService.countFromRoll(this.diceNumbers)
       }
@@ -52,7 +53,6 @@ export class PlayerComponent implements OnInit {
   }
 
   private sendData() {
-    console.log('SEND DATA')
     this.countService.countFromDices(this.diceNumbers);
     this.updatePoints();
     this.updateDices();

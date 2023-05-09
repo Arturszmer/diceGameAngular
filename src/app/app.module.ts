@@ -11,6 +11,7 @@ import { PlayerComponent } from './play-game/main-table/player/player.component'
 import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-dice.component';
 import { WinnerModalComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal.component';
 import { WinnerModalContentComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal-content/winner-modal-content.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { WinnerModalContentComponent } from './play-game/main-table/roller-dice/
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

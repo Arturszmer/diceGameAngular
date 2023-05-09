@@ -14,6 +14,7 @@ export class MainPageComponent implements OnInit {
   players: Player[] = [];
   invalidName: boolean = false;
   names: string[] = ['', '', '', ''];
+  uniqueId: string = this.generateUniqueId();
 
   constructor(private router: Router, private data: DataService) { }
 
@@ -32,9 +33,10 @@ export class MainPageComponent implements OnInit {
         throw this.invalidName = true;
       }
       this.players.push({id: i, name: playerName, points: 0});
+      // this.players.push({id: i, name: playerName, points: 1000});
     }
     this.data.setGameData(this.players);
-    this.router.navigate(['/game']);
+    this.router.navigate(['/game', this.uniqueId]);
   }
 
   playerNameValid(index: number): boolean {
@@ -43,5 +45,15 @@ export class MainPageComponent implements OnInit {
 
   playerNameInvalid(index: number) {
     return this.invalidName && !this.playerNameValid(index);
+  }
+
+  generateUniqueId() {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 8; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 }

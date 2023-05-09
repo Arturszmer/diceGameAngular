@@ -6,6 +6,8 @@ import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
 import {Subscription} from "rxjs";
 import {Player} from "../../../model/player";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WinnerModalComponent} from "./winner-modal/winner-modal.component";
 
 @Component({
   selector: 'app-roller-dice',
@@ -30,9 +32,10 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   isWinner: boolean = false;
   @Output() changeTurn = new EventEmitter<number>();
 
-  constructor(private dataService: DataService, private countService: CountService) { }
+  constructor(private dataService: DataService, private countService: CountService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.playerTurn = this.dataService.getPlayerTurn();
     this.pointsSubscription = this.countService.points$.subscribe((p) => this.points = p)
     this.pointsFromRollSubscription = this.countService.pointsFromRoll$.subscribe((p) => this.pointsFromRoll = p)
     this.player = this.dataService.getPlayer();
@@ -50,9 +53,11 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   ngOnDestroy(){
     this.diceSubscription?.unsubscribe();
     this.pointsSubscription?.unsubscribe();
+    this.pointsFromRollSubscription?.unsubscribe();
   }
 
   ngDoCheck() {
+    this.isSaved = false;
     this.buttonValidation();
   }
 
@@ -138,8 +143,8 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   }
 
   isSaveValid(): boolean {
-    if(!this.isNextPlayer && !this.isWinner){
-      if(this.player?.points! <= 100){
+    if(!this.isNextPlayer){
+      if(this.player?.points! < 100){
         return this.points >= 100;
       } else {
         return this.points >= 25;
@@ -159,7 +164,8 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   nextPlayer() {
     this.points = 0;
     this.dices = [];
-    this.playerTurn = this.dataService.chaneTurn();
+    this.playerTurn = this.dataService.changeTurn();
+    localStorage.setItem('turn', JSON.stringify(this.playerTurn))
     this.dataService.setPlayer(this.playerTurn)
     this.countService.setHandlePoints(0);
     this.changeTurn.emit(this.playerTurn);
@@ -171,7 +177,11 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   }
 
   winGame(){
-
+    let modalRef = this.modalService.open(WinnerModalComponent, {centered: true});
+    this.isWinner = false;
+    modalRef.componentInstance.playerData = this.player;
+    modalRef.componentInstance.players = this.dataService.getGameData();
+    this.nextPlayer();
   }
 
   buttonValidation(): void {
@@ -187,7 +197,7 @@ export class RollerDiceComponent implements OnInit, DoCheck {
       this.isWinner = false;
       this.isRolling = false;
       this.isNextPlayer = true;
-    } else if(this.isSaveValid()){
+    } else if(this.isSaveValid() && !this.isNextPlayer && this.isRolling){
       this.isSaved = true;
     }
   }
