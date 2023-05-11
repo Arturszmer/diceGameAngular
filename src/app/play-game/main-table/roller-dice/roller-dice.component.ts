@@ -2,18 +2,19 @@ import {Component, DoCheck, EventEmitter, OnInit, Output} from '@angular/core';
 import {rollDice} from "../diceLogic/throwingDice";
 import {checkMultipleNumbers, checkGoodNumbers} from "../diceLogic/validators"
 import {Dice} from "../../../model/dice";
-import {DataService, flagLocal} from "../services/dataService";
+import {
+  DataService,
+  localDices,
+  localHandlePoints,
+  localPoints,
+  localTurn,
+  localValidations
+} from "../services/dataService";
 import {CountService} from "../services/count.service";
 import {Subscription} from "rxjs";
 import {Player} from "../../../model/player";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WinnerModalComponent} from "./winner-modal/winner-modal.component";
-
-export const localDices: string = 'localDices';
-export const localValidations: string = 'localValidations';
-export const localPoints: string = 'localPoints';
-export const localHandlePoints: string = 'handlePoints';
-
 
 interface Val {
   isRolling: boolean,
@@ -48,10 +49,7 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   constructor(private dataService: DataService, private countService: CountService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    console.log('INIT RollerDiceComponent')
-    console.log(flagLocal, ' FLAG')
-    if (flagLocal && Number.parseInt(localStorage.getItem(localPoints) || '0') > 0){
-      console.log('INSIDE')
+    if (this.dataService.getFlagLocal() && Number.parseInt(localStorage.getItem(localPoints) || '0') > 0){
       this.countService.setHandlePoints(Number.parseInt(localStorage.getItem(localHandlePoints) || '0'));
       this.dices = JSON.parse(localStorage.getItem(localDices) || '[]');
     }
@@ -61,7 +59,6 @@ export class RollerDiceComponent implements OnInit, DoCheck {
     this.player = this.dataService.getPlayer();
     this.diceSubscription = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
-        console.log(diceNumbers, ' diceSubscription')
         this.dices = diceNumbers;
         if(this.getCheckedDiceArr().length > 0){
           this.isRolling = true;
@@ -80,31 +77,27 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   ngDoCheck() {
     this.isSaved = false;
     this.buttonValidation();
-    console.log('ngDoCheck', flagLocal)
     let val: Val = {
       isRolling: this.isRolling,
       isNextPlayer: this.isNextPlayer,
       isSaved: this.isSaved,
       isWinner: this.isWinner
     };
-    if (!flagLocal){
+    if (!this.dataService.getFlagLocal()){
       localStorage.setItem(localValidations, JSON.stringify(val));
       localStorage.setItem(localPoints, JSON.stringify(this.points))
       if(this.countService.getHandlePoints() !== 0){
         localStorage.setItem(localHandlePoints, JSON.stringify(this.countService.getHandlePoints()))
       }
-    } else if (flagLocal){
+    } else if (this.dataService.getFlagLocal()){
       let locVal = JSON.parse(localStorage.getItem(localValidations) || '');
-      console.log(locVal, ' LOC VAL')
       this.isRolling = locVal.isRolling;
       this.isNextPlayer = locVal.isNextPlayer;
       this.isSaved = locVal.isSaved;
       this.isWinner = locVal.isWinner;
-      this.dataService.setFlag(false);
+      this.dataService.setFlagLocal(false);
 
       this.points = Number.parseInt(localStorage.getItem(localPoints) || '0')
-        // + Number.parseInt(localStorage.getItem(localHandlePoints) || '0');
-      // this.points += Number.parseInt(localStorage.getItem(localHandlePoints) || '0');
     }
 
   }
@@ -213,7 +206,7 @@ export class RollerDiceComponent implements OnInit, DoCheck {
     this.points = 0;
     this.dices = [];
     this.playerTurn = this.dataService.changeTurn();
-    localStorage.setItem('turn', JSON.stringify(this.playerTurn))
+    localStorage.setItem(localTurn, JSON.stringify(this.playerTurn))
     localStorage.setItem(localDices, '[]')
     localStorage.setItem(localHandlePoints, JSON.stringify(0))
     this.dataService.setPlayer(this.playerTurn)

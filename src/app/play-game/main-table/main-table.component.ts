@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Player} from "../../model/player";
-import {DataService, flagLocal} from "./services/dataService";
+import {DataService} from "./services/dataService";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -29,6 +29,6 @@ export class MainTableComponent implements OnInit {
 
   quit() {
     localStorage.clear();
-    this.data.setFlag(false);
+    this.data.setFlagLocal(false);
   }
 }

@@ -3,7 +3,6 @@ import {Subscription} from "rxjs";
 import {Dice} from "../../../model/dice";
 import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
-import {localDices} from "../roller-dice/roller-dice.component";
 
 export const playerStorage = (id: number) => `player_${id}`
 
@@ -22,14 +21,11 @@ export class PlayerComponent implements OnInit {
   constructor(private dataService: DataService, private countService: CountService ) { }
 
   ngOnInit(): void {
-    console.log('init PlayerComponent')
     if(this.dataService.getDiceNumbers() !== []){
       this.diceNumbers = this.dataService.getDiceNumbers();
     }
     this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
-        console.log('dice numbers', diceNumbers)
-
           this.diceNumbers = diceNumbers;
           this.countService.countFromRoll(this.diceNumbers)
       }
