@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Player} from "../../model/player";
-import {DataService} from "./services/dataService";
+import {DataService, flagLocal} from "./services/dataService";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -17,7 +17,7 @@ export class MainTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.players = this.data.getGameData();
-    this.playerTurn = this.data.setPlayerTurn();
+    this.playerTurn = this.data.managePlayerTurn();
     this.route.paramMap.subscribe(params => {
       const gameId = params.get('id');
     })
@@ -29,5 +29,6 @@ export class MainTableComponent implements OnInit {
 
   quit() {
     localStorage.clear();
+    this.data.setFlag(false);
   }
 }

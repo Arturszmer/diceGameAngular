@@ -36,6 +36,10 @@ export class CountService {
     return this.points;
   }
 
+  getHandlePoints(){
+    return this.handlePoints;
+  }
+
   getPointsFromRoll(){
     return this.pointsFromRoll;
   }

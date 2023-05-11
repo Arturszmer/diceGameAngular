@@ -32,7 +32,7 @@ export class MainPageComponent implements OnInit {
       if(playerName.length <= 3){
         throw this.invalidName = true;
       }
-      this.players.push({id: i, name: playerName, points: 0});
+      this.players.push({id: i, name: playerName, points: 100});
       // this.players.push({id: i, name: playerName, points: 1000});
     }
     this.data.setGameData(this.players);

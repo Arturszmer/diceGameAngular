@@ -3,6 +3,9 @@ import {Subject} from "rxjs";
 import {Player} from "../../../model/player";
 import {Dice} from "../../../model/dice";
 import {playerStorage} from "../player/player.component";
+import {localDices} from "../roller-dice/roller-dice.component";
+
+export let flagLocal = false;
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +50,20 @@ export class DataService {
   }
 
   setDiceNumbers(value: Dice[]) {
-    this._diceNumbers = value;
-    this.diceNumbersSource.next(value);
+    console.log(value.length, ' VALUE')
+    if (value.length === 0){
+      console.log(' into ')
+      this._diceNumbers = JSON.parse(localStorage.getItem(localDices) || '[]');
+      // console.log('_dice ', this._diceNumbers)
+      // this.diceNumbersSource.next(JSON.parse(localStorage.getItem(localDices) || ''));
+      // this._diceNumbers = [diceOne, diceOne, diceOne, diceOne, diceOne];
+      // console.log(this._diceNumbers, ' DICE NUMBER _')
+      // this.diceNumbersSource.next([diceOne, diceOne, diceOne, diceOne, diceOne] );
+    } else {
+      localStorage.setItem(localDices, JSON.stringify(value));
+      this._diceNumbers = value;
+      this.diceNumbersSource.next(value);
+    }
   }
 
   getPlayer() {
@@ -59,16 +74,19 @@ export class DataService {
     this.player = this.gamePlayers[turn];
   }
 
-  setPlayerTurn() {
+  managePlayerTurn() {
     if (this.playerTurn === 5){
       this.setPlayer(this.loadTurnFromLocalStorage())
+      this.setDiceNumbers([]);
       return this.playerTurn = this.loadTurnFromLocalStorage();
     }
+    this._diceNumbers = [];
     this.setPlayer(0)
     return this.playerTurn = 0;
   }
 
   changeTurn(): number{
+    this._diceNumbers = [];
     this.playerTurn++
     if(this.playerTurn == this.gamePlayers.length){
       this.playerTurn = 0;
@@ -88,8 +106,10 @@ export class DataService {
   }
 
   loadDataFromLocalStorage() {
+    console.log(flagLocal, 'loadDataFromLocalStorage')
+    flagLocal = true;
     const players = Number.parseInt(localStorage.getItem('players') || "0" );
-    if(players !== 0) {
+    if(flagLocal) {
       for (let i = 1; i <= players; i++){
         let parse = JSON.parse(localStorage.getItem(playerStorage(i)) || '');
         this.gamePlayers.push(parse);
@@ -102,4 +122,7 @@ export class DataService {
     return Number.parseInt(localStorage.getItem('turn') || '0');
   }
 
+  setFlag(flag: boolean) {
+    flagLocal = flag;
+  }
 }
