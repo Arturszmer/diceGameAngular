@@ -1,3 +1,11 @@
+<!-- 
+  choroba nestowania divow. Glowna zasada HTML im mniej divow tym lepiej.
+  zarowno jesli chodzi o sama redundancje kontenerow ale rowniez zastepowanie 
+  ich semantycznie nacechowanymi tagami https://learntheweb.courses/topics/html-semantics-cheat-sheet/
+  
+  
+ -->
+
 <div class="container">
   <div class="container-conf conf-data">
     <div class="form-container">
@@ -9,6 +17,8 @@
         <div class="form-container-in">
           <label for="numPlayers" class="selected">Number of players:</label>
           <div class="input-group">
+            <!-- dziwny bug gdy zmieniamy wartosc na 4 -->
+            <!-- wyglada to na to ze elementy z ngFor ponizej nie istnieja bo usuwasz tablice i tworzysz nowa. -->
             <select [(ngModel)]="numPlayers" (ngModelChange)="updatePlayersArray()" name="numPlayers" id="numPlayers" class="form-select">
               <option [ngValue]="2">2</option>
               <option [ngValue]="3">3</option>
@@ -19,24 +29,31 @@
         </div>
 
         <!-- Add a container to hold player names -->
-        <div id="player-names">
+        <div id="player-names"> 
+          {{playersArray |json}}
           <div *ngFor="let i of playersArray">
             <div class="form-container-in">
               <div class="selected">Player {{ i }} name:</div>
               <input type="text" class="form-input" name="text"
+                     #player
                      [placeholder]="'Player ' + i + ' name'"
                      [id]="'player' + i" required minlength="3"
-              [(ngModel)]="names[i]">
+                     [(ngModel)]="names[i]">
             </div>
+            <!-- tu walidujesz dynamicznie po stronie html -->
+            <!-- zdecydowanie ngIf zamienilbym na [hidden] -->
+            tajemnicze i = {{i}}
             <div *ngIf="names[i].length > 0 && names[i].length < 3" class="alert-custom">
               Please enter a valid name (minimum 3 characters).
             </div>
+            <!-- tu walidujesz z warunkami po stronie komponentu -->
+            <!-- pojedyncza flaga zarzadzajaca wszystkimi komunikatami bledow, nadal jestesmy w ngFor -->
             <div *ngIf="invalidName" class="alert-custom">
               Name cannot be empty
             </div>
           </div>
         </div>
-
+        
         <button class="btn-primary">Start Game!</button>
       </form>
     </div>
