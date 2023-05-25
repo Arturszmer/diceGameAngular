@@ -7,7 +7,7 @@
                         "corner-left player2 footer";
   height: 100vh;
   gap: 10px;
-  font-family: "Baloo Bhaijaan";
+  font-family: "Baloo Bhaijaan", sans-serif;
 }
 #firstThrow, #nextThrow, #saveButton, #nextPlayer, #win {
   font-size: 1.5rem;

@@ -1,42 +1,74 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { Player } from "../model/player";
-import { DataService } from "../play-game/main-table/services/dataService";
+import {Component, OnInit, AfterViewInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {Player} from "../model/player";
+import {DataService} from "../play-game/main-table/services/dataService";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
 /**
  * - brakuje walidacji co do unikalnosci nazw graczy.
  * - tworzenie i przechowywanie danych graczy powinno odbywac sie w serwisie
  */
+@UntilDestroy()
 @Component({
   selector: "app-main-page",
   templateUrl: "./main-page.component.html",
   styleUrls: ["./main-page.component.css"],
 })
-export class MainPageComponent implements OnInit {
-  numPlayers: number = 2;
-  playersArray: number[] = new Array(this.numPlayers)
-    .fill(0)
-    .map((x, i) => i + 1);
-  players: Player[] = [];
+export class MainPageComponent implements OnInit, AfterViewInit {
 
-  invalidName: boolean = false;
-  names: string[] = ["", "", "", ""];
-  uniqueId: string = this.generateUniqueId();
+  myForm!: FormGroup;
 
-  constructor(private router: Router, private data: DataService) {}
+  playersNumber: FormControl = new FormControl<number>(2);
+  private currentPlayersInputs_: number = 0;
+  private players_: Player[] = [];
+  names: string[] = [];
+
+  constructor(private router: Router, private data: DataService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.numPlayers = 2;
+    this.myForm = this.fb.group({
+      fPlayers: this.fb.array([])
+    })
+    this.addPLayerFields(this.playersNumber.value)
+    this.currentPlayersInputs_ = this.playersNumber.value;
+
   }
 
-  updatePlayersArray() {
-    // w js jest przyjęta konwencja, że gdy nie używamy jakiegoś argumentu ale jest zdeklarowany to wpisujemy go jako "_"
-    // za kazdym razem tworzysz nowa metode. po wywolaniu tej metody wpisane juz imiona zostana usuniete. bad ux.
-    // zamist tworzyc ciagle nowe tablice powinienes dodawc usuwac odpowiednia ilosc elementow.
-    this.playersArray = new Array(this.numPlayers).fill(0).map((x, i) => i + 1);
+  ngAfterViewInit(): void {
+    this.playersNumber.valueChanges
+      .pipe(untilDestroyed(this))
+      .subscribe((val) => {
+      this.addPLayerFields(val);
+      this.currentPlayersInputs_ = val;
+    })
+  }
+
+  get pForms(): FormArray<FormGroup>{
+    return this.myForm?.get('fPlayers') as FormArray<FormGroup>;
   }
 
   onSubmit() {
+    //Dodać własnego validatora który sprawdza unikalność imion
+    for (let pName of this.pForms.controls){
+      if (!this.names.includes(pName.controls['name'].value)){
+        this.names.push(pName.controls['name'].value)
+        this.players_.push({
+          id: pName.controls['id'].value,
+          name: pName.controls['name'].value,
+          points: pName.controls['points'].value
+        })
+      } else {
+        pName.setErrors({'unique' : 'your names isnt unique'})
+        this.myForm.setErrors({'unique' : 'your names isnt unique'})
+        this.names = [];
+        return
+      }
+    }
+    this.names = []
+    this.data.setGameData(this.players_);
+
+
     /**
      * to manulane iterownie przy uzyciu reactive forms w ogole by nie zachodzilo,
      * bo byś mial mozliwosc sprawdzenia poprawnosci calego formularza.
@@ -48,40 +80,18 @@ export class MainPageComponent implements OnInit {
      *  -
      */
 
-    //jesli juz mamy taki zapis walidacji etc. to ten for bym wyciagnal do osobnej metody
-    for (let i = 1; i <= this.numPlayers; i++) {
-      const playerName = (
-        document.getElementById(`player${i}`) as HTMLInputElement
-      ).value;
-      if (playerName.length <= 3) {
-        //nieprawidlowe uzycie throw https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw
-        throw (this.invalidName = true);
-      }
-      // to tez bym wyciagnal do osobnej opisanej metody
-      this.players.push({ id: i, name: playerName, points: 0 });
-      // this.players.push({id: i, name: playerName, points: 1000});
-    }
-    this.data.setGameData(this.players);
     /**
      *  osobna metoda. i to w niej by mdal generowanie uniqueId.
      *  Wtedy spokojnie moze to byc zmienna istniejaca tylko w scope metody
      *  zamiast w scope calego komponentu.
      */
-    this.router.navigate(["/game", this.uniqueId]);
-  }
 
-  // nieuzywana metoda
-  playerNameValid(index: number): boolean {
-    return this.players[index] && this.players[index].name.length >= 3;
-  }
 
-  // nieuzywana metoda
-  playerNameInvalid(index: number) {
-    return this.invalidName && !this.playerNameValid(index);
+    this.generateUniqueIdAndSubmit()
   }
 
   // metoda powinna byc prywatna. uzywana jest tylko wewnatrz komponentu
-  generateUniqueId() {
+  private generateUniqueIdAndSubmit(): void {
     let result = "";
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -89,6 +99,35 @@ export class MainPageComponent implements OnInit {
     for (let i = 0; i < 8; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    return result;
+    this.router.navigate(["/game", result]) // dopytać co znaczy ten promis z metody navigate
   }
+//
+  private addPLayerFields(val: number) {
+    let delta = val - this.currentPlayersInputs_;
+
+    while (delta !== 0){
+      if(delta > 0){
+        const player = this.fb.group({
+          id: this.pForms.length + 1,
+          name: ['', [Validators.required, Validators.minLength(3)]],
+          points: 0
+        })
+        this.pForms.push(player);
+        delta--;
+      }
+      if (delta < 0){
+        this.pop();
+        delta++;
+      }
+    }
+  }
+
+  private pop(){
+    this.remove(this.pForms.length -1)
+  }
+
+  private remove(index: number){
+    this.pForms.removeAt(index)
+  }
+
 }
