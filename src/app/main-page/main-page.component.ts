@@ -6,7 +6,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angul
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
 /**
- * - brakuje walidacji co do unikalnosci nazw graczy.
+ * - brakuje walidacji co do unikalnosci nazw graczy. //coś tam jest ale nie do końca chce działać
  * - tworzenie i przechowywanie danych graczy powinno odbywac sie w serwisie
  */
 @UntilDestroy()
@@ -17,7 +17,7 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 })
 export class MainPageComponent implements OnInit, AfterViewInit {
 
-  myForm!: FormGroup;
+  initialGameForm!: FormGroup;
 
   playersNumber: FormControl = new FormControl<number>(2);
   private currentPlayersInputs_: number = 0;
@@ -27,7 +27,7 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private data: DataService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.myForm = this.fb.group({
+    this.initialGameForm = this.fb.group({
       fPlayers: this.fb.array([])
     })
     this.addPLayerFields(this.playersNumber.value)
@@ -44,13 +44,13 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     })
   }
 
-  get pForms(): FormArray<FormGroup>{
-    return this.myForm?.get('fPlayers') as FormArray<FormGroup>;
+  get playersForm(): FormArray<FormGroup>{
+    return this.initialGameForm?.get('fPlayers') as FormArray<FormGroup>;
   }
 
   onSubmit() {
     //Dodać własnego validatora który sprawdza unikalność imion
-    for (let pName of this.pForms.controls){
+    for (let pName of this.playersForm.controls){
       if (!this.names.includes(pName.controls['name'].value)){
         this.names.push(pName.controls['name'].value)
         this.players_.push({
@@ -60,7 +60,7 @@ export class MainPageComponent implements OnInit, AfterViewInit {
         })
       } else {
         pName.setErrors({'unique' : 'your names isnt unique'})
-        this.myForm.setErrors({'unique' : 'your names isnt unique'})
+        this.initialGameForm.setErrors({'unique' : 'your names isnt unique'})
         this.names = [];
         return
       }
@@ -79,13 +79,6 @@ export class MainPageComponent implements OnInit, AfterViewInit {
      *    https://angular.io/guide/forms
      *  -
      */
-
-    /**
-     *  osobna metoda. i to w niej by mdal generowanie uniqueId.
-     *  Wtedy spokojnie moze to byc zmienna istniejaca tylko w scope metody
-     *  zamiast w scope calego komponentu.
-     */
-
 
     this.generateUniqueIdAndSubmit()
   }
@@ -108,11 +101,11 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     while (delta !== 0){
       if(delta > 0){
         const player = this.fb.group({
-          id: this.pForms.length + 1,
+          id: this.playersForm.length + 1,
           name: ['', [Validators.required, Validators.minLength(3)]],
           points: 0
         })
-        this.pForms.push(player);
+        this.playersForm.push(player);
         delta--;
       }
       if (delta < 0){
@@ -123,11 +116,11 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   }
 
   private pop(){
-    this.remove(this.pForms.length -1)
+    this.remove(this.playersForm.length -1)
   }
 
   private remove(index: number){
-    this.pForms.removeAt(index)
+    this.playersForm.removeAt(index)
   }
 
 }

@@ -6,15 +6,14 @@
 
  -->
 
-<div class="container">
-  <div class="container-conf conf-data">
+<main class="container">
+  <section class="container-conf conf-data">
     <div class="form-container">
       <div class="title h2">
         <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
         Game Configuration
       </div>
-      <form>
-        <div class="form-container-in">
+      <form class="form-container-in">
           <label class="selected">Number of players:</label>
           <div class="input-group">
             <select [formControl]="playersNumber" id="numPlayers2" class="form-select">
@@ -22,40 +21,34 @@
               <option [value]="3">3</option>
               <option [value]="4">4</option>
             </select>
-            <label class="input-group-text"><i class="bi bi-people"></i></label>
           </div>
-        </div>
       </form>
-      <form [formGroup]="myForm!" (ngSubmit)="onSubmit()">
-
-        Value: {{ myForm!.value | json }}
-        <hr>
+      <form [formGroup]="initialGameForm!" (ngSubmit)="onSubmit()">
 
         <ng-container formArrayName="fPlayers">
-          <div *ngFor="let p of pForms.controls; let i=index" [formGroupName]="i">
-            {{ p.value | json }}
+          <div *ngFor="let p of playersForm.controls; let i=index" [formGroupName]="i">
             <div class="form-container-in">
               <label for="name">Player name: </label>
               <input class="form-input" id="name" type="text" formControlName="name">
             </div>
 <!--            <div *ngIf="p.errors?.min && p.value['name'].touched" class="alert-custom">-->
-            <div *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">
+            <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">
 <!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
               Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or
               {{p.controls['name'].hasError('unique').valueOf()}}
-            </div>
-            <div *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">
+            </span>
+            <span *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">
               <!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
               This field is required
-            </div>
+            </span>
           </div>
         </ng-container>
-        <button class="btn-primary" [disabled]="!myForm.valid" [ngClass]="{'invalid-submit': !myForm.valid}">Start Game!</button>
-        TOTO: {{myForm.hasError('unique').valueOf()}}
-        <div [hidden]="myForm.hasError('unique').valueOf" class="alert-custom">
-           {{myForm.hasError('unique') ? myForm.getError('unique').name : 'nullll'}}
+        <button class="btn-primary" [disabled]="!initialGameForm.valid" [ngClass]="{'invalid-submit': !initialGameForm.valid}">Start Game!</button>
+        TOTO: {{initialGameForm.hasError('unique').valueOf()}}
+        <div [hidden]="initialGameForm.hasError('unique').valueOf" class="alert-custom">
+           {{initialGameForm.hasError('unique') ? initialGameForm.getError('unique').name : 'nullll'}}
         </div>
       </form>
     </div>
-  </div>
-</div>
+  </section>
+</main>
