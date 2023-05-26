@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { Player } from "../../model/player";
 import { DataService } from "./services/dataService";
 import { ActivatedRoute } from "@angular/router";
@@ -8,30 +8,33 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: "./main-table.component.html",
   styleUrls: ["./main-table.component.css"],
 })
-export class MainTableComponent implements OnInit {
+export class MainTableComponent implements OnInit{
   players: Player[] = [];
-  playerTurn: number = 0;
 
   constructor(private data: DataService, private route: ActivatedRoute) {}
 
+  get playerTurn(){
+    return this.data.playerTurn;
+  }
+
+  set playerTurn(turn: number){
+    this.data.playerTurn = turn;
+  }
   ngOnInit(): void {
     //zaciagasz dane raz i nie ma opcji zeby dane o pkt akutalizowaly sie prawidlowo
-    this.players = this.data.getGameData();
+    this.players = this.data.gamePlayers;
+
     //1 tu przypisujesz wartosc z serwisu
-    this.playerTurn = this.data.setPlayerTurn();
+    this.playerTurn = this.data.playerTurn;
+
     this.route.paramMap.subscribe((params) => {
       // niewykorzystne nigdzie gameID
       const gameId = params.get("id");
     });
   }
 
-  nextPlayer(turn: number) {
-    //2 a tu ja przeslaniasz i cala synchronizacja danych idzie w piach
-    this.playerTurn = turn;
-  }
-
-  // mylna nazwa metody. bardziej clearLocalSotrage
-  quit() {
+  clearLocalStorage() {
     localStorage.clear();
   }
+
 }

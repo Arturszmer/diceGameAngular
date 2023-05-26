@@ -16,43 +16,33 @@ import { playerStorage } from "../player/player.component";
  * wczytywanie tury z localStorage masz tu a zapis do localStorge masz w roller-dice.
  */
 export class DataService {
-  private gamePlayers: Player[] = [];
-  private playerTurn: number = 5;
-  private player?: Player;
+  private gamePlayers_: Player[] = [];
+  private playerTurn_: number = 0;
+  private player_?: Player;
   private _player = new Subject<Player>();
-  player$ = this._player.asObservable(); //nieuzywne
-  private _diceNumbers: Dice[] = [];
+  private _diceNumbers: Dice[] = []; // coś tu nie gra?
   private diceNumbersSource = new Subject<Dice[]>();
   diceNumbers$ = this.diceNumbersSource.asObservable();
   constructor() {}
 
-  // malo opisowy argument
-  setGameData(data: Player[]) {
-    this.gamePlayers = data;
-
-    // to bym wyniosl do metody saveGameDataToLocalStorage
-    localStorage.setItem("players", JSON.stringify(data.length));
-    this.gamePlayers.forEach((player) => {
-      //nic to nie wnosi. nie robisz tu zadnego mapowania
-      const playerData = {
-        id: player.id,
-        name: player.name,
-        points: player.points,
-      };
-      // rownie dobrze tu mozna zapisac to
-      // localStorage.setItem(playerStorage(player.id), JSON.stringify(player))
-      localStorage.setItem(
-        playerStorage(player.id),
-        JSON.stringify(playerData)
-      );
-    });
+  setGamePlayers(players: Player[]) {
+    this.gamePlayers_ = players;
+    this.player = players[this.playerTurn]
+    this.saveGameDataToLocalStorage();
   }
 
-  getGameData() {
-    if (this.gamePlayers.length === 0) {
+  get gamePlayers() {
+    if (this.gamePlayers_.length === 0) {
       this.loadDataFromLocalStorage();
     }
-    return this.gamePlayers;
+    return this.gamePlayers_;
+  }
+
+  private saveGameDataToLocalStorage(){
+    localStorage.setItem("players", JSON.stringify(this.gamePlayers_.length));
+    this.gamePlayers_.forEach((player) => {
+      localStorage.setItem(playerStorage(player.id), JSON.stringify(player))
+    });
   }
 
   // getter
@@ -66,62 +56,62 @@ export class DataService {
    * }
    *
    */
-  getPlayerTurn() {
-    return this.playerTurn;
-  }
-
-  // getter
-  getDiceNumbers(): Dice[] {
-    return this._diceNumbers;
-  }
 
   setDiceNumbers(value: Dice[]) {
     this._diceNumbers = value;
     this.diceNumbersSource.next(value);
   }
 
-  getPlayer() {
-    return this.gamePlayers[this.playerTurn];
+  get player() {
+    return this.gamePlayers_[this.playerTurn];
+  }
+  set player(player: Player) {
+    this.player_ = player;
+  }
+  get playerTurn() {
+    return this.playerTurn_;
   }
 
-  setPlayer(turn: number) {
-    this.player = this.gamePlayers[turn];
+  nextPlayer(playerTurn: number){
+    this.player = this.gamePlayers_[playerTurn];
   }
 
-  setPlayerTurn() {
-    if (this.playerTurn === 5) {
-      this.setPlayer(this.loadTurnFromLocalStorage());
+  set playerTurn(playerTurn: number){
+    this.playerTurn_ = playerTurn;
+  }
+
+  managePlayerTurn(turn: number) {
+    if (this.playerTurn_ === 5) {
+      this.loadDataFromLocalStorage();
+      this.player = this.gamePlayers_[this.playerTurn]
+      this.playerTurn_ = this.loadTurnFromLocalStorage()
       //nie zwracamy przypisania wartosci!!
-      //zamiast zwracac przypisane lepiej wystawic playerTurn jako getter (co robisz). 
+      //zamiast zwracac przypisane lepiej wystawic playerTurn jako getter (co robisz).
       //w komponencie sobie zrobic getter tego gettera i mamy prosty mechanizm gdzie zawsze dostajemy aktualna wartosc playersTurn
-      return (this.playerTurn = this.loadTurnFromLocalStorage());
+    } else {
+      this.playerTurn_ = 0
     }
-    this.setPlayer(0);
-    return (this.playerTurn = 0);
   }
 
   changeTurn(): number {
-    this.playerTurn++;
-    if (this.playerTurn == this.gamePlayers.length) {
-      this.playerTurn = 0;
+    this.playerTurn = this.playerTurn_ + 1;
+    if (this.playerTurn_ == this.gamePlayers_.length) {
+      this.playerTurn_ = 0;
     }
-    return this.playerTurn;
+    return this.playerTurn_;
   }
 
   addPoints(points: number) {
-    this.player!.points += points;
+    this.player_!.points += points;
     localStorage.setItem(
-      playerStorage(this.player?.id!),
+      playerStorage(this.player_?.id!),
       JSON.stringify({
-        id: this.player!.id,
-        name: this.player!.name,
-        points: this.player!.points,
+        id: this.player_!.id,
+        name: this.player_!.name,
+        points: this.player_!.points,
       })
     );
-    console.log(
-      JSON.parse(localStorage.getItem(playerStorage(this.player?.id!)) || "")
-    );
-    this._player.next(this.player!);
+    this._player.next(this.player_!);
   }
 
   loadDataFromLocalStorage() {
@@ -129,7 +119,7 @@ export class DataService {
     if (players !== 0) {
       for (let i = 1; i <= players; i++) {
         let parse = JSON.parse(localStorage.getItem(playerStorage(i)) || "");
-        this.gamePlayers.push(parse);
+        this.gamePlayers_.push(parse);
       }
     }
   }

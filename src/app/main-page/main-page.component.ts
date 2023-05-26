@@ -2,9 +2,27 @@ import {Component, OnInit, AfterViewInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Player} from "../model/player";
 import {DataService} from "../play-game/main-table/services/dataService";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
+//TODO: spróbować zrobić customowego validatora
+export function forbiddenNameValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    console.log('control',control )
+    const forbidden = control.value
+    //validacja przypisana do pola control.parent (poziom wyżej?)
+    return null;
+  };
+}
 /**
  * - brakuje walidacji co do unikalnosci nazw graczy. //coś tam jest ale nie do końca chce działać
  * - tworzenie i przechowywanie danych graczy powinno odbywac sie w serwisie
@@ -22,17 +40,17 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   playersNumber: FormControl = new FormControl<number>(2);
   private currentPlayersInputs_: number = 0;
   private players_: Player[] = [];
-  names: string[] = [];
 
   constructor(private router: Router, private data: DataService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
+
     this.initialGameForm = this.fb.group({
       fPlayers: this.fb.array([])
     })
+
     this.addPLayerFields(this.playersNumber.value)
     this.currentPlayersInputs_ = this.playersNumber.value;
-
   }
 
   ngAfterViewInit(): void {
@@ -49,10 +67,11 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
+    let names: string[] = []
     //Dodać własnego validatora który sprawdza unikalność imion
     for (let pName of this.playersForm.controls){
-      if (!this.names.includes(pName.controls['name'].value)){
-        this.names.push(pName.controls['name'].value)
+      if (!names.includes(pName.controls['name'].value)){
+        names.push(pName.controls['name'].value)
         this.players_.push({
           id: pName.controls['id'].value,
           name: pName.controls['name'].value,
@@ -61,12 +80,11 @@ export class MainPageComponent implements OnInit, AfterViewInit {
       } else {
         pName.setErrors({'unique' : 'your names isnt unique'})
         this.initialGameForm.setErrors({'unique' : 'your names isnt unique'})
-        this.names = [];
+        names = [];
         return
       }
     }
-    this.names = []
-    this.data.setGameData(this.players_);
+    this.data.setGamePlayers(this.players_);
 
 
     /**

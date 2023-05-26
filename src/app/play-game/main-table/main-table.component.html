@@ -1,7 +1,6 @@
 <div class="menu">
-  <!-- throw bym nie uzywal nawet jako klasy css. za duze zwiazanie nazwy z bledami/wyjatkiem w dowolym jezyku programowania.  -->
-  <div class="throw bg-secondary-p grid-item">
-    <a routerLink="" class="btn btn-quit btn-lg" (click)="quit()">
+  <div class="roller bg-secondary-p grid-item">
+    <a routerLink="" class="btn btn-quit btn-lg" (click)="clearLocalStorage()">
       <i class="bi bi-box-arrow-left me-2">Quit game</i>
     </a>
   </div>
@@ -20,36 +19,43 @@
       <div id="player1Points"></div>
     </div>
   </div>
+
+<!--  PRÓBA DUMMY COMPONENT  -->
+<!--  <scc-player-ui [player]="players![0]" [playerTurn]="playerTurn">-->
+<!--    <app-player class="gridCube"></app-player>-->
+<!--  </scc-player-ui>-->
+<!--  KONIEC  -->
   <div class="grid-item player3">
-    <div id="player3Name" class="container" *ngIf="players[2]">
-      {{ players[2].name || "" }}
+    <div id="player3Name" class="container" *ngIf="players[3]">
+      {{ players[3].name || "" }}
     </div>
     <!-- hidden zamiast ngIf -->
-    <div id="player3Cube" *ngIf="playerTurn === 2">
+    <div id="player3Cube" *ngIf="playerTurn === 3">
       <!--      <app-player (takePoints)="playerPoints($event)" class="gridCubeSides"></app-player>-->
       <app-player class="gridCubeSides"></app-player>
     </div>
-    <div class="container points" *ngIf="players[2]">
-      <div>Points: {{ players[2].points }}</div>
+    <div class="container points" *ngIf="players[3]">
+      <div>Points: {{ players[3].points }}</div>
       <div id="player3Points"></div>
     </div>
   </div>
   <div class="grid-item corner-right"></div>
   <div class="grid-item main">
     <div class="mainContent">
-      <app-roller-dice (changeTurn)="nextPlayer($event)"></app-roller-dice>
+      <app-roller-dice></app-roller-dice>
+<!--      <app-roller-dice (changeTurn)="nextPlayer($event)"></app-roller-dice>-->
       <!--      <app-roller-dice></app-roller-dice>-->
     </div>
   </div>
   <div class="grid-item player4">
-    <div id="player4Name" class="container" *ngIf="players[3]">
-      {{ players[3].name || "" }}
+    <div id="player4Name" class="container" *ngIf="players[4]">
+      {{ players[4].name || "" }}
     </div>
-    <div id="player4Cube" *ngIf="playerTurn === 3">
+    <div id="player4Cube" *ngIf="playerTurn === 4">
       <app-player class="gridCubeSides"></app-player>
     </div>
-    <div class="container points" *ngIf="players[3]">
-      <div>Points: {{ players[3].points }}</div>
+    <div class="container points" *ngIf="players[4]">
+      <div>Points: {{ players[4].points }}</div>
       <div id="player4Points"></div>
     </div>
   </div>

@@ -35,10 +35,10 @@ export class RollerDiceComponent implements OnInit, DoCheck {
   constructor(private dataService: DataService, private countService: CountService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.playerTurn = this.dataService.getPlayerTurn();
+    this.playerTurn = this.dataService.playerTurn;
     this.pointsSubscription = this.countService.points$.subscribe((p) => this.points = p)
     this.pointsFromRollSubscription = this.countService.pointsFromRoll$.subscribe((p) => this.pointsFromRoll = p)
-    this.player = this.dataService.getPlayer();
+    this.player = this.dataService.player;
     this.diceSubscription = this.dataService.diceNumbers$.subscribe(
       (diceNumbers) => {
         this.dices = diceNumbers;
@@ -48,6 +48,7 @@ export class RollerDiceComponent implements OnInit, DoCheck {
           this.isRolling = false;
         }
       })
+    console.log(this.player, ' roller dice player?')
   }
 
   ngOnDestroy(){
@@ -166,13 +167,12 @@ export class RollerDiceComponent implements OnInit, DoCheck {
     this.dices = [];
     this.playerTurn = this.dataService.changeTurn();
     localStorage.setItem('turn', JSON.stringify(this.playerTurn))
-    this.dataService.setPlayer(this.playerTurn)
+    this.dataService.nextPlayer(this.playerTurn)
     this.countService.setHandlePoints(0);
     this.changeTurn.emit(this.playerTurn);
     this.isRolling = true;
     this.isNextPlayer = false;
     this.isSaved = false;
-    this.player = this.dataService.getPlayer();
     return this.dices.filter((f) => f.isChecked && !f.isImmutable);
   }
 
@@ -180,7 +180,7 @@ export class RollerDiceComponent implements OnInit, DoCheck {
     let modalRef = this.modalService.open(WinnerModalComponent, {centered: true});
     this.isWinner = false;
     modalRef.componentInstance.playerData = this.player;
-    modalRef.componentInstance.players = this.dataService.getGameData();
+    modalRef.componentInstance.players = this.dataService.gamePlayers;
     this.nextPlayer();
   }
 
