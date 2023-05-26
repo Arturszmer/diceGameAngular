@@ -1,9 +1,9 @@
-<!-- 
+<!--
   choroba nestowania divow. Glowna zasada HTML im mniej divow tym lepiej.
-  zarowno jesli chodzi o sama redundancje kontenerow ale rowniez zastepowanie 
+  zarowno jesli chodzi o sama redundancje kontenerow ale rowniez zastepowanie
   ich semantycznie nacechowanymi tagami https://learntheweb.courses/topics/html-semantics-cheat-sheet/
-  
-  
+
+
  -->
 
 <div class="container">
@@ -13,48 +13,48 @@
         <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
         Game Configuration
       </div>
-      <form class="form" id="form" (ngSubmit)="onSubmit()">
+      <form>
         <div class="form-container-in">
-          <label for="numPlayers" class="selected">Number of players:</label>
+          <label class="selected">Number of players:</label>
           <div class="input-group">
-            <!-- dziwny bug gdy zmieniamy wartosc na 4 -->
-            <!-- wyglada to na to ze elementy z ngFor ponizej nie istnieja bo usuwasz tablice i tworzysz nowa. -->
-            <select [(ngModel)]="numPlayers" (ngModelChange)="updatePlayersArray()" name="numPlayers" id="numPlayers" class="form-select">
-              <option [ngValue]="2">2</option>
-              <option [ngValue]="3">3</option>
-              <option [ngValue]="4">4</option>
+            <select [formControl]="playersNumber" id="numPlayers2" class="form-select">
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
             </select>
-            <label class="input-group-text" for="numPlayers"><i class="bi bi-people"></i></label>
+            <label class="input-group-text"><i class="bi bi-people"></i></label>
           </div>
         </div>
+      </form>
+      <form [formGroup]="myForm!" (ngSubmit)="onSubmit()">
 
-        <!-- Add a container to hold player names -->
-        <div id="player-names"> 
-          {{playersArray |json}}
-          <div *ngFor="let i of playersArray">
+        Value: {{ myForm!.value | json }}
+        <hr>
+
+        <ng-container formArrayName="fPlayers">
+          <div *ngFor="let p of pForms.controls; let i=index" [formGroupName]="i">
+            {{ p.value | json }}
             <div class="form-container-in">
-              <div class="selected">Player {{ i }} name:</div>
-              <input type="text" class="form-input" name="text"
-                     #player
-                     [placeholder]="'Player ' + i + ' name'"
-                     [id]="'player' + i" required minlength="3"
-                     [(ngModel)]="names[i]">
+              <label for="name">Player name: </label>
+              <input class="form-input" id="name" type="text" formControlName="name">
             </div>
-            <!-- tu walidujesz dynamicznie po stronie html -->
-            <!-- zdecydowanie ngIf zamienilbym na [hidden] -->
-            tajemnicze i = {{i}}
-            <div *ngIf="names[i].length > 0 && names[i].length < 3" class="alert-custom">
-              Please enter a valid name (minimum 3 characters).
+<!--            <div *ngIf="p.errors?.min && p.value['name'].touched" class="alert-custom">-->
+            <div *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">
+<!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
+              Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or
+              {{p.controls['name'].hasError('unique').valueOf()}}
             </div>
-            <!-- tu walidujesz z warunkami po stronie komponentu -->
-            <!-- pojedyncza flaga zarzadzajaca wszystkimi komunikatami bledow, nadal jestesmy w ngFor -->
-            <div *ngIf="invalidName" class="alert-custom">
-              Name cannot be empty
+            <div *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">
+              <!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
+              This field is required
             </div>
           </div>
+        </ng-container>
+        <button class="btn-primary" [disabled]="!myForm.valid" [ngClass]="{'invalid-submit': !myForm.valid}">Start Game!</button>
+        TOTO: {{myForm.hasError('unique').valueOf()}}
+        <div [hidden]="myForm.hasError('unique').valueOf" class="alert-custom">
+           {{myForm.hasError('unique') ? myForm.getError('unique').name : 'nullll'}}
         </div>
-        
-        <button class="btn-primary">Start Game!</button>
       </form>
     </div>
   </div>
