@@ -1,0 +1,30 @@
+.grid-item {
+  font-weight: 800;
+  font-size: 24px;
+  text-align: center;
+  align-content: center;
+  padding: 35px;
+}
+
+
+.player1 {
+  grid-area: player1;
+  background-color: #FBB13C;
+}
+
+.gridCube {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
+  padding-bottom: 15px;
+}
+
+.points {
+  display: flex;
+  border: solid;
+  border-radius: 8px;
+  border-color: darkmagenta;
+  background-color: white;
+  text-align: left;
+}

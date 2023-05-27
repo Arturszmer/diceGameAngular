@@ -1,5 +1,4 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Subscription} from "rxjs";
 import {Dice} from "../../../model/dice";
 import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
@@ -13,24 +12,20 @@ export const playerStorage = (id: number) => `player_${id}`
 })
 export class PlayerComponent implements OnInit {
 
-  diceNumbers: Dice[] = [];
-  subscriptionDices?: Subscription;
   points: number = 0;
   @Output() takePoints = new EventEmitter<number>()
 
   constructor(private dataService: DataService, private countService: CountService ) { }
 
-  ngOnInit(): void {
-    this.subscriptionDices = this.dataService.diceNumbers$.subscribe(
-      (diceNumbers) => {
-        this.diceNumbers = diceNumbers;
-        this.countService.countFromRoll(this.diceNumbers)
-      }
-    );
+  get diceNumbers(){
+    return this.dataService.diceNumbers;
   }
-
-  ngOnDestroy(): void {
-    this.subscriptionDices?.unsubscribe();
+  set diceNumbers(dices: Dice[]){
+    this.dataService.diceNumbers = dices;
+  }
+  ngOnInit(): void {
+    this.countService.countFromRoll(this.diceNumbers);
+    this.diceNumbers = this.dataService.diceNumbers;
   }
 
   diceCheck(index: number, dice: Dice) {
@@ -48,13 +43,8 @@ export class PlayerComponent implements OnInit {
     this.countService.getPoints();
   }
 
-  updateDices(){
-    this.dataService.setDiceNumbers(this.diceNumbers);
-  }
-
   private sendData() {
     this.countService.countFromDices(this.diceNumbers);
     this.updatePoints();
-    this.updateDices();
   }
 }

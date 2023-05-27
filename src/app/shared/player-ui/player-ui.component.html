@@ -1,0 +1,16 @@
+
+  <!-- tu by sie przydal dummy component z widokiem calego UI dla pojedynczego gracza -->
+  <!-- dodatkowo mozna generowanie kafelkow zrobic ngForem zamiast recznie sprawdzac ilu graczy trzeba wyrysowac -->
+  <!-- przy uzyciu display:grid w css mozna ustwaic taka siatke widoku tak zeby roller byl zawsze na srodku ;) -->
+  <div [class]="'player' + player.id + ' grid-item'">
+    <div [id]="'player' + player.id + 'Name'" class="container">
+      {{ player.name || "" }}
+    </div>
+    <div id="player1Cube" *ngIf="playerTurn === player.id">
+<!--      <app-player class="gridCube"></app-player>-->
+    </div>
+    <div class="container points">
+      <div>Points: {{ player.points }}</div>
+      <div id="player1Points"></div>
+    </div>
+  </div>

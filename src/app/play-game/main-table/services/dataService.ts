@@ -20,9 +20,7 @@ export class DataService {
   private playerTurn_: number = 0;
   private player_?: Player;
   private _player = new Subject<Player>();
-  private _diceNumbers: Dice[] = []; // coś tu nie gra?
-  private diceNumbersSource = new Subject<Dice[]>();
-  diceNumbers$ = this.diceNumbersSource.asObservable();
+  private diceNumbers_: Dice[] = [];
   constructor() {}
 
   setGamePlayers(players: Player[]) {
@@ -57,9 +55,12 @@ export class DataService {
    *
    */
 
-  setDiceNumbers(value: Dice[]) {
-    this._diceNumbers = value;
-    this.diceNumbersSource.next(value);
+  set diceNumbers(dices: Dice[]) {
+    this.diceNumbers_ = dices;
+  }
+
+  get diceNumbers(){
+    return this.diceNumbers_;
   }
 
   get player() {
@@ -78,19 +79,6 @@ export class DataService {
 
   set playerTurn(playerTurn: number){
     this.playerTurn_ = playerTurn;
-  }
-
-  managePlayerTurn(turn: number) {
-    if (this.playerTurn_ === 5) {
-      this.loadDataFromLocalStorage();
-      this.player = this.gamePlayers_[this.playerTurn]
-      this.playerTurn_ = this.loadTurnFromLocalStorage()
-      //nie zwracamy przypisania wartosci!!
-      //zamiast zwracac przypisane lepiej wystawic playerTurn jako getter (co robisz).
-      //w komponencie sobie zrobic getter tego gettera i mamy prosty mechanizm gdzie zawsze dostajemy aktualna wartosc playersTurn
-    } else {
-      this.playerTurn_ = 0
-    }
   }
 
   changeTurn(): number {
