@@ -14,19 +14,16 @@ import {
 } from "@angular/forms";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
-//TODO: spróbować zrobić customowego validatora
-export function forbiddenNameValidator(): ValidatorFn {
+export function uniqueNamesValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    console.log('control',control )
-    const forbidden = control.value
-    //validacja przypisana do pola control.parent (poziom wyżej?)
-    return null;
+    const controlsValues = (control as FormArray)?.value
+      ?.map((val: any) => val.name)
+      .filter((val: any) => val !== "");
+
+    const temp = Array.from(new Set(controlsValues))
+    return controlsValues.length === temp.length ? null : {unique: "Your names are not unique"};
   };
 }
-/**
- * - brakuje walidacji co do unikalnosci nazw graczy. //coś tam jest ale nie do końca chce działać
- * - tworzenie i przechowywanie danych graczy powinno odbywac sie w serwisie
- */
 @UntilDestroy()
 @Component({
   selector: "app-main-page",
@@ -46,19 +43,19 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     this.initialGameForm = this.fb.group({
-      fPlayers: this.fb.array([])
+      fPlayers: this.fb.array([], uniqueNamesValidator())
     })
 
-    this.addPLayerFields(this.playersNumber.value)
+    this.setPlayersFieldsNumberTo(this.playersNumber.value)
     this.currentPlayersInputs_ = this.playersNumber.value;
   }
 
   ngAfterViewInit(): void {
     this.playersNumber.valueChanges
       .pipe(untilDestroyed(this))
-      .subscribe((val) => {
-      this.addPLayerFields(val);
-      this.currentPlayersInputs_ = val;
+      .subscribe((value) => {
+      this.setPlayersFieldsNumberTo(value);
+      this.currentPlayersInputs_ = value;
     })
   }
 
@@ -67,41 +64,15 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    let names: string[] = []
-    //Dodać własnego validatora który sprawdza unikalność imion
-    for (let pName of this.playersForm.controls){
-      if (!names.includes(pName.controls['name'].value)){
-        names.push(pName.controls['name'].value)
-        this.players_.push({
-          id: pName.controls['id'].value,
-          name: pName.controls['name'].value,
-          points: pName.controls['points'].value
-        })
-      } else {
-        pName.setErrors({'unique' : 'your names isnt unique'})
-        this.initialGameForm.setErrors({'unique' : 'your names isnt unique'})
-        names = [];
-        return
-      }
-    }
+    this.playersForm.controls.forEach((player) => this.players_.push({
+      id: player.controls['id'].value,
+      name: player.controls['name'].value,
+      points: player.controls['points'].value
+    }))
     this.data.setGamePlayers(this.players_);
-
-
-    /**
-     * to manulane iterownie przy uzyciu reactive forms w ogole by nie zachodzilo,
-     * bo byś mial mozliwosc sprawdzenia poprawnosci calego formularza.
-     *
-     * ale co mozemy zrobic z tym podejsciem ktore tu zastosowales:
-     *  - możesz stworzyc w html w <form ngForm="form"> co pozwoli zagregowac wszystkie ngModele z
-     *    tego formularza w jedno i tez uzyc przeznaczonych do walidacji metod w celu sprawdzenia poprwanosci danych.
-     *    https://angular.io/guide/forms
-     *  -
-     */
-
     this.generateUniqueIdAndSubmit()
   }
 
-  // metoda powinna byc prywatna. uzywana jest tylko wewnatrz komponentu
   private generateUniqueIdAndSubmit(): void {
     let result = "";
     const characters =
@@ -112,8 +83,8 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     }
     this.router.navigate(["/game", result]) // dopytać co znaczy ten promis z metody navigate
   }
-//
-  private addPLayerFields(val: number) {
+
+  private setPlayersFieldsNumberTo(val: number) {
     let delta = val - this.currentPlayersInputs_;
 
     while (delta !== 0){
@@ -121,7 +92,7 @@ export class MainPageComponent implements OnInit, AfterViewInit {
         const player = this.fb.group({
           id: this.playersForm.length + 1,
           name: ['', [Validators.required, Validators.minLength(3)]],
-          points: 0
+          points: 100
         })
         this.playersForm.push(player);
         delta--;

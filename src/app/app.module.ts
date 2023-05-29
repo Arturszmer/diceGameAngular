@@ -11,7 +11,6 @@ import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-d
 import { WinnerModalComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal.component';
 import { WinnerModalContentComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal-content/winner-modal-content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {PlayerUiModule} from "./shared/player-ui/player-ui.module";
 import {PlayerModule} from "./play-game/main-table/player/player.module";
 
 @NgModule({
@@ -30,7 +29,6 @@ import {PlayerModule} from "./play-game/main-table/player/player.module";
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    PlayerUiModule,
     PlayerModule
   ],
   providers: [],

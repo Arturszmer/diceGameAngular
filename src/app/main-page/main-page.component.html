@@ -2,7 +2,7 @@
   choroba nestowania divow. Glowna zasada HTML im mniej divow tym lepiej.
   zarowno jesli chodzi o sama redundancje kontenerow ale rowniez zastepowanie
   ich semantycznie nacechowanymi tagami https://learntheweb.courses/topics/html-semantics-cheat-sheet/
-
+    -- CZY LEPIEJ?
 
  -->
 
@@ -44,9 +44,9 @@
           </div>
         </ng-container>
         <button class="btn-primary" [disabled]="!initialGameForm.valid" [ngClass]="{'invalid-submit': !initialGameForm.valid}">Start Game!</button>
-        TOTO: {{initialGameForm.hasError('unique').valueOf()}}
-        <div [hidden]="initialGameForm.hasError('unique').valueOf" class="alert-custom">
-           {{initialGameForm.hasError('unique') ? initialGameForm.getError('unique').name : 'nullll'}}
+
+        <div [hidden]="!initialGameForm.controls['fPlayers'].hasError('unique')" class="alert-custom">
+           {{initialGameForm.controls['fPlayers'].hasError('unique') ? initialGameForm.controls['fPlayers'].getError('unique') : ''}}
         </div>
       </form>
     </div>

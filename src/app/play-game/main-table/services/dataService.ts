@@ -3,6 +3,7 @@ import { Subject } from "rxjs";
 import { Player } from "../../../model/player";
 import { Dice } from "../../../model/dice";
 import { playerStorage } from "../player/player.component";
+import {DicesService} from "./dices.service";
 
 @Injectable({
   providedIn: "root",
@@ -56,10 +57,12 @@ export class DataService {
    */
 
   set diceNumbers(dices: Dice[]) {
+    console.log('set diceNumbers in data service: ', dices)
     this.diceNumbers_ = dices;
   }
 
   get diceNumbers(){
+    console.log('get diceNumbers in data service: ', this.diceNumbers_)
     return this.diceNumbers_;
   }
 
@@ -113,5 +116,9 @@ export class DataService {
   }
   loadTurnFromLocalStorage(): number {
     return Number.parseInt(localStorage.getItem("turn") || "0");
+  }
+
+  diceCheck() {
+    // this.dicesService.diceCheck(this.diceNumbers)
   }
 }

@@ -1,5 +1,5 @@
 import {Component, DoCheck, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
-import {rollDice} from "../diceLogic/throwingDice";
+import {rollDice} from "../diceLogic/rollingDices";
 import {checkMultipleNumbers, checkGoodNumbers} from "../diceLogic/validators"
 import {Dice} from "../../../model/dice";
 import {DataService} from "../services/dataService";
