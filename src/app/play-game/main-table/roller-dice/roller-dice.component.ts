@@ -1,4 +1,4 @@
-import {Component, DoCheck, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, DoCheck, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
 import {rollDice} from "../diceLogic/throwingDice";
 import {checkMultipleNumbers, checkGoodNumbers} from "../diceLogic/validators"
 import {Dice} from "../../../model/dice";
@@ -57,6 +57,38 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
   ngOnDestroy(){
     this.pointsSubscription?.unsubscribe();
     this.pointsFromRollSubscription?.unsubscribe();
+  }
+
+  @HostListener('window:keydown.space', ['$event'])
+  listenSpace(event: KeyboardEvent): void {
+
+    event.preventDefault();
+    if(this.isRolling){
+      this.diceRoll();
+      console.log(this.playerTurn, ' player turn')
+      switch (this.playerTurn){
+        case 0: window.scrollTo(0, 0);
+        break;
+        case 1: window.scrollTo(0, 400);
+        break;
+      }
+    } else if (this.isNextPlayer){
+      this.nextPlayer();
+      switch (this.playerTurn){
+        case 0: window.scrollTo(0, 0);
+          break;
+        case 1: window.scrollTo(0, 150);
+          break;
+      }
+    }
+  }
+
+  @HostListener('window:keydown.Enter', ['$event'])
+  listenEnter(event: KeyboardEvent): void {
+    event.preventDefault();
+    if(this.isSaved){
+      this.savePoints();
+    }
   }
 
   diceRoll() {

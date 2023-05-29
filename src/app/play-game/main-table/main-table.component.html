@@ -7,24 +7,25 @@
   <!-- tu by sie przydal dummy component z widokiem calego UI dla pojedynczego gracza -->
   <!-- dodatkowo mozna generowanie kafelkow zrobic ngForem zamiast recznie sprawdzac ilu graczy trzeba wyrysowac -->
   <!-- przy uzyciu display:grid w css mozna ustwaic taka siatke widoku tak zeby roller byl zawsze na srodku ;) -->
-  <div class="player1 grid-item">
-    <div id="player1Name" class="container">
-      {{ players[0].name || "" }}
-    </div>
-    <div id="player1Cube" *ngIf="playerTurn === 0">
-      <app-player class="gridCube"></app-player>
-    </div>
-    <div class="container points">
-      <div>Points: {{ players[0].points }}</div>
-      <div id="player1Points"></div>
-    </div>
-  </div>
 
-<!--  PRÓBA DUMMY COMPONENT  -->
-<!--  <scc-player-ui [player]="players![0]" [playerTurn]="playerTurn">-->
+<!--  <div class="player1 grid-item">-->
+<!--    <div id="player1Name" class="container">-->
+<!--      {{ players[0].name || "" }}-->
+<!--    </div>-->
+<!--    <div id="player1Cube" *ngIf="playerTurn === 0">-->
+<!--      <app-player class="gridCube"></app-player>-->
+<!--    </div>-->
+<!--    <div class="container points">-->
+<!--      <div>Points: {{ players[0].points }}</div>-->
+<!--      <div id="player1Points"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  PRÓBA DUMMY COMPONENT-->
+  <scc-player-ui [player]="players![0]" [playerTurn]="playerTurn">
 <!--    <app-player class="gridCube"></app-player>-->
-<!--  </scc-player-ui>-->
-<!--  KONIEC  -->
+  </scc-player-ui>
+<!--  KONIEC-->
   <div class="grid-item player3">
     <div id="player3Name" class="container" *ngIf="players[3]">
       {{ players[3].name || "" }}
