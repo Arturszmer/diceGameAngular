@@ -28,8 +28,8 @@
         <ng-container formArrayName="fPlayers">
           <div *ngFor="let p of playersForm.controls; let i=index" [formGroupName]="i">
             <div class="form-container-in">
-              <label for="name">Player name: </label>
-              <input class="form-input" id="name" type="text" formControlName="name">
+              <label [for]="'name' + i">Player name: </label>
+              <input class="form-input" [id]="'name' + i" type="text" formControlName="name">
             </div>
 <!--            <div *ngIf="p.errors?.min && p.value['name'].touched" class="alert-custom">-->
             <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">

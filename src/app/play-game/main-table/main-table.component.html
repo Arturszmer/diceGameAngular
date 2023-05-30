@@ -20,15 +20,16 @@
     </div>
   </div>
   <div class="grid-item player3">
-    CO TU JEST?
-    <div id="player3Name" class="container" *ngIf="players[3]">
-      {{ players[3].name || "" }}
+    {{players[2] | json}}
+    CO TU JEST 3?
+    <div id="player3Name" class="container" *ngIf="players[2]">
+      {{ players[2].name || "" }}
     </div>
-    <div id="player3Cube" [hidden]="playerTurn !== 3">
-      <app-player class="gridCubeSides" [diceNumbers]="diceNumbers" [points]="playerPoints" (diceChecked)="diceCheck($event)"></app-player>
+    <div id="player3Cube" [hidden]="playerTurn !== 2">
+      <app-player [diceNumbers]="diceNumbers" [points]="playerPoints" (diceChecked)="diceCheck($event)" class="gridCubeSides" ></app-player>
     </div>
-    <div class="container points" *ngIf="players[3]">
-      <div>Points: {{ players[3].points }}</div>
+    <div class="container points" *ngIf="players[2]">
+      <div>Points: {{ players[2].points }}</div>
       <div id="player3Points"></div>
     </div>
   </div>
@@ -39,14 +40,16 @@
     </div>
   </div>
   <div class="grid-item player4">
-    <div id="player4Name" class="container" *ngIf="players[4]">
-      {{ players[4].name || "" }}
+    {{players[3] | json}}
+    CO TU JEST 4?
+    <div id="player4Name" class="container" *ngIf="players[3]">
+      {{ players[3].name || "" }}
     </div>
-    <div id="player4Cube" [hidden]="playerTurn !== 4">
+    <div id="player4Cube" [hidden]="playerTurn !== 3">
       <app-player [diceNumbers]="diceNumbers" [points]="playerPoints" (diceChecked)="diceCheck($event)" class="gridCubeSides"></app-player>
     </div>
-    <div class="container points" *ngIf="players[4]">
-      <div>Points: {{ players[4].points }}</div>
+    <div class="container points" *ngIf="players[3]">
+      <div>Points: {{ players[3].points }}</div>
       <div id="player4Points"></div>
     </div>
   </div>
