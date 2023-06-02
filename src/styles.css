@@ -6,3 +6,7 @@
   --casino-gold: #F2B632;
   --casino-red: #ED553B;
 }
+
+body {
+  font-family: "Baloo Bhaijaan", sans-serif;
+}

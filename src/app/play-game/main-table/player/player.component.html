@@ -1,10 +1,9 @@
   <button class="cubeValue"
           *ngFor="let dice of diceNumbers; let i = index"
-          (click)="diceCheck(i, dice)"
+          (click)="diceCheck(i)"
   [ngClass]="{
   'selected' : dice.isChecked, 'good' : dice.isGoodNumber, 'multiple' : dice.isMultiple, 'immutable' : dice.isImmutable}"
-  [disabled]="!dice.isGoodNumber || dice.isImmutable"
-  (change)="updatePoints()">
+  [disabled]="!dice.isGoodNumber || dice.isImmutable">
     <div>
       <span>{{dice.value}}</span>
 
