@@ -38,6 +38,7 @@ export class MainTableComponent implements OnInit{
     });
   }
 
+  //TODO: dopracować localstorage (trochę się rozjechało)
   clearLocalStorage() {
     localStorage.clear();
   }

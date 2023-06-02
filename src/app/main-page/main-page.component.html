@@ -1,11 +1,3 @@
-<!--
-  choroba nestowania divow. Glowna zasada HTML im mniej divow tym lepiej.
-  zarowno jesli chodzi o sama redundancje kontenerow ale rowniez zastepowanie
-  ich semantycznie nacechowanymi tagami https://learntheweb.courses/topics/html-semantics-cheat-sheet/
-    -- CZY LEPIEJ?
-
- -->
-
 <main class="container">
   <section class="container-conf conf-data">
     <div class="form-container">
@@ -31,9 +23,7 @@
               <label [for]="'name' + i">Player name: </label>
               <input class="form-input" [id]="'name' + i" type="text" formControlName="name">
             </div>
-<!--            <div *ngIf="p.errors?.min && p.value['name'].touched" class="alert-custom">-->
             <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">
-<!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
               Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or
               {{p.controls['name'].hasError('unique').valueOf()}}
             </span>
