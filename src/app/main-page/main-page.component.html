@@ -1,44 +1,44 @@
-<div class="container">
-  <div class="container-conf conf-data">
+<main class="container">
+  <section class="container-conf conf-data">
     <div class="form-container">
       <div class="title h2">
         <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
         Game Configuration
       </div>
-      <form class="form" id="form" (ngSubmit)="onSubmit()">
-        <div class="form-container-in">
-          <label for="numPlayers" class="selected">Number of players:</label>
+      <form class="form-container-in">
+          <label class="selected">Number of players:</label>
           <div class="input-group">
-            <select [(ngModel)]="numPlayers" (ngModelChange)="updatePlayersArray()" name="numPlayers" id="numPlayers" class="form-select">
-              <option [ngValue]="2">2</option>
-              <option [ngValue]="3">3</option>
-              <option [ngValue]="4">4</option>
+            <select [formControl]="playersNumber" id="numPlayers2" class="form-select">
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
             </select>
-            <label class="input-group-text" for="numPlayers"><i class="bi bi-people"></i></label>
           </div>
-        </div>
+      </form>
+      <form [formGroup]="initialGameForm!" (ngSubmit)="onSubmit()">
 
-        <!-- Add a container to hold player names -->
-        <div id="player-names">
-          <div *ngFor="let i of playersArray">
+        <ng-container formArrayName="fPlayers">
+          <div *ngFor="let p of playersForm.controls; let i=index" [formGroupName]="i">
             <div class="form-container-in">
-              <div class="selected">Player {{ i }} name:</div>
-              <input type="text" class="form-input" name="text"
-                     [placeholder]="'Player ' + i + ' name'"
-                     [id]="'player' + i" required minlength="3"
-              [(ngModel)]="names[i]">
+              <label [for]="'name' + i">Player name: </label>
+              <input class="form-input" [id]="'name' + i" type="text" formControlName="name">
             </div>
-            <div *ngIf="names[i].length > 0 && names[i].length < 3" class="alert-custom">
-              Please enter a valid name (minimum 3 characters).
-            </div>
-            <div *ngIf="invalidName" class="alert-custom">
-              Name cannot be empty
-            </div>
+            <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">
+              Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or
+              {{p.controls['name'].hasError('unique').valueOf()}}
+            </span>
+            <span *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">
+              <!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
+              This field is required
+            </span>
           </div>
-        </div>
+        </ng-container>
+        <button class="btn-primary" [disabled]="!initialGameForm.valid" [ngClass]="{'invalid-submit': !initialGameForm.valid}">Start Game!</button>
 
-        <button class="btn-primary">Start Game!</button>
+        <div [hidden]="!initialGameForm.controls['fPlayers'].hasError('unique')" class="alert-custom">
+           {{initialGameForm.controls['fPlayers'].hasError('unique') ? initialGameForm.controls['fPlayers'].getError('unique') : ''}}
+        </div>
       </form>
     </div>
-  </div>
-</div>
+  </section>
+</main>

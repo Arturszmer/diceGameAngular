@@ -1,8 +1,8 @@
 <div id="mainButtons" class="container">
-  <button type="button"  id="firstThrow" class="btn-cube"
+  <button type="button" id="roller" class="btn-cube"
           (click)="diceRoll()"
           [ngClass]="{'clicked' : isClicked}"
-  [disabled]="!isRolling">
+          [disabled]="!isRolling">
     <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="150px" height="150px" alt="" *ngIf="isRolling">
     <img id="conf-dis" src="assets/soundsAndImages/roller-dice-disabled.png" width="150px" height="150px" alt="" *ngIf="!isRolling"></button>
 
