@@ -6,7 +6,7 @@ import {MultipleGameComponent} from "./multiple-game.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { PlayersTableComponent } from './players-table/players-table.component';
-
+import {PlayerModule} from "../play-game/main-table/player/player.module";
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { PlayersTableComponent } from './players-table/players-table.component';
     CommonModule,
     MultipleGameRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PlayerModule,
   ],
   exports: [
     ReactiveFormsModule
