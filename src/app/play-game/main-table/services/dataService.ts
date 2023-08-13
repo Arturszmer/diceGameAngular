@@ -3,16 +3,23 @@ import { Subject } from "rxjs";
 import { Player } from "../../../model/player";
 import { Dice } from "../../../model/dice";
 import { playerStorage } from "../player/player.component";
+import {GameData} from "../../../service-interfaces/gameData";
 
 @Injectable({
   providedIn: "root",
 })
-export class DataService {
-  private gamePlayers_: Player[] = [];
-  private playerTurn_: number = 0;
-  private player_?: Player;
+export class DataService implements GameData{
+  // TODO: create service interface - different implementation for single, and different for multiple
+  // private gamePlayers_: Player[] = [];
+  // private playerTurn_: number = 0;
+  // private player_?: Player;
+  // private diceNumbers_: Dice[] = [];
   private _player = new Subject<Player>();
-  private diceNumbers_: Dice[] = [];
+  gamePlayers_: Player[] = []
+  playerTurn_: number = 0;
+  player_?: Player | undefined;
+  diceNumbers_: Dice[] = [];
+
   constructor() {}
 
   setGamePlayers(players: Player[]) {

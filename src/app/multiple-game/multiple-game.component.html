@@ -25,12 +25,12 @@
         </tr>
         </thead>
         <tbody>
-        <ng-container *ngFor="let game of games; let i = index">
+        <ng-container *ngFor="let game of games">
         <tr [ngClass]="{unavailable: game.players.length == 4}">
           <td>{{game.gameId.substring(0, 5) + '...'}}</td>
           <td>{{game.adminPlayer.name}}</td>
           <td>{{game.players.length}}</td>
-          <td><button class="btn btn-sm" [disabled]="game.players.length == 4">join</button></td>
+          <td><button class="btn btn-sm" [disabled]="game.players.length == 4" (click)="joinGame(game.gameId)">join</button></td>
         </tr>
         </ng-container>
 

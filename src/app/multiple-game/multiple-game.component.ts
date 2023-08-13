@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {GameDto, PlayerDto} from "../model/dtos";
 import {ApiService} from "./services/api.service";
+import {GameDataService} from "./services/game-data.service";
 
 @Component({
   selector: 'app-multiple-game',
@@ -13,48 +13,50 @@ export class MultipleGameComponent implements OnInit{
 
   currentPage = 0;
   pageSize = 5;
-  totalGames = 0;
   initialGameForm: FormGroup = new FormGroup<any>({
     playerName: new FormControl(''),
   });
-  adminPlayer!: PlayerDto;
-  games: GameDto[] = [];
 
-  constructor(private router: Router, private api: ApiService) { }
+  constructor(private router: Router, private api: ApiService, private dataService: GameDataService) { }
 
   ngOnInit(){
-    //   this.api.findOpenGames().subscribe(game => {
-    //     this.games = game
-    // });
     this.fetchGames()
   }
 
-
+  get games(){
+    return this.dataService.games;
+  }
 
   onSubmit(){
-    this.adminPlayer = {
+    this.dataService.adminPlayer = {
       id: 0,
       name: this.initialGameForm.get('playerName')?.value,
       points: 0
     };
-    this.api.createGame(this.adminPlayer).subscribe(response => {
-      this.games.push(response);
-      this.router.navigate(["/mulitple-game", response.gameId])
+    this.api.createGame(this.dataService.adminPlayer).subscribe(response => {
+      this.dataService.game = response;
+      this.dataService.players.push(this.dataService.adminPlayer);
+      this.router.navigate(["/mulitple-game", response.gameId]);
     });
   }
 
   private fetchGames() {
     this.api.findOpenGamesPage(this.currentPage, this.pageSize).subscribe(
       response => {
-        this.games = response.content;
-
-        // this.games = response
+        this.dataService.games = response.content;
       },
       (error) => {
         console.error('Error fetching open games:', error);
       }
     );
+  }
 
+  joinGame(existGameId: string){
+    this.api.findGameById(existGameId).subscribe(response => {
+      this.dataService.game = response;
+      this.dataService.adminPlayer = response.adminPlayer;
+      this.router.navigate(["/mulitple-game", existGameId])
+    });
   }
 
   previousPage() {

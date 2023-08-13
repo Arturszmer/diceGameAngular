@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {GameDto, OpenGamesResponse, PlayerDto} from "../../model/dtos";
 import {environment} from "../../../environments/environment";
 import {Params} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,10 @@ export class ApiService {
   }
   createGame(adminPlayer: PlayerDto) {
     return this.http.post<GameDto>(environment.apiUrl + this.createGameApi, adminPlayer);
+  }
+
+  findGameById(existGameId: string): Observable<GameDto> {
+    let path: string = '/find-game?gameId=' + existGameId;
+    return this.http.get<GameDto>(environment.apiUrl + path).pipe();
   }
 }

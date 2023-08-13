@@ -92,7 +92,7 @@ export class SingleGameComponent implements OnInit, AfterViewInit {
         const player = this.fb.group({
           id: this.playersForm.length + 1,
           name: ['', [Validators.required, Validators.minLength(3)]],
-          points: 100
+          points: 0
         })
         this.playersForm.push(player);
         delta--;
