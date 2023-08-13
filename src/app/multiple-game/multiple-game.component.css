@@ -1,0 +1,158 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input,
+button {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled{
+  background-color: darkgray;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+/* Style the form */
+.form-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #f2f2f2;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-container .title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-container .form-input {
+  width: 70%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-container-in {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.selected {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.alert-custom {
+  color: red;
+  font-size: 1vh;
+  font-style: italic;
+}
+
+.invalid-submit {
+  background-color: #BFBFBF !important;
+  cursor: default;
+}
+
+.margin-up {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+tr:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.unavailable {
+  background-color: rgba(237, 85, 59, 0.49) !important;
+  cursor: default !important;
+}
+
+td:last-child {
+  text-align: center;
+}
+
+/* Additional styles for responsiveness */
+@media screen and (max-width: 600px) {
+  th, td {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  tr:hover {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+}
+
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pagination-btn {
+  background-color: #f1f1f1;
+  border: none;
+  color: black;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination-btn:hover {
+  background-color: #ddd;
+}
+
+.pagination-btn:disabled{
+  cursor: default;
+  background-color: #ddd;
+}

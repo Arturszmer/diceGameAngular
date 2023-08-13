@@ -27,10 +27,10 @@ export function uniqueNamesValidator(): ValidatorFn {
 @UntilDestroy()
 @Component({
   selector: "app-main-page",
-  templateUrl: "./main-page.component.html",
-  styleUrls: ["./main-page.component.css"],
+  templateUrl: "./single-game.component.html",
+  styleUrls: ["./single-game.component.css"],
 })
-export class MainPageComponent implements OnInit, AfterViewInit {
+export class SingleGameComponent implements OnInit, AfterViewInit {
 
   initialGameForm!: FormGroup;
 

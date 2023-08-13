@@ -28,13 +28,11 @@
               {{p.controls['name'].hasError('unique').valueOf()}}
             </span>
             <span *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">
-              <!--            <div *ngIf="p.invalid && p.touched"  class="alert-custom">-->
               This field is required
             </span>
           </div>
         </ng-container>
         <button class="btn-primary" [disabled]="!initialGameForm.valid" [ngClass]="{'invalid-submit': !initialGameForm.valid}">Start Game!</button>
-
         <div [hidden]="!initialGameForm.controls['fPlayers'].hasError('unique')" class="alert-custom">
            {{initialGameForm.controls['fPlayers'].hasError('unique') ? initialGameForm.controls['fPlayers'].getError('unique') : ''}}
         </div>
