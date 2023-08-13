@@ -36,12 +36,10 @@ export class DataService {
   }
 
   set diceNumbers(dices: Dice[]) {
-    console.log('set diceNumbers in data service: ', dices)
     this.diceNumbers_ = dices;
   }
 
   get diceNumbers(){
-    console.log('get diceNumbers in data service: ', this.diceNumbers_)
     return this.diceNumbers_;
   }
 
