@@ -10,21 +10,6 @@
           <label for="playerName">Player name:</label>
           <input id="playerName" type="text" formControlName="playerName">
         </div>
-<!--        <ng-container formArrayName="fPlayers">-->
-<!--          <div *ngFor="let p of playersForm.controls; let i=index" [formGroupName]="i">-->
-<!--            <div class="form-container-in">-->
-<!--              <label [for]="'name' + i">Player name: </label>-->
-<!--              <input class="form-input" [id]="'name' + i" type="text" formControlName="name">-->
-<!--            </div>-->
-<!--            <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">-->
-<!--              Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or-->
-<!--              {{p.controls['name'].hasError('unique').valueOf()}}-->
-<!--            </span>-->
-<!--            <span *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">-->
-<!--              This field is required-->
-<!--            </span>-->
-<!--          </div>-->
-<!--        </ng-container>-->
         <button class="btn-primary">Create game</button>
       </form>
     </div>

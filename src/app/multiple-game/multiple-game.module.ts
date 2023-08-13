@@ -5,11 +5,13 @@ import { MultipleGameRoutingModule } from './multiple-game-routing.module';
 import {MultipleGameComponent} from "./multiple-game.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { PlayersTableComponent } from './players-table/players-table.component';
 
 
 @NgModule({
   declarations: [
-    MultipleGameComponent
+    MultipleGameComponent,
+    PlayersTableComponent
   ],
   imports: [
     CommonModule,

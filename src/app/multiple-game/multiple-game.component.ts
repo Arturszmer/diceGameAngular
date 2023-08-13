@@ -32,16 +32,14 @@ export class MultipleGameComponent implements OnInit{
 
 
   onSubmit(){
-    console.log('submit!');
     this.adminPlayer = {
       id: 0,
       name: this.initialGameForm.get('playerName')?.value,
       points: 0
     };
-    console.log(this.adminPlayer)
     this.api.createGame(this.adminPlayer).subscribe(response => {
-      console.log('response --> ', response)
       this.games.push(response);
+      this.router.navigate(["/mulitple-game", response.gameId])
     });
   }
 
