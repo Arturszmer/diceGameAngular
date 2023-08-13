@@ -1,0 +1,60 @@
+<main class="container">
+  <section class="container-conf conf-data">
+    <div class="form-container">
+      <div class="title h2">
+        <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
+        Game Configuration
+      </div>
+      <form [formGroup]="initialGameForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="playerName">Player name:</label>
+          <input id="playerName" type="text" formControlName="playerName">
+        </div>
+<!--        <ng-container formArrayName="fPlayers">-->
+<!--          <div *ngFor="let p of playersForm.controls; let i=index" [formGroupName]="i">-->
+<!--            <div class="form-container-in">-->
+<!--              <label [for]="'name' + i">Player name: </label>-->
+<!--              <input class="form-input" [id]="'name' + i" type="text" formControlName="name">-->
+<!--            </div>-->
+<!--            <span *ngIf="p.controls['name'].hasError('minlength').valueOf() && p.touched"  class="alert-custom">-->
+<!--              Please enter a valid name (minimum 3 characters), your name has {{p.value['name'].length}} letters or-->
+<!--              {{p.controls['name'].hasError('unique').valueOf()}}-->
+<!--            </span>-->
+<!--            <span *ngIf="p.controls['name'].hasError('required').valueOf() && p.touched"  class="alert-custom">-->
+<!--              This field is required-->
+<!--            </span>-->
+<!--          </div>-->
+<!--        </ng-container>-->
+        <button class="btn-primary">Create game</button>
+      </form>
+    </div>
+    <div class="form-container margin-up">
+      <div class="title h2">Open games:</div>
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Admin Player Name</th>
+          <th>Number of Players</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let game of games; let i = index">
+        <tr [ngClass]="{unavailable: game.players.length == 4}">
+          <td>{{game.gameId.substring(0, 5) + '...'}}</td>
+          <td>{{game.adminPlayer.name}}</td>
+          <td>{{game.players.length}}</td>
+          <td><button class="btn btn-sm" [disabled]="game.players.length == 4">join</button></td>
+        </tr>
+        </ng-container>
+
+        </tbody>
+      </table>
+      <div class="pagination-container">
+        <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage==0"><-</button>
+        <button class="pagination-btn" (click)="nextPage()" [disabled]="games.length == 0">-></button>
+      </div>
+    </div>
+  </section>
+</main>
