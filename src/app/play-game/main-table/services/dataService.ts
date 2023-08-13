@@ -9,6 +9,7 @@ import {GameData} from "../../../service-interfaces/gameData";
   providedIn: "root",
 })
 export class DataService implements GameData{
+  // TODO: create service interface - different implementation for single, and different for multiple
   // private gamePlayers_: Player[] = [];
   // private playerTurn_: number = 0;
   // private player_?: Player;
