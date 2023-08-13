@@ -53,7 +53,6 @@ export class MultipleGameComponent implements OnInit{
 
   joinGame(existGameId: string){
     this.api.findGameById(existGameId).subscribe(response => {
-      console.log('JOIN -> ', response)
       this.dataService.game = response;
       this.dataService.adminPlayer = response.adminPlayer;
       this.router.navigate(["/mulitple-game", existGameId])

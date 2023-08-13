@@ -1,0 +1,146 @@
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas: "throw player1 corner-right"
+                        "player3 main player4"
+                        "corner-left player2 footer";
+  height: 100vh;
+  gap: 10px;
+  font-family: "Baloo Bhaijaan", sans-serif;
+}
+#firstThrow, #nextThrow, #saveButton, #nextPlayer, #win {
+  font-size: 1.5rem;
+}
+
+
+.grid-item {
+  font-weight: 800;
+  font-size: 24px;
+  text-align: center;
+  align-content: center;
+  padding: 35px;
+}
+
+.roller {
+  grid-area: throw;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.player1 {
+  grid-area: player1;
+  background-color: #FBB13C;
+}
+.corner-right {
+  grid-area: corner-right;
+  background-color: gray;
+}
+.corner-left {
+  grid-area: corner-left;
+  background-color: gray;
+}
+.player2 {
+  grid-area: player2;
+  background-color: tan;
+}
+
+.player3 {
+  grid-area: player3;
+  background-color: paleturquoise;
+}
+
+.player4 {
+  grid-area: player4;
+  background-color: blueviolet;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: chocolate;
+}
+.main {
+  grid-area: main;
+  background-color: firebrick;
+}
+
+.bg-secondary-p {
+  background-color: #57B8FF;
+}
+
+
+
+.gridCube {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
+  padding-bottom: 15px;
+}
+.gridCubeSides {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding-bottom: 15px;
+}
+
+.goodNumber {
+  border: 3px;
+  border-style: solid;
+  border-color: green;
+}
+
+.multiple {
+  border: 3px;
+  border-style: solid;
+  border-color: darkmagenta;
+}
+
+.result {
+  border: solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 15px;
+  margin: 10px;
+}
+
+.container {
+  font-size: 1.8rem;
+  padding: 15px;
+}
+
+.mainContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 10%;
+}
+
+.points {
+  display: flex;
+  border: solid;
+  border-radius: 8px;
+  border-color: darkmagenta;
+  background-color: white;
+  text-align: left;
+}
+
+.checked {
+  background-color: green;
+}
+
+.immutable {
+  border: dashed !important;
+  border-color: aliceblue !important;
+  background-color: green !important;
+  color: black !important;
+}
+
+
+.btn-quit {
+  background: var(--casino-red);
+  color: white;
+}
