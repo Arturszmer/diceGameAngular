@@ -23,7 +23,6 @@ export class ApiService {
     return this.http.get<OpenGamesResponse>(environment.apiUrl + this.openGamesApiPage, {params});
   }
   createGame(adminPlayer: PlayerDto) {
-    console.log('go api: ', environment.apiUrl + this.createGameApi)
     return this.http.post<GameDto>(environment.apiUrl + this.createGameApi, adminPlayer);
   }
 }

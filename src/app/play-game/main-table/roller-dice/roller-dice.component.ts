@@ -65,7 +65,6 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
     event.preventDefault();
     if(this.isRolling){
       this.diceRoll();
-      console.log(this.playerTurn, ' player turn')
       switch (this.playerTurn){
         case 0: window.scrollTo(0, 0);
         break;

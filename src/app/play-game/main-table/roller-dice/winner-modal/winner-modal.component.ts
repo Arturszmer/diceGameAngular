@@ -21,7 +21,6 @@ export class WinnerModalComponent implements OnInit {
     this.activeModal.close();
   }
   restartGame(){
-    console.log(this.players, 'players')
     this.players?.forEach(pl => {
       pl.points = 0;
     })

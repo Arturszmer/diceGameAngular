@@ -46,7 +46,6 @@ export class MultipleGameComponent implements OnInit{
   private fetchGames() {
     this.api.findOpenGamesPage(this.currentPage, this.pageSize).subscribe(
       response => {
-        console.log('respo: ', response)
         this.games = response.content;
 
         // this.games = response
