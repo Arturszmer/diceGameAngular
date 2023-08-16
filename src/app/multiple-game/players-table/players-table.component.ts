@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameDataService} from "../services/game-data.service";
 import {Dice} from "../../model/dice";
 import {mockDiceRoll} from "../../model/mock-models";
-import {DicesService} from "../../play-game/main-table/services/dices.service";
 import {MultipleGameDicesServiceService} from "../services/multiple-game-dices-service.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-players-table',
@@ -14,29 +14,35 @@ export class PlayersTableComponent implements OnInit {
 
   diceNumbers: Dice[] = mockDiceRoll;
 
-  constructor(private dataService: GameDataService, private diceService: MultipleGameDicesServiceService) { }
+  constructor(private gameDataService: GameDataService,
+              private diceService: MultipleGameDicesServiceService,
+              private router: Router) { }
 
 
   ngOnInit(): void {
   }
 
   get players(){
-    return this.dataService.players;
+    return this.gameDataService.players;
   }
 
   get game(){
-    return this.dataService.game;
+    return this.gameDataService.game;
   }
 
   get currentTurn(){
-    return this.dataService.game.currentTurn;
+    return this.gameDataService.game.currentTurn;
   }
   get points(){
-    return this.dataService.currentPlayerPoints;
+    return this.gameDataService.currentPlayerPoints;
   }
 
   diceCheck(index: number){
     this.diceService.diceCheck(this.diceNumbers[index]);
   }
 
+    quit() {
+        this.gameDataService.clearPlayers();
+        this.router.navigate([""]);
+    }
 }

@@ -1,7 +1,7 @@
 <div class="menu">
   <div class="roller bg-secondary-p grid-item">
-    <a routerLink="" class="btn btn-quit btn-lg">
-      <i class="bi bi-box-arrow-left me-2">Quit game</i>
+    <a class="btn btn-quit btn-lg">
+      <i class="bi bi-box-arrow-left me-2" (click)="quit()">Quit game</i>
     </a>
   </div>
   <!-- dodatkowo mozna generowanie kafelkow zrobic ngForem zamiast recznie sprawdzac ilu graczy trzeba wyrysowac -->
@@ -53,7 +53,7 @@
   </div>
   <div class="grid-item corner-left"></div>
   <div class="grid-item player2">
-    <div id="player2Name" class="container">
+    <div id="player2Name" class="container" *ngIf="players[1]">
       {{ players[1].name || "" }}
     </div>
     <div id="player2Cube" [hidden]="currentTurn !== 1" *ngIf="players[1]">
