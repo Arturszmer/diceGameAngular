@@ -7,7 +7,7 @@ import {GameDataService} from "./services/game-data.service";
 @Component({
   selector: 'app-multiple-game',
   templateUrl: './multiple-game.component.html',
-  styleUrls: ['./multiple-game.component.css']
+  styleUrls: ['./multiple-game.component.css'],
 })
 export class MultipleGameComponent implements OnInit{
 
@@ -51,12 +51,14 @@ export class MultipleGameComponent implements OnInit{
     );
   }
 
-  joinGame(existGameId: string){
+  joinGame(event: Event, existGameId: string){
+    event.stopPropagation();
     this.api.findGameById(existGameId).subscribe(response => {
       this.dataService.game = response;
       this.dataService.adminPlayer = response.adminPlayer;
       this.router.navigate(["/mulitple-game", existGameId])
-    });
+          .catch(error => console.error("error: ", error));
+    })
   }
 
   previousPage() {

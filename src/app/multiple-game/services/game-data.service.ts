@@ -14,6 +14,8 @@ export class GameDataService {
   private _games: GameDto[] = [];
   private _game!: GameDto;
 
+  constructor() {}
+
   get currentPlayerPoints(): number {
     return this.players[this.game.currentTurn].points;
   }
@@ -55,7 +57,8 @@ export class GameDataService {
     return mockDiceRoll
   }
 
-  constructor() {
+  clearPlayers(): void {
+    this._players = [];
   }
 
 
