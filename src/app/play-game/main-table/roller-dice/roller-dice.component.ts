@@ -5,7 +5,6 @@ import {Dice} from "../../../model/dice";
 import {DataService} from "../services/dataService";
 import {CountService} from "../services/count.service";
 import {Subscription} from "rxjs";
-import {Player} from "../../../model/player";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WinnerModalComponent} from "./winner-modal/winner-modal.component";
 
@@ -22,7 +21,6 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
   pointsSubscription?: Subscription;
   pointsFromRoll: number = 0;
   pointsFromRollSubscription?: Subscription;
-  player?: Player;
   playerTurn: number = 0;
   isRolling: boolean = true;
   isNextPlayer: boolean = false;
@@ -40,11 +38,14 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
     this.dataService.diceNumbers = dices
   }
 
+  get player(){
+    return this.dataService.player;
+  }
+
   ngOnInit(): void {
     this.playerTurn = this.dataService.playerTurn;
     this.pointsSubscription = this.countService.points$.subscribe((p) => this.points = p)
     this.pointsFromRollSubscription = this.countService.pointsFromRoll$.subscribe((p) => this.pointsFromRoll = p)
-    this.player = this.dataService.player;
     this.diceNumbers;
   }
 
