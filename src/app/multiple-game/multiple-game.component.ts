@@ -1,14 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ApiService} from "./services/api.service";
 import {GameDataService} from "./services/game-data.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {JoinGameModalComponent} from "./join-game-modal/join-game-modal.component";
-import {Observable} from "rxjs";
-import {NewPlayer} from "../model/dtos";
-
-export const GAME_ID_STORAGE = 'GAME_ID';
 
 @Component({
   selector: 'app-multiple-game',
@@ -23,79 +15,33 @@ export class MultipleGameComponent implements OnInit{
     playerName: new FormControl(''),
   });
 
-  constructor(private router: Router,
-              private api: ApiService,
-              private dataService: GameDataService,
-              private modalService: NgbModal) { }
+  constructor(private gameDataService: GameDataService) { }
 
   ngOnInit(){
-    this.fetchGames()
+    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
   }
 
   get games(){
-    return this.dataService.games;
+    return this.gameDataService.games;
   }
 
   createGame(){
-    this.dataService.adminPlayer = {
-      id: 0,
-      name: this.initialGameForm.get('playerName')?.value,
-      points: 0
-    };
-    this.api.createGame(this.dataService.adminPlayer).subscribe(response => {
-      this.dataService.game = response;
-      localStorage.setItem(GAME_ID_STORAGE, response.gameId)
-      this.router.navigate(["/mulitple-game", response.gameId]);
-    });
-  }
-
-  private fetchGames() {
-    this.api.findOpenGamesPage(this.currentPage, this.pageSize).subscribe(
-      response => {
-        this.dataService.games = response.content;
-      },
-      (error) => {
-        console.error('Error fetching open games:', error);
-      }
-    );
+    let name: string = this.initialGameForm.get('playerName')?.value;
+    this.gameDataService.createGame(name)
   }
 
   joinGame(event: Event, existGameId: string, adminPlayerName: string){
     event.stopPropagation();
-    let modalRef = this.modalService.open(JoinGameModalComponent, {centered: true});
-    modalRef.componentInstance.gameId = existGameId;
-    modalRef.componentInstance.adminName = adminPlayerName;
-    const str: Observable<String> = modalRef.componentInstance.playerName;
-    str.subscribe(response => {
-      console.log(response, ' --> resp')
-      newPlayer = {
-        playerName: response.toString()
-      }
-      console.log(newPlayer, ' --> new player')
-      this.api.joinGameWithName(existGameId, newPlayer).subscribe(game => {
-        console.log('Game: --> ', game)
-        this.dataService.game = game;
-        this.dataService.players = (game.players);
-        localStorage.setItem(GAME_ID_STORAGE, existGameId);
-
-          this.router.navigate(["/mulitple-game", existGameId])
-              .catch(error => console.error("error: ", error));
-      }
-    )
-
-    })
-    let newPlayer: NewPlayer = {
-      playerName: ''
-    }
+    this.gameDataService.joinGame(existGameId, adminPlayerName);
   }
 
   previousPage() {
     this.currentPage--;
-    this.fetchGames();
+    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
   }
 
   nextPage() {
     this.currentPage++;
-    this.fetchGames();
+    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
   }
 }
