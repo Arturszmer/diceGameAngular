@@ -5,7 +5,7 @@
         <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="100px" height="100px" alt="">
         Game Configuration
       </div>
-      <form [formGroup]="initialGameForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="initialGameForm" (ngSubmit)="createGame()">
         <div>
           <label for="playerName">Player name:</label>
           <input id="playerName" type="text" formControlName="playerName">
