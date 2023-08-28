@@ -1,13 +1,18 @@
 export interface PlayerDto {
-  id: number,
-  name: string,
-  points: number
+  id: number;
+  name: string;
+  points: number;
+  validations?: Validations;
+}
+
+export interface NewPlayer{
+  playerName: string;
 }
 
 export interface GameDto {
-  gameId: string,
-  gameStatus: GameStatus,
-  players: PlayerDto[],
+  gameId: string;
+  gameStatus: GameStatus;
+  players: PlayerDto[];
   adminPlayer: PlayerDto;
   currentTurn: number;
   startGameTime: Date;
@@ -26,4 +31,11 @@ export interface OpenGamesResponse {
     pageSize: number;
     totalElements: number;
   };
+}
+
+interface Validations {
+  isNextPlayer: boolean;
+  isRolling: boolean;
+  isSaved: boolean;
+  isWinner: boolean;
 }

@@ -3,6 +3,8 @@ import {Player} from "../../model/player";
 import {GameDto} from "../../model/dtos";
 import {mockDiceRoll} from "../../model/mock-models";
 import {Dice} from "../../model/dice";
+import {GAME_ID_STORAGE} from "../multiple-game.component";
+import {ApiService} from "./api.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class GameDataService {
   private _games: GameDto[] = [];
   private _game!: GameDto;
 
-  constructor() {}
+  constructor(private api: ApiService) {}
 
   get currentPlayerPoints(): number {
     return this.players[this.game.currentTurn].points;
@@ -61,5 +63,12 @@ export class GameDataService {
     this._players = [];
   }
 
+  restoreData() {
+    const gameId: string = localStorage.getItem(GAME_ID_STORAGE) || "";
+    this.api.findGameById(gameId).subscribe(response => {
+      this._game = response;
+      this._players = response.players;
+    })
 
+  }
 }

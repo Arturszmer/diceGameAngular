@@ -9,7 +9,6 @@ import { MainTableComponent } from './play-game/main-table/main-table.component'
 import { AppRoutingModule } from './app-routing.module';
 import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-dice.component';
 import { WinnerModalComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal.component';
-import { WinnerModalContentComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal-content/winner-modal-content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {PlayerModule} from "./play-game/main-table/player/player.module";
 import { StartPageComponent } from './start-page/start-page.component';
@@ -23,7 +22,6 @@ import {MultipleGameModule} from "./multiple-game/multiple-game.module";
     MainTableComponent,
     RollerDiceComponent,
     WinnerModalComponent,
-    WinnerModalContentComponent,
     StartPageComponent,
   ],
   imports: [
