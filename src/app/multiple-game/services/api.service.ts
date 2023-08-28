@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {GameDto, OpenGamesResponse, PlayerDto} from "../../model/dtos";
+import {GameDto, NewPlayer, OpenGamesResponse, PlayerDto} from "../../model/dtos";
 import {environment} from "../../../environments/environment";
 import {Params} from "@angular/router";
 import {Observable} from "rxjs";
@@ -13,6 +13,7 @@ export class ApiService {
   private createGameApi: string = "/create-game";
   private openGamesApi: string = "/find-open-games"
   private openGamesApiPage: string = "/find-open-games-page"
+  private joinWithName: string = "/add-player"
 
   constructor(private http: HttpClient) { }
 
@@ -31,4 +32,9 @@ export class ApiService {
     let path: string = '/find-game?gameId=' + existGameId;
     return this.http.get<GameDto>(environment.apiUrl + path).pipe();
   }
+
+  joinGameWithName(existGameId: string, newPlayer: NewPlayer){
+    return this.http.post<GameDto>(environment.apiUrl + `/${existGameId}` + this.joinWithName, newPlayer)
+  }
+
 }

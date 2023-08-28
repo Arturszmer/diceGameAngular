@@ -1,0 +1,16 @@
+<form [formGroup]="initialGameForm" (ngSubmit)="joinGame()">
+  <div class="modal-header">
+    <h2 class="modal-title">Configuration</h2>
+  </div>
+  <div class="modal-body">
+    <p class="modal-body-text">You want to join game with id: {{gameId}} created by: {{adminName}}</p>
+    <div>
+      <label for="playerName">Player name:</label>
+      <input id="playerName" type="text" formControlName="playerName">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="modal-button-back" (click)="close()">Back</button>
+    <button type="button" class="modal-button-join" (click)="joinGame(); close()">Join</button>
+  </div>
+</form>

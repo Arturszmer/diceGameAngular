@@ -20,6 +20,7 @@ export class PlayersTableComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.gameDataService.restoreData();
   }
 
   get players(){
@@ -43,6 +44,7 @@ export class PlayersTableComponent implements OnInit {
 
     quit() {
         this.gameDataService.clearPlayers();
+        localStorage.clear();
         this.router.navigate([""]);
     }
 }
