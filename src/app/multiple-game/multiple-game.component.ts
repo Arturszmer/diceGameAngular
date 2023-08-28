@@ -27,7 +27,7 @@ export class MultipleGameComponent implements OnInit{
     return this.dataService.games;
   }
 
-  onSubmit(){
+  createGame(){
     this.dataService.adminPlayer = {
       id: 0,
       name: this.initialGameForm.get('playerName')?.value,
@@ -35,7 +35,6 @@ export class MultipleGameComponent implements OnInit{
     };
     this.api.createGame(this.dataService.adminPlayer).subscribe(response => {
       this.dataService.game = response;
-      this.dataService.players.push(this.dataService.adminPlayer);
       this.router.navigate(["/mulitple-game", response.gameId]);
     });
   }
