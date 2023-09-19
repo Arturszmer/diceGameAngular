@@ -8,13 +8,13 @@ export const playerStorage = (id: number) => `player_${id}`
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent {
+export class PlayerComponent{
 
   @Input() points: number = 0;
   @Input() diceNumbers!: Dice[];
   @Output() diceChecked: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
   diceCheck(index: number) {
     this.diceChecked.emit(index);
