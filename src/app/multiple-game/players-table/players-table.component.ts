@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MultipleGameDataService} from "../services/multiple-game-data.service";
-import {mockDiceRoll} from "../../model/mock-models";
 import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
 import {Router} from "@angular/router";
-import {Dice} from "../../model/dtos";
 
 @Component({
   selector: 'app-players-table',
@@ -12,11 +10,13 @@ import {Dice} from "../../model/dtos";
 })
 export class PlayersTableComponent implements OnInit {
 
-  diceNumbers: Dice[] = mockDiceRoll;
-
   constructor(private gameDataService: MultipleGameDataService,
               private diceService: MultipleGameDicesService,
               private router: Router) { }
+
+  get diceNumbers(){
+    return this.diceService.diceNumbers
+  }
 
 
   ngOnInit(): void {

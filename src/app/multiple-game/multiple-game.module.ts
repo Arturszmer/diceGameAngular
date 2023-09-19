@@ -8,12 +8,14 @@ import {HttpClientModule} from "@angular/common/http";
 import { PlayersTableComponent } from './players-table/players-table.component';
 import {PlayerModule} from "../play-single-game/main-table/player/player.module";
 import { JoinGameModalComponent } from './join-game-modal/join-game-modal.component';
+import { MultipleRollerDiceComponent } from './players-table/multiple-roller-dice/multiple-roller-dice.component';
 
 @NgModule({
   declarations: [
     MultipleGameComponent,
     PlayersTableComponent,
-    JoinGameModalComponent
+    JoinGameModalComponent,
+    MultipleRollerDiceComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,28 @@
+
+.btn-cube {
+  background: transparent;
+  border: 1px white solid;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-cube:not(:disabled):hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-cube.clicked {
+  background-color: rgba(166, 31, 31, 0.5);
+
+  transform: scale(0.9);
+}
+
+.result {
+  border: solid;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.container {
+  font-size: 1.8rem;
+  padding: 15px;
+}

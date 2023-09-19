@@ -1,19 +1,17 @@
 import {Injectable} from '@angular/core';
-import {Dice, GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
-import {mockDiceRoll} from "../../model/mock-models";
+import {GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
 import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
 import {JoinGameModalComponent} from "../join-game-modal/join-game-modal.component";
 import {Observable} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {GameDataService} from "../../service-interfaces/data-service";
 
 export const GAME_ID_STORAGE = 'GAME_ID';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MultipleGameDataService extends GameDataService {
+export class MultipleGameDataService {
 
   private _adminPlayer!: PlayerDto;
   _players: PlayerDto[] = [];
@@ -21,12 +19,10 @@ export class MultipleGameDataService extends GameDataService {
   private _games: GameDto[] = [];
   private _game!: GameDto;
   playerTurn_: number = 0;
-  diceNumbers_: Dice[] = [];
 
   constructor(private api: ApiService,
               private router: Router,
               private modalService: NgbModal) {
-    super();
   }
 
   get currentPlayerPoints(): number {
@@ -74,9 +70,6 @@ export class MultipleGameDataService extends GameDataService {
     this._players.push(player)
   }
 
-  get diceNumbers(): Dice[] {
-    return mockDiceRoll
-  }
 
   clearPlayers(): void {
     this._players = [];
@@ -150,5 +143,4 @@ export class MultipleGameDataService extends GameDataService {
   get playerTurn(): number {
     return 0;
   }
-
 }

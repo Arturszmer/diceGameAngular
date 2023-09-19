@@ -12,7 +12,7 @@
       {{ players[0].name || "" }}
     </div>
     <div id="player1Cube" [hidden]="currentTurn !== 0">
-      <app-player [diceNumbers]="diceNumbers" [points]="points" class="gridCube"></app-player>
+      <app-player [diceNumbers]="diceNumbers" [points]="points" (diceChecked)="diceCheck($event)" class="gridCube"></app-player>
     </div>
     <div class="container points">
       <div>Points: {{ players[0].points }}</div>
@@ -34,7 +34,7 @@
   <div class="grid-item corner-right"></div>
   <div class="grid-item main">
     <div class="mainContent">
-<!--      <app-roller-dice></app-roller-dice>-->
+      <app-multiple-roller-dice></app-multiple-roller-dice>
     </div>
   </div>
   <div class="grid-item player4">
