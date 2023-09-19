@@ -1,4 +1,4 @@
-import {Dice} from "../../../model/dice";
+import {Dice} from "../../../model/dtos";
 
 export const checkMultipleNumbers =(numbers: number[], muiltipleDices: Dice[]) => {
   let diceProperties = muiltipleDices.filter(dices => !dices.isImmutable);

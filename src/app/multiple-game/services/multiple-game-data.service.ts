@@ -1,28 +1,33 @@
 import {Injectable} from '@angular/core';
-import {GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
+import {Dice, GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
 import {mockDiceRoll} from "../../model/mock-models";
-import {Dice} from "../../model/dice";
 import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
 import {JoinGameModalComponent} from "../join-game-modal/join-game-modal.component";
 import {Observable} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {GameDataService} from "../../service-interfaces/data-service";
 
 export const GAME_ID_STORAGE = 'GAME_ID';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameDataService {
+export class MultipleGameDataService extends GameDataService {
 
   private _adminPlayer!: PlayerDto;
-  private _players: PlayerDto[] = [];
+  _players: PlayerDto[] = [];
+  _player!: PlayerDto;
   private _games: GameDto[] = [];
   private _game!: GameDto;
+  playerTurn_: number = 0;
+  diceNumbers_: Dice[] = [];
 
   constructor(private api: ApiService,
               private router: Router,
-              private modalService: NgbModal) {}
+              private modalService: NgbModal) {
+    super();
+  }
 
   get currentPlayerPoints(): number {
     return this.players[this.game.currentTurn].points;
@@ -34,6 +39,14 @@ export class GameDataService {
 
   set players(value: PlayerDto[]) {
     this._players = value;
+  }
+
+  get player(): PlayerDto {
+    return this._player;
+  }
+
+  set player(player: PlayerDto){
+    this._player = player;
   }
 
   get game(): GameDto {
@@ -122,6 +135,20 @@ export class GameDataService {
                 .catch(error => console.error("error: ", error));
         })
       })
+  }
+
+  addPoints(points: number): void {
+  }
+
+  changeTurn(): number {
+    return 0;
+  }
+
+  nextPlayer(playerTurn: number): void {
+  }
+
+  get playerTurn(): number {
+    return 0;
   }
 
 }

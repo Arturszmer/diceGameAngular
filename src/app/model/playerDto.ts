@@ -1,4 +1,4 @@
-export interface Player {
+export interface PlayerDto {
   id: number,
   name: string,
   points: number

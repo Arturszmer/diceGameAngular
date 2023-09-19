@@ -1,6 +1,6 @@
 import { Component, OnInit} from "@angular/core";
-import { Player } from "../../model/player";
-import { DataService } from "./services/dataService";
+import { PlayerDto } from "../../model/playerDto";
+import { SingleGameDataService } from "./services/single-game-data.service";
 import { ActivatedRoute } from "@angular/router";
 import {DicesService} from "./services/dices.service";
 
@@ -10,28 +10,28 @@ import {DicesService} from "./services/dices.service";
   styleUrls: ["./main-table.component.css"],
 })
 export class MainTableComponent implements OnInit{
-  players: Player[] = [];
+  players: PlayerDto[] = [];
 
-  constructor(private data: DataService, private dicesService: DicesService, private route: ActivatedRoute) {}
+  constructor(private dataService: SingleGameDataService, private dicesService: DicesService, private route: ActivatedRoute) {}
 
   get playerTurn(){
-    return this.data.playerTurn;
+    return this.dataService.playerTurn;
   }
 
   get diceNumbers(){
-    return this.data.diceNumbers;
+    return this.dataService.diceNumbers;
   }
 
   get playerPoints(){
-    return this.data.player.points;
+    return this.dataService.player_.points;
   }
 
   set playerTurn(turn: number){
-    this.data.playerTurn = turn;
+    this.dataService.playerTurn = turn;
   }
   ngOnInit(): void {
-    this.players = this.data.gamePlayers;
-    this.playerTurn = this.data.playerTurn;
+    this.players = this.dataService.players;
+    this.playerTurn = this.dataService.playerTurn;
 
     this.route.paramMap.subscribe((params) => {
       const gameId = params.get("id");

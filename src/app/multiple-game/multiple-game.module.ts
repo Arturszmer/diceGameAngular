@@ -6,7 +6,7 @@ import {MultipleGameComponent} from "./multiple-game.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { PlayersTableComponent } from './players-table/players-table.component';
-import {PlayerModule} from "../play-game/main-table/player/player.module";
+import {PlayerModule} from "../play-single-game/main-table/player/player.module";
 import { JoinGameModalComponent } from './join-game-modal/join-game-modal.component';
 
 @NgModule({
@@ -24,6 +24,7 @@ import { JoinGameModalComponent } from './join-game-modal/join-game-modal.compon
   ],
   exports: [
     ReactiveFormsModule
-  ]
+  ],
+  providers: []
 })
 export class MultipleGameModule { }

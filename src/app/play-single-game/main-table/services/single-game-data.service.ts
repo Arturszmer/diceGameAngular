@@ -1,43 +1,41 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { Player } from "../../../model/player";
-import { Dice } from "../../../model/dice";
+import { PlayerDto } from "../../../model/playerDto";
 import { playerStorage } from "../player/player.component";
-import {GameData} from "../../../service-interfaces/gameData";
+import {Dice} from "../../../model/dtos";
+import {GameDataService} from "../../../service-interfaces/data-service";
 
 @Injectable({
   providedIn: "root",
 })
-export class DataService implements GameData{
-  // TODO: create service interface - different implementation for single, and different for multiple
-  // private gamePlayers_: Player[] = [];
-  // private playerTurn_: number = 0;
-  // private player_?: Player;
-  // private diceNumbers_: Dice[] = [];
-  private _player = new Subject<Player>();
-  gamePlayers_: Player[] = []
+export class SingleGameDataService extends GameDataService{
+
+  private _player_ = new Subject<PlayerDto>();
+  _players: PlayerDto[] = []
   playerTurn_: number = 0;
-  player_?: Player | undefined;
+  _player!: PlayerDto;
   diceNumbers_: Dice[] = [];
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
-  setGamePlayers(players: Player[]) {
-    this.gamePlayers_ = players;
-    this.player = players[this.playerTurn]
+  setGamePlayers(players: PlayerDto[]) {
+    this._players = players;
+    this._player = players[this.playerTurn]
     this.saveGameDataToLocalStorage();
   }
 
-  get gamePlayers() {
-    if (this.gamePlayers_.length === 0) {
+  get players() {
+    if (this._players.length === 0) {
       this.loadDataFromLocalStorage();
     }
-    return this.gamePlayers_;
+    return this._players;
   }
 
   private saveGameDataToLocalStorage(){
-    localStorage.setItem("players", JSON.stringify(this.gamePlayers_.length));
-    this.gamePlayers_.forEach((player) => {
+    localStorage.setItem("players", JSON.stringify(this._players.length));
+    this._players.forEach((player) => {
       localStorage.setItem(playerStorage(player.id), JSON.stringify(player))
     });
   }
@@ -46,22 +44,22 @@ export class DataService implements GameData{
     this.diceNumbers_ = dices;
   }
 
-  get diceNumbers(){
+  get diceNumbers() {
     return this.diceNumbers_;
   }
 
-  get player() {
-    return this.gamePlayers_[this.playerTurn];
+  get player_() {
+    return this._players[this.playerTurn];
   }
-  set player(player: Player) {
-    this.player_ = player;
+  set player(player: PlayerDto) {
+    this._player = player;
   }
-  get playerTurn() {
+  get playerTurn(): number {
     return this.playerTurn_;
   }
 
   nextPlayer(playerTurn: number){
-    this.player = this.gamePlayers_[playerTurn];
+    this._player = this._players[playerTurn];
   }
 
   set playerTurn(playerTurn: number){
@@ -70,7 +68,7 @@ export class DataService implements GameData{
 
   changeTurn(): number {
     this.playerTurn = this.playerTurn_ + 1;
-    if (this.playerTurn_ == this.gamePlayers_.length) {
+    if (this.playerTurn_ == this._players.length) {
       this.playerTurn_ = 0;
     }
     return this.playerTurn_;
@@ -86,7 +84,7 @@ export class DataService implements GameData{
         points: this.player_!.points,
       })
     );
-    this._player.next(this.player_!);
+    this._player_.next(this.player_!);
   }
 
   loadDataFromLocalStorage() {
@@ -94,7 +92,7 @@ export class DataService implements GameData{
     if (players !== 0) {
       for (let i = 1; i <= players; i++) {
         let parse = JSON.parse(localStorage.getItem(playerStorage(i)) || "");
-        this.gamePlayers_.push(parse);
+        this._players.push(parse);
       }
     }
   }
