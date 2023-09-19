@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Player} from "../../../../model/player";
+import {PlayerDto} from "../../../../model/playerDto";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -9,8 +9,8 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class WinnerModalComponent implements OnInit {
 
-  @Input() playerData?: Player;
-  @Input() players?: Player[];
+  @Input() playerData?: PlayerDto;
+  @Input() players?: PlayerDto[];
 
   constructor(private activeModal: NgbActiveModal) { }
 

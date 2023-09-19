@@ -1,12 +1,12 @@
 import {Component, DoCheck, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
 import {rollDice} from "../diceLogic/rollingDices";
 import {checkMultipleNumbers, checkGoodNumbers} from "../diceLogic/validators"
-import {Dice} from "../../../model/dice";
-import {DataService} from "../services/dataService";
+import {SingleGameDataService} from "../services/single-game-data.service";
 import {CountService} from "../services/count.service";
 import {Subscription} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WinnerModalComponent} from "./winner-modal/winner-modal.component";
+import {Dice} from "../../../model/dtos";
 
 @Component({
   selector: 'app-roller-dice',
@@ -28,7 +28,8 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
   isWinner: boolean = false;
   @Output() changeTurn = new EventEmitter<number>();
 
-  constructor(private dataService: DataService, private countService: CountService, private modalService: NgbModal) { }
+  constructor(private dataService: SingleGameDataService, private countService: CountService, private modalService: NgbModal) {
+  }
 
   get diceNumbers(){
     return this.dataService.diceNumbers;
@@ -39,7 +40,7 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   get player(){
-    return this.dataService.player;
+    return this.dataService._player;
   }
 
   ngOnInit(): void {
@@ -216,7 +217,7 @@ export class RollerDiceComponent implements OnInit, DoCheck, OnDestroy {
     let modalRef = this.modalService.open(WinnerModalComponent, {centered: true});
     this.isWinner = false;
     modalRef.componentInstance.playerData = this.player;
-    modalRef.componentInstance.players = this.dataService.gamePlayers;
+    modalRef.componentInstance.players = this.dataService.players;
     this.nextPlayer();
   }
 

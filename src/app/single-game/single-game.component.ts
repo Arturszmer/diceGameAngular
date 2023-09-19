@@ -1,7 +1,7 @@
 import {Component, OnInit, AfterViewInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {Player} from "../model/player";
-import {DataService} from "../play-game/main-table/services/dataService";
+import {PlayerDto} from "../model/playerDto";
+import {SingleGameDataService} from "../play-single-game/main-table/services/single-game-data.service";
 import {
   AbstractControl,
   FormArray,
@@ -36,9 +36,9 @@ export class SingleGameComponent implements OnInit, AfterViewInit {
 
   playersNumber: FormControl = new FormControl<number>(2);
   private currentPlayersInputs_: number = 0;
-  private players_: Player[] = [];
+  private players_: PlayerDto[] = [];
 
-  constructor(private router: Router, private data: DataService, private fb: FormBuilder) {}
+  constructor(private router: Router, private dataService: SingleGameDataService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
 
@@ -69,7 +69,7 @@ export class SingleGameComponent implements OnInit, AfterViewInit {
       name: player.controls['name'].value,
       points: player.controls['points'].value
     }))
-    this.data.setGamePlayers(this.players_);
+    this.dataService.setGamePlayers(this.players_);
     this.generateUniqueIdAndSubmit()
   }
 
@@ -81,7 +81,7 @@ export class SingleGameComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < 8; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    this.router.navigate(["/game", result]) // dopytać co znaczy ten promis z metody navigate
+    this.router.navigate(["/game", result]);
   }
 
   private setPlayersFieldsNumberTo(val: number) {

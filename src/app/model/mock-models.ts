@@ -1,4 +1,4 @@
-import {Dice} from "./dice";
+import {Dice} from "./dtos";
 
 export const mockDiceRoll: Dice[] = [
   { value: 1, isGoodNumber: true, isChecked: false, isMultiple: false, isImmutable: false },

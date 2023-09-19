@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Dice} from "../../../model/dice";
 import {count, countAllGoodNumbers} from "../diceLogic/count";
 import {Subject} from "rxjs";
+import {Dice} from "../../../model/dtos";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {GameDataService} from "./services/game-data.service";
+import {MultipleGameDataService} from "./services/multiple-game-data.service";
 
 @Component({
   selector: 'app-multiple-game',
@@ -15,7 +15,7 @@ export class MultipleGameComponent implements OnInit{
     playerName: new FormControl(''),
   });
 
-  constructor(private gameDataService: GameDataService) { }
+  constructor(private gameDataService: MultipleGameDataService) { }
 
   ngOnInit(){
     this.gameDataService.fetchGames(this.currentPage, this.pageSize)

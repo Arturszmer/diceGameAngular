@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {GameDataService} from "../services/game-data.service";
-import {Dice} from "../../model/dice";
+import {MultipleGameDataService} from "../services/multiple-game-data.service";
 import {mockDiceRoll} from "../../model/mock-models";
-import {MultipleGameDicesServiceService} from "../services/multiple-game-dices-service.service";
+import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
 import {Router} from "@angular/router";
+import {Dice} from "../../model/dtos";
 
 @Component({
   selector: 'app-players-table',
@@ -14,8 +14,8 @@ export class PlayersTableComponent implements OnInit {
 
   diceNumbers: Dice[] = mockDiceRoll;
 
-  constructor(private gameDataService: GameDataService,
-              private diceService: MultipleGameDicesServiceService,
+  constructor(private gameDataService: MultipleGameDataService,
+              private diceService: MultipleGameDicesService,
               private router: Router) { }
 
 

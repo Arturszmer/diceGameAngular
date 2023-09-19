@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {Dice} from "../../../model/dice";
-import {DataService} from "./dataService";
-import {CountService} from "./count.service";
+import {MultipleGameDataService} from "./multiple-game-data.service";
+import {CountService} from "../../play-single-game/main-table/services/count.service";
+import {Dice} from "../../model/dtos";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DicesService {
+export class MultipleGameDicesService {
 
-  constructor(private dataService: DataService, private countService: CountService) { }
+  constructor(private dataService: MultipleGameDataService, private countService: CountService) { }
 
   diceCheck(dice: Dice) {
     if(dice.isMultiple && !dice.isImmutable){
@@ -19,10 +19,6 @@ export class DicesService {
       dice.isChecked = !dice.isChecked;
       this.sendData()
     }
-  }
-
-  updatePoints(){
-    this.countService.getPoints();
   }
 
   private sendData() {

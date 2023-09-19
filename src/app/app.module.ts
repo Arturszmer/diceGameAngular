@@ -4,13 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SingleGameComponent } from './single-game/single-game.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { PlayGameComponent } from './play-game/play-game.component';
-import { MainTableComponent } from './play-game/main-table/main-table.component';
+import { PlayGameComponent } from './play-single-game/play-game.component';
+import { MainTableComponent } from './play-single-game/main-table/main-table.component';
 import { AppRoutingModule } from './app-routing.module';
-import { RollerDiceComponent } from './play-game/main-table/roller-dice/roller-dice.component';
-import { WinnerModalComponent } from './play-game/main-table/roller-dice/winner-modal/winner-modal.component';
+import { RollerDiceComponent } from './play-single-game/main-table/roller-dice/roller-dice.component';
+import { WinnerModalComponent } from './play-single-game/main-table/roller-dice/winner-modal/winner-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {PlayerModule} from "./play-game/main-table/player/player.module";
+import {PlayerModule} from "./play-single-game/main-table/player/player.module";
 import { StartPageComponent } from './start-page/start-page.component';
 import {MultipleGameModule} from "./multiple-game/multiple-game.module";
 
@@ -33,7 +33,6 @@ import {MultipleGameModule} from "./multiple-game/multiple-game.module";
     PlayerModule,
     MultipleGameModule
   ],
-  providers: [],
   bootstrap: [AppComponent],
   exports: [
     ReactiveFormsModule

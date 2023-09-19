@@ -1,4 +1,4 @@
-import {Dice} from "../../../model/dice";
+import {Dice} from "../../../model/dtos";
 
 export const count = (dices: Dice[]) => {
   let points: number = 0;

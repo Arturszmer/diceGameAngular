@@ -39,3 +39,11 @@ interface Validations {
   isSaved: boolean;
   isWinner: boolean;
 }
+
+export interface Dice {
+  value: number;
+  isGoodNumber: boolean;
+  isChecked: boolean;
+  isMultiple: boolean;
+  isImmutable: boolean;
+}

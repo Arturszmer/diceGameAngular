@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Dice} from "../../../model/dice";
+import {Dice} from "../../../model/dtos";
 
 export const playerStorage = (id: number) => `player_${id}`
 
