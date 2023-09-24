@@ -16,6 +16,7 @@ export interface GameDto {
   adminPlayer: PlayerDto;
   currentTurn: number;
   startGameTime: Date;
+  dices: Dice[];
 }
 
 export enum GameStatus {
@@ -46,4 +47,16 @@ export interface Dice {
   isChecked: boolean;
   isMultiple: boolean;
   isImmutable: boolean;
+}
+
+export interface RollDto{
+  dices: Dice[],
+  gameId: string
+}
+
+export interface RollDicesDto {
+  dices: Dice[],
+  temporaryPoints: number,
+  allPointsFromRoll: number,
+  player: PlayerDto;
 }
