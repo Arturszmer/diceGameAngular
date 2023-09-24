@@ -1,18 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MultipleGameDataService} from "../services/multiple-game-data.service";
 import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-players-table',
   templateUrl: './players-table.component.html',
   styleUrls: ['./players-table.component.css']
 })
-export class PlayersTableComponent implements OnInit {
+export class PlayersTableComponent implements OnInit, AfterViewInit {
 
   constructor(private gameDataService: MultipleGameDataService,
               private diceService: MultipleGameDicesService,
-              private router: Router) { }
+              private router: Router,
+              private cdRef: ChangeDetectorRef,
+              private activeRouter: ActivatedRoute) { }
 
   get diceNumbers(){
     return this.diceService.diceNumbers
@@ -20,7 +22,19 @@ export class PlayersTableComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.gameDataService.restoreData();
+
+    this.activeRouter.paramMap.subscribe(params => {
+      const gameId: string | null = params.get('id')
+      if (gameId){
+              console.log('GAME ID: ', gameId);
+              this.restoreGameData(gameId);
+      }
+    })
+  }
+
+  ngAfterViewInit():void {
+    console.log(this.gameDataService.game)
+    this.cdRef.detectChanges();
   }
 
   get players(){
@@ -40,6 +54,15 @@ export class PlayersTableComponent implements OnInit {
 
   diceCheck(index: number){
     this.diceService.diceCheck(this.diceNumbers[index]);
+  }
+
+  restoreGameData(gameId: string){
+   return this.gameDataService.restoreData(gameId).subscribe(response => {
+      this.gameDataService.game = response
+      this.gameDataService.players = response.players
+      this.gameDataService.setCurrentPlayer();
+      this.diceService.diceNumbers = response.dices
+    })
   }
 
     quit() {

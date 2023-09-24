@@ -16,9 +16,9 @@
   <span id="resultZero">{{points}}</span>
 </div>
 <div class="container">
-  <ng-container>
-    <button type="button" id="saveButton" class="btn btn-success btn-lg" *ngIf="isSaved" (click)="savePoints()">Save points</button>
-    <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" *ngIf="isNextPlayer && !isWinner" (click)="nextPlayer()">Next player</button>
-    <button type="button" id="winner" class="btn btn-light btn-lg" *ngIf="isWinner" (click)="winGame()">Winner!</button>
+  <ng-container *ngIf="player && player.validations">
+    <button type="button" id="saveButton" class="btn btn-success btn-lg" *ngIf="player.validations?.isSaved || false" (click)="savePoints()">Save points</button>
+    <button type="button" id="nextPlayer" class="btn btn-dark btn-lg" *ngIf="(player.validations?.isNextPlayer && !player.validations?.isWinner) || false" (click)="nextPlayer()">Next player</button>
+    <button type="button" id="winner" class="btn btn-light btn-lg" *ngIf="player.validations?.isWinner || false" (click)="winGame()">Winner!</button>
   </ng-container>
 </div>

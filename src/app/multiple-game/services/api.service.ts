@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Dice, GameDto, NewPlayer, OpenGamesResponse, PlayerDto} from "../../model/dtos";
+import {GameDto, NewPlayer, OpenGamesResponse, PlayerDto, RollDicesDto, RollDto} from "../../model/dtos";
 import {environment} from "../../../environments/environment";
 import {Params} from "@angular/router";
 import {Observable} from "rxjs";
@@ -37,7 +37,15 @@ export class ApiService {
     return this.http.post<GameDto>(environment.apiUrl + `/${existGameId}` + this.joinWithName, newPlayer)
   }
 
-  rollDices(numberOfDicesToRoll: number) {
-    return this.http.post<Dice[]>(environment.apiUrl + '/dice/roll', numberOfDicesToRoll);
+  rollDices(rollDto: RollDto) {
+    return this.http.post<RollDicesDto>(environment.apiUrl + '/dice/roll', rollDto);
+  }
+
+  diceCheck(rollDto: RollDto) {
+    return this.http.post<RollDicesDto>(environment.apiUrl + '/dice/check', rollDto);
+  }
+
+  nextPlayerTurn(gameId: string) {
+    return this.http.post<GameDto>(environment.apiUrl + '/nextPlayer', gameId)
   }
 }

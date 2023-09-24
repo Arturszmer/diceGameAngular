@@ -14,8 +14,8 @@ export const GAME_ID_STORAGE = 'GAME_ID';
 export class MultipleGameDataService {
 
   private _adminPlayer!: PlayerDto;
-  _players: PlayerDto[] = [];
-  _player!: PlayerDto;
+  private _players: PlayerDto[] = [];
+  private _player!: PlayerDto;
   private _games: GameDto[] = [];
   private _game!: GameDto;
   playerTurn_: number = 0;
@@ -41,8 +41,8 @@ export class MultipleGameDataService {
     return this._player;
   }
 
-  set player(player: PlayerDto){
-    this._player = player;
+  set player(playerDto: PlayerDto){
+    this._player = playerDto;
   }
 
   get game(): GameDto {
@@ -70,17 +70,23 @@ export class MultipleGameDataService {
     this._players.push(player)
   }
 
+  get dicesFromGame(){
+    console.log('dices: ', this.game.dices)
+    return this.game.dices;
+  }
+
+  setCurrentPlayer(){
+    this.player = this.players[this.game.currentTurn];
+  }
+
 
   clearPlayers(): void {
     this._players = [];
   }
 
-  restoreData() {
-    const gameId: string = localStorage.getItem(GAME_ID_STORAGE) || "";
-    this.api.findGameById(gameId).subscribe(response => {
-      this._game = response;
-      this._players = response.players;
-    })
+  restoreData(gameId: string):Observable<GameDto> {
+    // const gameId: string = localStorage.getItem(GAME_ID_STORAGE) || "";
+    return this.api.findGameById(gameId);
 
   }
 
@@ -103,6 +109,7 @@ export class MultipleGameDataService {
     }
     this.api.createGame(this.adminPlayer).subscribe(response => {
       this.game = response;
+      this.setCurrentPlayer();
       localStorage.setItem(GAME_ID_STORAGE, response.gameId)
       this.router.navigate(["/mulitple-game", response.gameId]);
     });
@@ -137,10 +144,19 @@ export class MultipleGameDataService {
     return 0;
   }
 
-  nextPlayer(playerTurn: number): void {
+  nextPlayer(): void {
+    this.api.nextPlayerTurn(this.game.gameId).subscribe(response => {
+      console.log(response);
+      this.refreshGameData(response);
+    });
   }
 
   get playerTurn(): number {
     return 0;
+  }
+
+  private refreshGameData(response: GameDto) {
+    this.game = response;
+    this.players = response.players;
   }
 }
