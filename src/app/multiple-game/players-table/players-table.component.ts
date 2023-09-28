@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core
 import {MultipleGameDataService} from "../services/multiple-game-data.service";
 import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {WebSocketService} from "../services/web-socket.service";
 
 @Component({
   selector: 'app-players-table',
@@ -14,7 +15,10 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
               private diceService: MultipleGameDicesService,
               private router: Router,
               private cdRef: ChangeDetectorRef,
-              private activeRouter: ActivatedRoute) { }
+              private activeRouter: ActivatedRoute,
+              private webSocket: WebSocketService
+              ) {
+  }
 
   get diceNumbers(){
     return this.diceService.diceNumbers
@@ -22,7 +26,6 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-
     this.activeRouter.paramMap.subscribe(params => {
       const gameId: string | null = params.get('id')
       if (gameId){
