@@ -14,6 +14,7 @@ import {
 } from "../../../play-single-game/main-table/roller-dice/winner-modal/winner-modal.component";
 import {MultipleGameDataService} from "../../services/multiple-game-data.service";
 import {MultipleGameDicesService} from "../../services/multiple-game-dices.service";
+import {WebSocketService} from "../../services/web-socket.service";
 
 @Component({
   selector: 'app-multiple-roller-dice',
@@ -39,7 +40,8 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   constructor(private dataService: MultipleGameDataService,
               private dicesService: MultipleGameDicesService,
               private countService: CountService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private webSocketService: WebSocketService) {
   }
 
   get diceNumbers(){
@@ -115,6 +117,7 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
 
   private toRollDice(){
       this.dicesService.rollDices();
+      this.webSocketService.rollDices([])
   }
 
   isSaveValid(): boolean {
@@ -128,7 +131,6 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   }
 
   private getCheckedDiceArr(dices: Dice[]) {
-    console.log(dices.filter((f) => f.isChecked && !f.isImmutable), ' --> getCheckedDiceArr')
     if ((this.diceNumbers.filter((f) => f.isChecked && !f.isImmutable).length > 0)
       || this.diceNumbers.length == 0){
       this.isRolling = true;

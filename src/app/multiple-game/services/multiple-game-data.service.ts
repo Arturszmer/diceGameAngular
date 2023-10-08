@@ -22,7 +22,9 @@ export class MultipleGameDataService {
 
   constructor(private api: ApiService,
               private router: Router,
-              private modalService: NgbModal) {
+              private modalService: NgbModal
+              // private webSocket: WebSocketService
+  ) {
   }
 
   get currentPlayerPoints(): number {
