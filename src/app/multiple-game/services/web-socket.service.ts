@@ -5,7 +5,7 @@ import * as SockJS from "sockjs-client";
 import {CompatClient, Stomp} from "@stomp/stompjs";
 import {environment} from "../../../environments/environment";
 
-const HOST_CONNECTION: string = "http://localhost:8080/ws";
+const WS_CONNECTION: string = "/ws";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class WebSocketService {
 
   constructor() {
     this.gameMessageSubject = new Subject<GameMessage>();
-    this.socketFactory = () => new SockJS(HOST_CONNECTION);
+    this.socketFactory = () => new SockJS(environment.apiUrl + WS_CONNECTION);
   }
 
   get gameMessage$(): Observable<GameMessage> {
