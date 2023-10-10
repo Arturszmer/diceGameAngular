@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {MultipleGameDataService} from "./multiple-game-data.service";
 import {CountService} from "../../play-single-game/main-table/services/count.service";
-import {Dice, RollDto} from "../../model/dtos";
+import {Dice, GameMessage, RollDto} from "../../model/dtos";
 import {ApiService} from "./api.service";
+import {WebSocketService} from "./web-socket.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {ApiService} from "./api.service";
 export class MultipleGameDicesService {
 
   private diceNumbers_: Dice[] = [];
+  private _gameMessage?: GameMessage;
 
   get diceNumbers(): Dice[] {
     return this.diceNumbers_;
@@ -19,14 +21,18 @@ export class MultipleGameDicesService {
     this.diceNumbers_ = dices;
   }
 
-  constructor(private dataService: MultipleGameDataService, private countService: CountService, private api: ApiService) { }
+  constructor(private dataService: MultipleGameDataService,
+              private countService: CountService,
+              private webSocket: WebSocketService,
+              private api: ApiService) {
+    this.webSocket.gameMessage$.subscribe((message) => {
+      this._gameMessage = message;
+      this.diceNumbers_ = message.game.dices;
+    })
+  }
 
   rollDices() {
-    this.api.rollDices(this.prepareDataToBE()).subscribe(response => {
-      console.log(response, ' --> zwrotka z BE');
-      this.diceNumbers = response.dices;
-      this.dataService.player = response.player;
-    });
+    this.webSocket.rollDices(this.dataService.game.gameId, this.diceNumbers)
   }
 
   diceCheck(dice: Dice) {
@@ -40,7 +46,6 @@ export class MultipleGameDicesService {
       this.sendData()
       this.refreshDataFromApi();
     }
-    console.log(this.diceNumbers_, '---> kostki z serwisu')
   }
 
   private refreshDataFromApi() {

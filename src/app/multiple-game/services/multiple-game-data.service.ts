@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
+import {GameDto, GameMessage, NewPlayer, PlayerDto} from "../../model/dtos";
 import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
 import {JoinGameModalComponent} from "../join-game-modal/join-game-modal.component";
 import {Observable} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WebSocketService} from "./web-socket.service";
 
 export const GAME_ID_STORAGE = 'GAME_ID';
 
@@ -19,10 +20,19 @@ export class MultipleGameDataService {
   private _games: GameDto[] = [];
   private _game!: GameDto;
   playerTurn_: number = 0;
+  private _gameMessage?: GameMessage;
+  private _joinedPlayer?: string;
 
   constructor(private api: ApiService,
               private router: Router,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private webSocket: WebSocketService) {
+    this.webSocket.gameMessage$.subscribe((message) => {
+      this._gameMessage = message;
+      this.game = message.game;
+      this.players = message.game.players;
+      this.setCurrentPlayer();
+    })
   }
 
   get currentPlayerPoints(): number {
@@ -71,7 +81,6 @@ export class MultipleGameDataService {
   }
 
   get dicesFromGame(){
-    console.log('dices: ', this.game.dices)
     return this.game.dices;
   }
 
@@ -85,7 +94,6 @@ export class MultipleGameDataService {
   }
 
   restoreData(gameId: string):Observable<GameDto> {
-    // const gameId: string = localStorage.getItem(GAME_ID_STORAGE) || "";
     return this.api.findGameById(gameId);
 
   }
@@ -101,6 +109,10 @@ export class MultipleGameDataService {
     );
   }
 
+  connectGame(){
+    this.webSocket.connectNewGame(this.game.gameId, this._joinedPlayer!);
+  }
+
   createGame(name: string) {
     this.adminPlayer = {
       id: 0,
@@ -111,6 +123,7 @@ export class MultipleGameDataService {
       this.game = response;
       this.setCurrentPlayer();
       localStorage.setItem(GAME_ID_STORAGE, response.gameId)
+      this._joinedPlayer = this.adminPlayer.name;
       this.router.navigate(["/mulitple-game", response.gameId]);
     });
   }
@@ -130,6 +143,7 @@ export class MultipleGameDataService {
           this.players = (game.players);
 
           localStorage.setItem(GAME_ID_STORAGE, existGameId);
+          this._joinedPlayer = newPlayer.playerName;
 
             this.router.navigate(["/mulitple-game", existGameId])
                 .catch(error => console.error("error: ", error));

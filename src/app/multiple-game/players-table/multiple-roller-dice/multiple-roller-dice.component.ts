@@ -64,7 +64,7 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     this.isSaved = false;
-    this.getCheckedDiceArr(this.diceNumbers);
+    this.getCheckedDiceArr();
     this.buttonValidation();
   }
 
@@ -127,8 +127,7 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
     } else return false;
   }
 
-  private getCheckedDiceArr(dices: Dice[]) {
-    console.log(dices.filter((f) => f.isChecked && !f.isImmutable), ' --> getCheckedDiceArr')
+  private getCheckedDiceArr() {
     if ((this.diceNumbers.filter((f) => f.isChecked && !f.isImmutable).length > 0)
       || this.diceNumbers.length == 0){
       this.isRolling = true;
