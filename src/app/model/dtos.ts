@@ -65,13 +65,8 @@ export interface GameMessage {
   type: string;
   gameId: string;
   content: string;
-  gameStatus: GameStatus;
-  players: PlayerDto[];
-  adminPlayer: PlayerDto;
+  game: GameDto;
   currentPlayer: PlayerDto;
-  currentTurn: number;
-  startGameTime: Date;
-  dices: Dice[];
 }
 
 export enum MessageTypes {

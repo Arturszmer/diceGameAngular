@@ -3,7 +3,6 @@ import {MultipleGameDataService} from "../services/multiple-game-data.service";
 import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WebSocketService} from "../services/web-socket.service";
-import {JoinMessage} from "../../model/dtos";
 
 @Component({
   selector: 'app-players-table',
@@ -12,12 +11,6 @@ import {JoinMessage} from "../../model/dtos";
 })
 export class PlayersTableComponent implements OnInit, AfterViewInit {
 
-  message: JoinMessage = {
-    type: '',
-    content: '',
-    gameId: '',
-    playerName: ''
-  }
   constructor(private gameDataService: MultipleGameDataService,
               private diceService: MultipleGameDicesService,
               private router: Router,
@@ -40,15 +33,10 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
               this.restoreGameData(gameId);
       }
     })
-    this.message.playerName = this.gameDataService.player.name;
-    this.message.gameId = this.gameDataService.game.gameId;
-    // this.webSocket.connect();
-    // this.webSocket.getGameData(this.message);
-
   }
 
   ngAfterViewInit():void {
-    console.log(this.gameDataService.game)
+    this.gameDataService.connectGame();
     this.cdRef.detectChanges();
   }
 
@@ -84,6 +72,6 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
         this.gameDataService.clearPlayers();
         localStorage.clear();
         this.router.navigate([""]);
-        this.webSocket.closeConnection();
+        this.webSocket.closeConnection(this.gameDataService.game.gameId);
     }
 }
