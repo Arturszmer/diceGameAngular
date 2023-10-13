@@ -50,8 +50,12 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
     this.dicesService.diceNumbers = dices
   }
 
-  get player(){
-    return this.dataService.player;
+  get currentPlayer(){
+    return this.dataService.currentPlayer;
+  }
+
+  get gameOwner(){
+    return this.dataService.gameOwner;
   }
 
   ngOnInit(): void {
@@ -66,6 +70,8 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
     this.isSaved = false;
     this.getCheckedDiceArr();
     this.buttonValidation();
+    console.log('GAME OWNER: ', this.gameOwner)
+    console.log('CURRENT PLAYER: ', this.currentPlayer)
   }
 
   ngOnDestroy(){
@@ -96,6 +102,15 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
     }
   }
 
+  disableButtonForWaitingPlayers():Boolean{
+    console.log('disableButtonForWaitingPlayers ---> ', this.currentPlayer.name !== this.gameOwner.name);
+    return this.currentPlayer.name !== this.gameOwner.name;
+  }
+
+  currentPlayerCanRoll() {
+    return this.isRolling && this.currentPlayer.name === this.gameOwner.name;
+  }
+
   @HostListener('window:keydown.Enter', ['$event'])
   listenEnter(event: KeyboardEvent): void {
     event.preventDefault();
@@ -119,7 +134,7 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
 
   isSaveValid(): boolean {
     if(!this.isNextPlayer){
-      if(this.player?.points! < 100){
+      if(this.currentPlayer?.points! < 100){
         return this.points >= 100;
       } else {
         return this.points >= 25;
@@ -151,20 +166,20 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   winGame(){
     let modalRef = this.modalService.open(WinnerModalComponent, {centered: true});
     this.isWinner = false;
-    modalRef.componentInstance.playerData = this.player;
+    modalRef.componentInstance.playerData = this.currentPlayer;
     modalRef.componentInstance.players = this.dataService.players;
     this.nextPlayer();
   }
 
   buttonValidation(): void {
-    if(this.player?.points! + this.points + this.pointsFromRoll === 1000){
+    if(this.currentPlayer?.points! + this.points + this.pointsFromRoll === 1000){
       this.isSaved = false;
       this.isWinner = true;
       this.diceNumbers.forEach(dice => {
         dice.isImmutable = true
       })
       this.points = this.pointsFromRoll + this.points;
-    } else if(this.player?.points! + this.points > 1000){
+    } else if(this.currentPlayer?.points! + this.points > 1000){
       this.isSaved = false;
       this.isWinner = false;
       this.isRolling = false;

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {MultipleGameDataService} from "./services/multiple-game-data.service";
+import {MultipleGameCreationService} from "./services/multiple-game-creation.service";
 
 @Component({
   selector: 'app-multiple-game',
@@ -15,33 +15,33 @@ export class MultipleGameComponent implements OnInit{
     playerName: new FormControl(''),
   });
 
-  constructor(private gameDataService: MultipleGameDataService) { }
+  constructor(private gameCreationService: MultipleGameCreationService) { }
 
   ngOnInit(){
-    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
+    this.gameCreationService.fetchGames(this.currentPage, this.pageSize)
   }
 
   get games(){
-    return this.gameDataService.games;
+    return this.gameCreationService.games;
   }
 
   createGame(){
     let name: string = this.initialGameForm.get('playerName')?.value;
-    this.gameDataService.createGame(name)
+    this.gameCreationService.createGame(name)
   }
 
   joinGame(event: Event, existGameId: string, adminPlayerName: string){
     event.stopPropagation();
-    this.gameDataService.joinGame(existGameId, adminPlayerName);
+    this.gameCreationService.joinGame(existGameId, adminPlayerName);
   }
 
   previousPage() {
     this.currentPage--;
-    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
+    this.gameCreationService.fetchGames(this.currentPage, this.pageSize)
   }
 
   nextPage() {
     this.currentPage++;
-    this.gameDataService.fetchGames(this.currentPage, this.pageSize)
+    this.gameCreationService.fetchGames(this.currentPage, this.pageSize)
   }
 }
