@@ -13,7 +13,7 @@ export class MultipleGameDataService {
 
   private _adminPlayer!: PlayerDto;
   private _players: PlayerDto[] = [];
-  private _player!: PlayerDto;
+  private _currentPlayer!: PlayerDto;
   private _game!: GameDto;
   private _gameMessage?: GameMessage;
   private _gameOwner!: PlayerDto;
@@ -40,12 +40,12 @@ export class MultipleGameDataService {
     this._players = value;
   }
 
-  get player(): PlayerDto {
-    return this._player;
+  get currentPlayer(): PlayerDto {
+    return this._currentPlayer;
   }
 
-  set player(playerDto: PlayerDto){
-    this._player = playerDto;
+  set currentPlayer(playerDto: PlayerDto){
+    this._currentPlayer = playerDto;
   }
 
   get game(): GameDto {
@@ -82,7 +82,7 @@ export class MultipleGameDataService {
   }
 
   setCurrentPlayer(){
-    this.player = this.players[this.game.currentTurn];
+    this.currentPlayer = this.players[this.game.currentTurn];
   }
 
   clearPlayers(): void {
@@ -99,6 +99,6 @@ export class MultipleGameDataService {
   }
 
   get playerTurn(): number {
-    return 0;
+    return this.game.currentTurn;
   }
 }

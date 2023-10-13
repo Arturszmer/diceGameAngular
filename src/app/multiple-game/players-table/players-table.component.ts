@@ -25,6 +25,10 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
     return this.diceService.diceNumbers
   }
 
+  get currentPlayer(){
+    return this.gameDataService.currentPlayer;
+  }
+
 
   ngOnInit(): void {
     this.activeRouter.paramMap.subscribe(params => {

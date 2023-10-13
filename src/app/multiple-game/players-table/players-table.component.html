@@ -35,7 +35,11 @@
       </ng-container>
     </div>
 
-    <div class="grid-item corner-right"></div>
+    <div class="grid-item corner-right text-center">
+      <div class="current-dice-roller">
+        The current DICE Roller is: {{currentPlayer.name}}
+      </div>
+    </div>
     <div class="grid-item main">
       <div class="mainContent">
         <app-multiple-roller-dice></app-multiple-roller-dice>

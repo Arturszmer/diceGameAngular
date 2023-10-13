@@ -69,10 +69,12 @@ export class MultipleGameCreationService {
       this.api.joinGameWithName(existGameId, newPlayer).subscribe(game => {
         console.log('Game: --> ', game)
         this.gameDataService.game = game;
-        this.gameDataService.players = (game.players);
+        this.gameDataService.players = game.players;
+        this._joinedPlayer = game.players.filter(player => player.name === newPlayer.playerName)[0];
+        this.gameDataService.gameOwner = this._joinedPlayer;
 
+        localStorage.setItem(GAME_OWNER, JSON.stringify(this._joinedPlayer))
         localStorage.setItem(GAME_ID_STORAGE, existGameId);
-        this.gameDataService.gameOwner = game.players.filter(player => player.name === newPlayer.playerName)[0];
 
         this.router.navigate(["/mulitple-game", existGameId])
           .catch(error => console.error("error: ", error));
