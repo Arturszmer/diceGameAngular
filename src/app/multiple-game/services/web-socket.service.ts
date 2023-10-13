@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
-import {Dice, DiceMessage, GameMessage, JoinMessage, MessageTypes} from "../../model/dtos";
+import {Dice, DiceMessage, GameMessage, JoinMessage, MessageTypes, RollDto, SimpMessage} from "../../model/dtos";
 import * as SockJS from "sockjs-client";
 import {CompatClient, Stomp} from "@stomp/stompjs";
 import {environment} from "../../../environments/environment";
@@ -70,5 +70,24 @@ export class WebSocketService {
       dices: dicesFromRoll
     }
     this.stompClient!.send('/app/game.roll', {}, JSON.stringify(dicesMessage));
+  }
+
+  checkDice(rollDto: RollDto) {
+    const dicesMessage: DiceMessage = {
+      type: MessageTypes.GAME_CHECK,
+      content: '',
+      gameId: rollDto.gameId,
+      dices: rollDto.dices
+    }
+    this.stompClient!.send('/app/game.check', {}, JSON.stringify(dicesMessage));
+  }
+
+  nextPlayer(gameId: string) {
+    const message: SimpMessage = {
+      type: MessageTypes.GAME_TURN_CHANGED,
+      content: '',
+      gameId: gameId,
+    }
+    this.stompClient!.send('/app/game.next-player', {}, JSON.stringify(message));
   }
 }

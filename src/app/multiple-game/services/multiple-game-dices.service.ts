@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {MultipleGameDataService} from "./multiple-game-data.service";
 import {CountService} from "../../play-single-game/main-table/services/count.service";
 import {Dice, GameMessage, RollDto} from "../../model/dtos";
-import {ApiService} from "./api.service";
 import {WebSocketService} from "./web-socket.service";
 
 @Injectable({
@@ -23,8 +22,7 @@ export class MultipleGameDicesService {
 
   constructor(private dataService: MultipleGameDataService,
               private countService: CountService,
-              private webSocket: WebSocketService,
-              private api: ApiService) {
+              private webSocket: WebSocketService) {
     this.webSocket.gameMessage$.subscribe((message) => {
       this._gameMessage = message;
       this.diceNumbers_ = message.game.dices;
@@ -49,10 +47,7 @@ export class MultipleGameDicesService {
   }
 
   private refreshDataFromApi() {
-    this.api.diceCheck(this.prepareDataToBE()).subscribe(response => {
-      this.diceNumbers = response.dices;
-      this.dataService.player = response.player;
-    });
+    this.webSocket.checkDice(this.prepareDataToBE())
   }
 
   private sendData() {

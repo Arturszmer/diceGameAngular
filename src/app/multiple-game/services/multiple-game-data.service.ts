@@ -151,18 +151,12 @@ export class MultipleGameDataService {
       })
   }
 
-  addPoints(points: number): void {
-  }
-
-  changeTurn(): number {
-    return 0;
-  }
-
   nextPlayer(): void {
     this.api.nextPlayerTurn(this.game.gameId).subscribe(response => {
       console.log(response);
       this.refreshGameData(response);
     });
+  this.webSocket.nextPlayer(this.game.gameId);
   }
 
   get playerTurn(): number {

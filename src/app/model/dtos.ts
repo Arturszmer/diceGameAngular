@@ -54,17 +54,13 @@ export interface RollDto{
   gameId: string
 }
 
-export interface RollDicesDto {
-  dices: Dice[],
-  temporaryPoints: number,
-  allPointsFromRoll: number,
-  player: PlayerDto;
-}
-
-export interface GameMessage {
+export interface SimpMessage {
   type: string;
   gameId: string;
   content: string;
+}
+
+export interface GameMessage extends SimpMessage {
   game: GameDto;
   currentPlayer: PlayerDto;
 }
@@ -75,19 +71,14 @@ export enum MessageTypes {
   GAME_JOINED = "game.joined",
   GAME_LEAVE = "game.leave",
   GAME_ROLL = "game.roll",
-  GAME_CHECK = "game.check"
+  GAME_CHECK = "game.check",
+  GAME_TURN_CHANGED = "game.game.turn-changed",
 }
 
-export interface JoinMessage{
-  type: string;
-  gameId: string;
-  content: string;
+export interface JoinMessage extends SimpMessage{
   playerName: string;
 }
 
-export interface DiceMessage{
-  type: string;
-  gameId: string;
-  content: string;
+export interface DiceMessage extends SimpMessage {
   dices: Dice[];
 }
