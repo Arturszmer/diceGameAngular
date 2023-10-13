@@ -36,8 +36,4 @@ export class ApiService {
   joinGameWithName(existGameId: string, newPlayer: NewPlayer){
     return this.http.post<GameDto>(environment.apiUrl + `/${existGameId}` + this.joinWithName, newPlayer)
   }
-
-  nextPlayerTurn(gameId: string) {
-    return this.http.post<GameDto>(environment.apiUrl + '/nextPlayer', gameId)
-  }
 }
