@@ -140,7 +140,6 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   }
 
   savePoints() {
-    this.dataService.addPoints(this.points);
     this.nextPlayer()
   }
 
