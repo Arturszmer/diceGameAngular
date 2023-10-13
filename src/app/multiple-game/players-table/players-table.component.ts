@@ -3,6 +3,7 @@ import {MultipleGameDataService} from "../services/multiple-game-data.service";
 import {MultipleGameDicesService} from "../services/multiple-game-dices.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WebSocketService} from "../services/web-socket.service";
+import {GAME_OWNER} from "../services/multiple-game-creation.service";
 
 @Component({
   selector: 'app-players-table',
@@ -65,6 +66,7 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
       this.gameDataService.players = response.players
       this.gameDataService.setCurrentPlayer();
       this.diceService.diceNumbers = response.dices
+      this.gameDataService.gameOwner = JSON.parse(localStorage.getItem(GAME_OWNER) || "");
     })
   }
 
