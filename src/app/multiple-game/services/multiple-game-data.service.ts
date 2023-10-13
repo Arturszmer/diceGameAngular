@@ -152,10 +152,6 @@ export class MultipleGameDataService {
   }
 
   nextPlayer(): void {
-    this.api.nextPlayerTurn(this.game.gameId).subscribe(response => {
-      console.log(response);
-      this.refreshGameData(response);
-    });
   this.webSocket.nextPlayer(this.game.gameId);
   }
 
