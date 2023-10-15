@@ -3,7 +3,7 @@
           (click)="diceCheck(i)"
   [ngClass]="{
   'selected' : dice.isChecked, 'good' : dice.isGoodNumber, 'multiple' : dice.isMultiple, 'immutable' : dice.isImmutable}"
-  [disabled]="!dice.isGoodNumber || dice.isImmutable">
+  [disabled]="canBeChecked(dice)">
     <div>
       <span>{{dice.value}}</span>
 

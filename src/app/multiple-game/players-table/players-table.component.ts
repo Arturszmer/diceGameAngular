@@ -29,6 +29,10 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
     return this.gameDataService.currentPlayer;
   }
 
+  get gameOwner(){
+    return this.gameDataService.gameOwner;
+  }
+
 
   ngOnInit(): void {
     this.activeRouter.paramMap.subscribe(params => {
