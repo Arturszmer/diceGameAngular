@@ -11,7 +11,7 @@
           {{ players[0].name || "" }}
         </div>
         <div id="player1Cube" [hidden]="currentTurn !== 0">
-          <app-player [diceNumbers]="diceNumbers" [points]="points" (diceChecked)="diceCheck($event)" class="gridCube"></app-player>
+          <app-player [diceNumbers]="diceNumbers" [points]="points" [currentPlayerName]="currentPlayer.name" [gameOwnerName]="gameOwner.name" (diceChecked)="diceCheck($event)" class="gridCube"></app-player>
         </div>
         <div class="container points">
           <div>Points: {{ players[0].points }}</div>
@@ -26,7 +26,7 @@
           {{ players[2].name || "" }}
         </div>
         <div id="player3Cube" [hidden]="currentTurn !== 2">
-          <app-player [diceNumbers]="diceNumbers" [points]="points" (diceChecked)="diceCheck($event)" class="gridCubeSides" ></app-player>
+          <app-player [diceNumbers]="diceNumbers" [points]="points" [currentPlayerName]="currentPlayer.name" [gameOwnerName]="gameOwner.name" (diceChecked)="diceCheck($event)" class="gridCubeSides" ></app-player>
         </div>
         <div class="container points" *ngIf="players[2]">
           <div>Points: {{ players[2].points }}</div>
@@ -52,7 +52,7 @@
         {{ players[3].name || "" }}
       </div>
       <div id="player4Cube" [hidden]="currentTurn !== 3">
-        <app-player [diceNumbers]="diceNumbers" [points]="points" (diceChecked)="diceCheck($event)" class="gridCubeSides"></app-player>
+        <app-player [diceNumbers]="diceNumbers" [points]="points" [currentPlayerName]="currentPlayer.name" [gameOwnerName]="gameOwner.name" (diceChecked)="diceCheck($event)" class="gridCubeSides"></app-player>
       </div>
       <div class="container points" *ngIf="players[3]">
         <div>Points: {{ players[3].points }}</div>
@@ -69,7 +69,7 @@
           {{ players[1].name || "" }}
         </div>
         <div id="player2Cube" [hidden]="currentTurn !== 1" *ngIf="players[1]">
-          <app-player [diceNumbers]="diceNumbers" [points]="points" (diceChecked)="diceCheck($event)" class="gridCube"></app-player>
+          <app-player [diceNumbers]="diceNumbers" [points]="points" [currentPlayerName]="currentPlayer.name" [gameOwnerName]="gameOwner.name" (diceChecked)="diceCheck($event)" class="gridCube"></app-player>
         </div>
         <div class="container points" *ngIf="players[1]">
           <div>Points: {{ players[1].points }}</div>
