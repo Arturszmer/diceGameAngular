@@ -101,4 +101,8 @@ export class MultipleGameDataService {
   get playerTurn(): number {
     return this.game.currentTurn;
   }
+
+  generateInvitationLink(gameId: string) {
+    return this.api.generateInvitationLink(gameId);
+  }
 }

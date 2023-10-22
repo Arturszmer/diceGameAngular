@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { PlayerDto } from "../../../model/playerDto";
+import { PlayerDto } from "../../../model/dtos";
 import { playerStorage } from "../player/player.component";
 import {Dice} from "../../../model/dtos";
 import {GameDataService} from "../../../service-interfaces/data-service";

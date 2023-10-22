@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {PlayerDto} from "../model/playerDto";
+import {PlayerDto} from "../model/dtos";
 import {SingleGameDataService} from "../play-single-game/main-table/services/single-game-data.service";
 import {
   AbstractControl,

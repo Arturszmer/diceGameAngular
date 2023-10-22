@@ -7,15 +7,19 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { PlayersTableComponent } from './players-table/players-table.component';
 import {PlayerModule} from "../play-single-game/main-table/player/player.module";
-import { JoinGameModalComponent } from './join-game-modal/join-game-modal.component';
 import { MultipleRollerDiceComponent } from './players-table/multiple-roller-dice/multiple-roller-dice.component';
+import {JoinGameModalComponent} from "./modals/join-game-modal/join-game-modal.component";
+import {QuitGameModalComponent} from "./modals/quit-game-modal/quit-game-modal.component";
+import { CopyDirectiveDirective } from './directives/copy-directive.directive';
 
 @NgModule({
   declarations: [
     MultipleGameComponent,
     PlayersTableComponent,
     JoinGameModalComponent,
-    MultipleRollerDiceComponent
+    MultipleRollerDiceComponent,
+    QuitGameModalComponent,
+    CopyDirectiveDirective
   ],
   imports: [
     CommonModule,

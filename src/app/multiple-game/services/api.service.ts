@@ -36,4 +36,11 @@ export class ApiService {
   joinGameWithName(existGameId: string, newPlayer: NewPlayer){
     return this.http.post<GameDto>(environment.apiUrl + `/${existGameId}` + this.joinWithName, newPlayer)
   }
+
+  generateInvitationLink(gameId: string) {
+    const options = {
+      responseType: 'text' as 'json'
+    };
+    return this.http.get<string>(environment.apiUrl + `/${gameId}/generate-invite-link`, options);
+  }
 }

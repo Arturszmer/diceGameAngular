@@ -4,6 +4,8 @@ import {MultipleGameDicesService} from "../services/multiple-game-dices.service"
 import {ActivatedRoute, Router} from "@angular/router";
 import {WebSocketService} from "../services/web-socket.service";
 import {GAME_OWNER} from "../services/multiple-game-creation.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {QuitGameModalComponent} from "../modals/quit-game-modal/quit-game-modal.component";
 
 @Component({
   selector: 'app-players-table',
@@ -12,12 +14,16 @@ import {GAME_OWNER} from "../services/multiple-game-creation.service";
 })
 export class PlayersTableComponent implements OnInit, AfterViewInit {
 
+  invitationLink?: string;
+  showMessage: boolean = false;
+
   constructor(private gameDataService: MultipleGameDataService,
               private diceService: MultipleGameDicesService,
               private router: Router,
               private cdRef: ChangeDetectorRef,
               private activeRouter: ActivatedRoute,
-              private webSocket: WebSocketService
+              private webSocket: WebSocketService,
+              private modalService: NgbModal
               ) {
   }
 
@@ -79,9 +85,40 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
   }
 
     quit() {
-        this.gameDataService.clearPlayers();
-        localStorage.clear();
-        this.router.navigate([""]);
-        this.webSocket.closeConnection(this.gameDataService.game.gameId);
+      let modalRef = this.modalService.open(QuitGameModalComponent, {centered: false});
+
+      modalRef.result.then((result) => {
+        if(result === 'quit'){
+          this.gameDataService.clearPlayers();
+          localStorage.clear();
+          this.router.navigate([""]);
+          this.webSocket.closeConnection(this.gameDataService.game.gameId);
+        }
+      })
     }
+
+  generateInvitationLink(event: any) {
+    this.gameDataService.generateInvitationLink(this.game.gameId).subscribe((response) => {
+      // const link = response;
+      this.invitationLink = response;
+      this.onClick(event)
+    });
+  }
+
+  public onClick(event: MouseEvent): void {
+
+    event.preventDefault();
+    if (!this.invitationLink)
+      return;
+
+    navigator.clipboard.writeText(this.invitationLink.toString()).then(() => {
+      this.showMessage = true;
+      setTimeout(() => {
+        this.showMessage = false
+      }, 2000)
+    }).catch((error) => {
+      console.error('Failed to copy text to clipboard: ' + error);
+    });
+  }
+
 }
