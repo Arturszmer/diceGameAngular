@@ -34,6 +34,18 @@
   grid-area: player1;
   background-color: #FBB13C;
 }
+
+.rollingPlayer {
+  border-bottom: solid 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.isActivePlayer {
+  color: grey;
+  text-decoration: line-through;
+}
+
 .corner-right {
   grid-area: corner-right;
   background-color: gray;
@@ -153,4 +165,10 @@
 }
 .text-center {
   text-align: center;
+}
+
+.message {
+  color: white;
+  font-size: 16px;
+  padding: 8px;
 }

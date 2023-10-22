@@ -3,9 +3,9 @@ import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {GAME_ID_STORAGE, MultipleGameDataService} from "./multiple-game-data.service";
-import {JoinGameModalComponent} from "../join-game-modal/join-game-modal.component";
 import {Observable} from "rxjs";
 import {GameDto, NewPlayer, PlayerDto} from "../../model/dtos";
+import {JoinGameModalComponent} from "../modals/join-game-modal/join-game-modal.component";
 
 export const GAME_OWNER: string = 'GAME_OWNER'
 
