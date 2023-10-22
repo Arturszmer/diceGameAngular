@@ -2,6 +2,7 @@ export interface PlayerDto {
   id: number;
   name: string;
   points: number;
+  active?: boolean;
   validations?: Validations;
 }
 
