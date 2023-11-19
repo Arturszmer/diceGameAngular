@@ -36,7 +36,6 @@ export class WebSocketService {
     this.stompClient.connect({}, () => {
       this.stompClient!.subscribe(environment.topicPath + gameId, (message: any) => {
         if (message.body) {
-          console.log(message.body)
           this.gameMessageSubject.next(JSON.parse(message.body));
         }
       });

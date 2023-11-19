@@ -59,7 +59,7 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
-    this.diceNumbers = this.dataService.dicesFromGame;
+    this.diceNumbers = this.dataService?.dicesFromGame;
     this.playerTurn = this.dataService.playerTurn;
     this.pointsSubscription = this.countService.points$.subscribe((p) => this.points = p)
     this.pointsFromRollSubscription = this.countService.pointsFromRoll$.subscribe((p) => this.pointsFromRoll = p)
@@ -70,8 +70,6 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
     this.isSaved = false;
     this.getCheckedDiceArr();
     this.buttonValidation();
-    console.log('GAME OWNER: ', this.gameOwner)
-    console.log('CURRENT PLAYER: ', this.currentPlayer)
   }
 
   ngOnDestroy(){
@@ -103,12 +101,11 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   }
 
   disableButtonForWaitingPlayers():Boolean{
-    console.log('disableButtonForWaitingPlayers ---> ', this.currentPlayer.name !== this.gameOwner.name);
     return this.currentPlayer.name !== this.gameOwner.name;
   }
 
   currentPlayerCanRoll() {
-    return this.isRolling && this.currentPlayer.name === this.gameOwner.name;
+    return this.isRolling && this.currentPlayer?.name === this.gameOwner?.name;
   }
 
   @HostListener('window:keydown.Enter', ['$event'])
@@ -143,12 +140,12 @@ export class MultipleRollerDiceComponent implements OnInit, DoCheck {
   }
 
   private getCheckedDiceArr() {
-    if ((this.diceNumbers.filter((f) => f.isChecked && !f.isImmutable).length > 0)
-      || this.diceNumbers.length == 0){
+    if ((this.diceNumbers?.filter((f) => f.isChecked && !f.isImmutable).length > 0)
+      || this.diceNumbers?.length == 0){
       this.isRolling = true;
       return;
     }
-    if (this.diceNumbers.filter((f) => f.isChecked && !f.isImmutable).length == 0){
+    if (this.diceNumbers?.filter((f) => f.isChecked && !f.isImmutable).length == 0){
       this.isRolling = false;
       return;
     }

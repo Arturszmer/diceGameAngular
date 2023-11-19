@@ -44,7 +44,6 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
     this.activeRouter.paramMap.subscribe(params => {
       const gameId: string | null = params.get('id')
       if (gameId){
-              console.log('GAME ID: ', gameId);
               this.restoreGameData(gameId);
       }
     })
