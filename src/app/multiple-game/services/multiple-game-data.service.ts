@@ -11,7 +11,6 @@ export const GAME_ID_STORAGE = 'GAME_ID';
 })
 export class MultipleGameDataService {
 
-  private _adminPlayer!: PlayerDto;
   private _players: PlayerDto[] = [];
   private _currentPlayer!: PlayerDto;
   private _game!: GameDto;
@@ -56,17 +55,8 @@ export class MultipleGameDataService {
     this._game = game;
   }
 
-  get adminPlayer(): PlayerDto {
-    return this._adminPlayer;
-  }
-
-  set adminPlayer(player: PlayerDto) {
-    this._adminPlayer = player;
-    this._players.push(player)
-  }
-
   get dicesFromGame(){
-    return this.game.dices;
+    return this.game?.dices;
   }
 
   get gameOwner(){
@@ -78,7 +68,7 @@ export class MultipleGameDataService {
   }
 
   connectGame(){
-    this.webSocket.connectNewGame(this.game.gameId, this.gameOwner.name);
+    this.webSocket.connectNewGame(this.game?.gameId, this.gameOwner?.name);
   }
 
   setCurrentPlayer(){
@@ -95,11 +85,11 @@ export class MultipleGameDataService {
   }
 
   nextPlayer(): void {
-  this.webSocket.nextPlayer(this.game.gameId);
+  this.webSocket.nextPlayer(this.game?.gameId);
   }
 
   get playerTurn(): number {
-    return this.game.currentTurn;
+    return this.game?.currentTurn;
   }
 
   generateInvitationLink(gameId: string) {

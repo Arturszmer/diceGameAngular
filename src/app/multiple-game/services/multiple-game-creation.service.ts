@@ -53,11 +53,11 @@ export class MultipleGameCreationService {
       this.gameDataService.gameOwner = this._joinedPlayer;
       localStorage.setItem(GAME_OWNER, JSON.stringify(this._joinedPlayer))
       localStorage.setItem(GAME_ID_STORAGE, response.gameId)
-      this.router.navigate(["/mulitple-game", response.gameId]);
+      this.router.navigate(["/multiple-game", response.gameId]);
     });
   }
 
-  joinGame(existGameId: string, adminPlayerName: string){
+  joinGame(existGameId: string, adminPlayerName?: string){
     let modalRef = this.modalService.open(JoinGameModalComponent, {centered: true});
     modalRef.componentInstance.gameId = existGameId;
     modalRef.componentInstance.adminName = adminPlayerName;
@@ -67,16 +67,15 @@ export class MultipleGameCreationService {
         playerName: response.toString()
       }
       this.api.joinGameWithName(existGameId, newPlayer).subscribe(game => {
-        console.log('Game: --> ', game)
         this.gameDataService.game = game;
         this.gameDataService.players = game.players;
         this._joinedPlayer = game.players.filter(player => player.name === newPlayer.playerName)[0];
         this.gameDataService.gameOwner = this._joinedPlayer;
 
         localStorage.setItem(GAME_OWNER, JSON.stringify(this._joinedPlayer))
-        localStorage.setItem(GAME_ID_STORAGE, existGameId);
+        localStorage.setItem(GAME_ID_STORAGE, game.gameId);
 
-        this.router.navigate(["/mulitple-game", existGameId])
+        this.router.navigate(["/multiple-game", game.gameId])
           .catch(error => console.error("error: ", error));
       })
     })
