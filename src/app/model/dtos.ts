@@ -10,12 +10,19 @@ export interface NewPlayer{
   playerName: string;
 }
 
+export interface Points {
+  points: number;
+  temporaryPoints: number;
+  pointsFromRoll: number;
+}
+
 export interface GameDto {
   gameId: string;
   gameStatus: GameStatus;
   players: PlayerDto[];
   adminPlayer: PlayerDto;
   currentTurn: number;
+  points: Points;
   startGameTime: Date;
   dices: Dice[];
 }
@@ -66,6 +73,10 @@ export interface GameMessage extends SimpMessage {
   currentPlayer: PlayerDto;
 }
 
+export interface WinnerMessage extends SimpMessage {
+  isReplay: boolean;
+}
+
 export enum MessageTypes {
   ERROR = "error",
   GAME_CREATED = "game.created",
@@ -74,6 +85,7 @@ export enum MessageTypes {
   GAME_ROLL = "game.roll",
   GAME_CHECK = "game.check",
   GAME_TURN_CHANGED = "game.game.turn-changed",
+  GAME_SAVED = "game.points-saved",
 }
 
 export interface JoinMessage extends SimpMessage{

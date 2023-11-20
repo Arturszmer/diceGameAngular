@@ -67,6 +67,10 @@ export class MultipleGameDataService {
     this._gameOwner = player;
   }
 
+  get points(){
+    return this._game.points.points;
+  }
+
   connectGame(){
     this.webSocket.connectNewGame(this.game?.gameId, this.gameOwner?.name);
   }
@@ -85,7 +89,11 @@ export class MultipleGameDataService {
   }
 
   nextPlayer(): void {
-  this.webSocket.nextPlayer(this.game?.gameId);
+    this.webSocket.nextPlayer(this.game?.gameId);
+  }
+
+  savePoints() {
+    this.webSocket.savePoints(this.game?.gameId);
   }
 
   get playerTurn(): number {
@@ -94,5 +102,13 @@ export class MultipleGameDataService {
 
   generateInvitationLink(gameId: string) {
     return this.api.generateInvitationLink(gameId);
+  }
+
+  winGame(isReplay: boolean) {
+    return this.webSocket.winGame(this.game?.gameId, isReplay);
+  }
+
+  closeWSConnection() {
+    this.webSocket.closeConnection(this.game.gameId);
   }
 }

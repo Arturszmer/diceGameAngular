@@ -2,9 +2,9 @@
   <button type="button" id="roller" class="btn-cube"
           (click)="diceRoll()"
           [ngClass]="{'clicked' : isClicked}"
-          [disabled]="!isRolling || !currentPlayerCanRoll()">
-    <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="150px" height="150px" alt="" *ngIf="isRolling">
-    <img id="conf-dis" src="assets/soundsAndImages/roller-dice-disabled.png" width="150px" height="150px" alt="" *ngIf="!isRolling"></button>
+          [disabled]="!currentPlayerCanRoll()">
+    <img id="conf" src="assets/soundsAndImages/LogoOneThousand.png" width="150px" height="150px" alt="" *ngIf="currentPlayerCanRoll()">
+    <img id="conf-dis" src="assets/soundsAndImages/roller-dice-disabled.png" width="150px" height="150px" alt="" *ngIf="!currentPlayerCanRoll()"></button>
 
   <button type="button" id="nextThrow" class="btn btn-warning btn-lg" style="display: none">Throw</button>
   <button type="button" id="win" class="btn btn-dark btn-lg" style="display: none">Click to WIN!</button>

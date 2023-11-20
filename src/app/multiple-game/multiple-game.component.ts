@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MultipleGameCreationService} from "./services/multiple-game-creation.service";
+import {GameStatus} from "../model/dtos";
 
 @Component({
   selector: 'app-multiple-game',
@@ -44,4 +45,6 @@ export class MultipleGameComponent implements OnInit{
     this.currentPage++;
     this.gameCreationService.fetchGames(this.currentPage, this.pageSize)
   }
+
+    protected readonly GameStatus = GameStatus;
 }
