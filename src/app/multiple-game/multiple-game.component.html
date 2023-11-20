@@ -30,7 +30,7 @@
           <td>{{game.gameId.substring(0, 5) + '...'}}</td>
           <td>{{game.adminPlayer.name}}</td>
           <td>{{game.players.length}}</td>
-          <td><button [id]="i" class="btn btn-sm" [disabled]="game.players.length == 4" (click)="joinGame($event, game.gameId, game.adminPlayer.name)">join</button></td>
+          <td><button [id]="i" class="btn btn-sm" [disabled]="game.players.length == 4 || game.gameStatus == GameStatus.FINISHED" (click)="joinGame($event, game.gameId, game.adminPlayer.name)">join</button></td>
         </tr>
         </ng-container>
 

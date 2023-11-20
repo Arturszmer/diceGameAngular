@@ -91,7 +91,7 @@ export class PlayersTableComponent implements OnInit, AfterViewInit {
           this.gameDataService.clearPlayers();
           localStorage.clear();
           this.router.navigate([""]);
-          this.webSocket.closeConnection(this.gameDataService.game.gameId);
+          this.gameDataService.closeWSConnection()
         }
       })
     }

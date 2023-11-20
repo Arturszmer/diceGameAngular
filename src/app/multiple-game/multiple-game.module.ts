@@ -12,6 +12,7 @@ import {JoinGameModalComponent} from "./modals/join-game-modal/join-game-modal.c
 import {QuitGameModalComponent} from "./modals/quit-game-modal/quit-game-modal.component";
 import { CopyDirectiveDirective } from './directives/copy-directive.directive';
 import { JoinByLinkComponent } from './join-by-link/join-by-link.component';
+import { MultipleWinnerModalComponent } from './modals/winner-modal/multiple-winner-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { JoinByLinkComponent } from './join-by-link/join-by-link.component';
     MultipleRollerDiceComponent,
     QuitGameModalComponent,
     CopyDirectiveDirective,
-    JoinByLinkComponent
+    JoinByLinkComponent,
+    MultipleWinnerModalComponent
   ],
   imports: [
     CommonModule,

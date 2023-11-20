@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
-import {Dice, DiceMessage, GameMessage, JoinMessage, MessageTypes, RollDto, SimpMessage} from "../../model/dtos";
+import {
+  Dice,
+  DiceMessage,
+  GameMessage,
+  JoinMessage,
+  MessageTypes,
+  RollDto,
+  SimpMessage,
+  WinnerMessage
+} from "../../model/dtos";
 import * as SockJS from "sockjs-client";
 import {CompatClient, Stomp} from "@stomp/stompjs";
 import {environment} from "../../../environments/environment";
@@ -88,5 +97,24 @@ export class WebSocketService {
       gameId: gameId,
     }
     this.stompClient!.send('/app/game.next-player', {}, JSON.stringify(message));
+  }
+
+  savePoints(gameId: string) {
+    const message: SimpMessage = {
+      type: MessageTypes.GAME_SAVED,
+      content: '',
+      gameId: gameId
+    }
+    this.stompClient!.send('/app/game.save-points', {}, JSON.stringify(message))
+  }
+
+  winGame(gameId: string, replay: boolean) {
+    const message: WinnerMessage = {
+      type: MessageTypes.GAME_SAVED,
+      content: '',
+      gameId: gameId,
+      isReplay: replay
+    }
+    this.stompClient!.send('/app/game.win', {}, JSON.stringify(message))
   }
 }

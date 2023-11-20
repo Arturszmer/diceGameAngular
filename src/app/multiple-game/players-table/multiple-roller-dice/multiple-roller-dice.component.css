@@ -16,6 +16,10 @@
   transform: scale(0.9);
 }
 
+.disabled {
+
+}
+
 .result {
   border: solid;
   border-radius: 10px;
